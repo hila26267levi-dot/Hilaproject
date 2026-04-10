@@ -1,8 +1,10 @@
 package com.hila.myapplication.model;
 
-public class User {
-    protected String id ;
+import java.io.Serializable;
 
+public class User implements Serializable {
+
+    protected String id;
     protected String fname ;
     protected String lname ;
 
@@ -10,15 +12,27 @@ public class User {
     protected String email;
 
     protected String password ;
+    protected String pic ;
 
 
     public User(String id, String fname, String lname, String phone, String email, String password) {
+
+        this.id=id;
+        this.fname = fname;
+        this.lname = lname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String id, String fname, String lname, String phone, String email, String password, String pic) {
         this.id = id;
         this.fname = fname;
         this.lname = lname;
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.pic = pic;
     }
 
     public User() {
@@ -72,6 +86,14 @@ public class User {
         this.password = password;
     }
 
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -81,6 +103,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", pic='" + pic + '\'' +
                 '}';
     }
 }

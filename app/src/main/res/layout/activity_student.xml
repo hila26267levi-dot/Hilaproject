@@ -5,6 +5,82 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StudentActivity">
+    tools:context=".screens.StudentActivity">
+
+    <ImageView
+        android:id="@+id/pic4"
+        android:layout_width="465dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="28dp"
+        android:src="@drawable/pic4_for_pages"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-20dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="82dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:text="דף תלמיד"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_studentpage_searchteacher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_studentpage_mylesson"
+        android:layout_width="125dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="63dp"
+        android:background="@drawable/my_button_background"
+        android:fontFamily="@font/nehama_webfont"
+        android:text="השעורים שלי"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btn_studentpage_myprofil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_studentpage_searchteacher" />
+
+    <Button
+        android:id="@+id/btn_studentpage_myprofil"
+        android:layout_width="123dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="229dp"
+        android:background="@drawable/my_button_background"
+        android:fontFamily="@font/nehama_webfont"
+        android:text="הפרופיל שלי"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_studentpage_mylesson" />
+
+    <Button
+        android:id="@+id/btn_studentpage_searchteacher"
+        android:layout_width="125dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="67dp"
+        android:background="@drawable/my_button_background"
+        android:fontFamily="@font/nehama_webfont"
+        android:text="חיפוש מורים"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btn_studentpage_mylesson"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/pic12"
+        android:layout_width="0dp"
+        android:layout_height="315dp"
+        android:layout_marginTop="3dp"
+        android:contentDescription="logo"
+        android:src="@drawable/pic12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/subjectText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="27dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/dateText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/kitaText"
+        app:layout_constraintTop_toBottomOf="@+id/teacherText" />
+
+    <TextView
+        android:id="@+id/teacherText"
+        android:layout_width="132dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="34dp"
+        android:layout_marginBottom="30dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/kitaText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="27dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/timeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/zoomHomeText"
+        app:layout_constraintTop_toBottomOf="@+id/subjectText" />
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="43dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/statusText"
+        app:layout_constraintEnd_toEndOf="@+id/dateText"
+        app:layout_constraintStart_toStartOf="@+id/dateText"
+        app:layout_constraintTop_toBottomOf="@+id/dateText" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="136dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="451dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeText" />
+
+    <TextView
+        android:id="@+id/zoomHomeText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="122dp"
+        android:layout_marginBottom="559dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dateText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kitaText" />
+
+    <TextView
+        android:id="@+id/kitaText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="122dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/zoomHomeText"
+        app:layout_constraintEnd_toStartOf="@+id/subjectText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teacherText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

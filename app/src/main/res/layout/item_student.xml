@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/pic13"
+        android:layout_width="457dp"
+        android:layout_height="727dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStusendFName"
+        app:layout_constraintTop_toBottomOf="@+id/tvStusendFName"
+        app:srcCompat="@drawable/pic13"
+        tools:layout_editor_absoluteX="-23dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="56dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/tvStusendFName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/profil" />
+
+    <TextView
+        android:id="@+id/tvStusendFName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="first name:"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvStusendLName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/tvStusendLName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="last name:"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvStusendclass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStusendFName" />
+
+    <TextView
+        android:id="@+id/tvStusendclass"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="471dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="class:"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStusendLName" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

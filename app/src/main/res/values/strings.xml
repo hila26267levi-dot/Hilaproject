@@ -1,3 +1,50 @@
 <resources>
     <string name="app_name">Hilaproject</string>
+    <string name="font_david_libre">\@font/David Libre</string>
+    <string name="font_gevert_levin_alef_alef_ttf">\@font/gevert levin alef alef.ttf</string>
+
+    <string-array name="my_items">
+        <item>בחר כיתה</item>
+        <item>א</item>
+        <item>ב</item>
+        <item>ג</item>
+        <item>ד</item>
+        <item>ה</item>
+        <item>ו</item>
+        <item>ז</item>
+        <item>ח</item>
+        <item>ט</item>
+        <item>י</item>
+        <item>יא</item>
+        <item>יב</item>
+    </string-array>
+
+    <string-array name="Arrgrade">
+        <item>בחר כיתות לימוד</item>
+        <item>יסודי</item>
+        <item>חטיבה</item>
+        <item>תיכון</item>
+        <item>  חטיבה ,יסודי</item>
+        <item>תיכון,חטיבה</item>
+        <item>יסודי ,תיכון</item>
+        <item>יסודי ,תיכון,חטיבה</item>
+    </string-array>
+
+
+    <string-array name="Arrsubject">
+        <item>בחר מקצוע </item>
+        <item>עברית </item>
+        <item>מדעי המחשב</item>
+        <item>פיזיקה</item>
+        <item>ביולוגיה</item>
+        <item> 5 מתמטיקה </item>
+        <item> 4 מתמטיקה </item>
+        <item> 3 מתמטיקה </item>
+        <item> 4 אנגלית</item>
+        <item> 5 אנגלית</item>
+        <item> 3 אנגלית</item>
+        <item></item>
+    </string-array>
+
+
 </resources>

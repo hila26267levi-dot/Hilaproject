@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.Addnewlesson">
+
+    <ImageView
+        android:id="@+id/pic6"
+        android:layout_width="582dp"
+        android:layout_height="783dp"
+        android:src="@drawable/pic6"
+        app:layout_constraintBaseline_toBaselineOf="parent"
+        tools:layout_editor_absoluteX="-86dp" />
+
+    <EditText
+        android:id="@+id/subjectlesson_addlesson"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="184dp"
+        android:layout_marginBottom="58dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="מקצוע שיעור"
+        app:layout_constraintBottom_toTopOf="@+id/etGradeClass"
+        app:layout_constraintEnd_toEndOf="@+id/et_datelesson_addlesson"
+        app:layout_constraintStart_toStartOf="@+id/et_datelesson_addlesson"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etGradeClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="171dp"
+        android:ems="10"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="כיתה"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/button_addlesson"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sp_Class_addlesson"
+        app:layout_constraintTop_toBottomOf="@+id/subjectlesson_addlesson" />
+
+    <EditText
+        android:id="@+id/et_timelesson_addlesson"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="זמן השיעור"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/ck_zoom"
+        app:layout_constraintEnd_toEndOf="@+id/ck_zoom"
+        app:layout_constraintStart_toStartOf="@+id/et_datelesson_addlesson"
+        app:layout_constraintTop_toBottomOf="@+id/sp_Class_addlesson" />
+
+    <EditText
+        android:id="@+id/et_datelesson_addlesson"
+        android:layout_width="257dp"
+        android:layout_height="0dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="תאריך השיעור"
+        app:layout_constraintBottom_toTopOf="@+id/sp_Class_addlesson"
+        app:layout_constraintEnd_toEndOf="@+id/etGradeClass"
+        app:layout_constraintTop_toBottomOf="@+id/subjectlesson_addlesson" />
+
+    <Spinner
+        android:id="@+id/sp_Class_addlesson"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:entries="@array/my_items"
+        android:gravity="center"
+        android:hint="דרך למידה"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/et_timelesson_addlesson"
+        app:layout_constraintEnd_toStartOf="@+id/etGradeClass"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_datelesson_addlesson" />
+
+    <Button
+        android:id="@+id/button_addlesson"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="113dp"
+        android:layout_marginBottom="171dp"
+        android:background="@drawable/my_button_background"
+        android:fontFamily="@font/nehama_webfont"
+        android:text="הוסף שיעור"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ck_zoom"
+        app:layout_constraintTop_toBottomOf="@+id/etGradeClass" />
+
+    <CheckBox
+        android:id="@+id/ck_zoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="310dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="במידה והשיעור בזום סמן אחרת לא ללחוץ"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_timelesson_addlesson" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

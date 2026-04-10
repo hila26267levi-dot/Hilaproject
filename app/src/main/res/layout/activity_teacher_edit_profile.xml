@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.Teacher_edit_profile">
+
+    <ImageView
+        android:id="@+id/adutpic"
+        android:layout_width="431dp"
+        android:layout_height="722dp"
+        android:src="@drawable/adutpic"
+        tools:layout_editor_absoluteX="-10dp"
+        tools:layout_editor_absoluteY="4dp" />
+
+    <EditText
+        android:id="@+id/profile_Teacher_E_zoom"
+        android:layout_width="209dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="זום"
+        android:textSize="17dp"
+        tools:layout_editor_absoluteX="133dp"
+        tools:layout_editor_absoluteY="532dp" />
+
+    <EditText
+        android:id="@+id/profile_Teacher_E_subject"
+        android:layout_width="209dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="מקצוע"
+        android:textSize="17dp"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="463dp" />
+
+    <EditText
+        android:id="@+id/profile_Teacher_E_Lname"
+        android:layout_width="209dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="שם משפחה"
+        android:textSize="17dp"
+        tools:layout_editor_absoluteX="133dp"
+        tools:layout_editor_absoluteY="206dp" />
+
+    <EditText
+        android:id="@+id/profile_Teacher_E_price"
+        android:layout_width="209dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="מחיר"
+        android:textSize="17dp"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="396dp" />
+
+    <ImageView
+        android:id="@+id/img_TeacherProfile"
+        android:layout_width="176dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/profil"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="90dp" />
+
+    <EditText
+        android:id="@+id/profile_Teacher_E_Fname"
+        android:layout_width="209dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="שם פרטי"
+        android:textColor="#1E5A7A"
+        android:textSize="17dp"
+        tools:layout_editor_absoluteX="133dp"
+        tools:layout_editor_absoluteY="148dp" />
+
+    <EditText
+        android:id="@+id/profile_Teacher_E_teachclass"
+        android:layout_width="209dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="כיתות לימוד"
+        android:inputType="text"
+        android:textColor="#1E5A7A"
+        android:textSize="17dp"
+        tools:layout_editor_absoluteX="133dp"
+        tools:layout_editor_absoluteY="330dp" />
+
+    <EditText
+        android:id="@+id/profile_Teacher_E_age"
+        android:layout_width="209dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="גיל"
+        android:textSize="17dp"
+        tools:layout_editor_absoluteX="133dp"
+        tools:layout_editor_absoluteY="268dp" />
+
+    <Button
+        android:id="@+id/profile_Teacher_E_btn"
+        android:layout_width="151dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:background="@drawable/my_button_background"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:text="שמור פרופיל"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="611dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.teacher_profile">
+
+    <ImageView
+        android:id="@+id/pic8"
+        android:layout_width="660dp"
+        android:layout_height="0dp"
+        android:contentDescription="logo"
+        android:src="@drawable/pic8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-125dp" />
+
+
+    <TextView
+        android:id="@+id/tvProfileTeacher_Fname"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_Lname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_TeacherProfile" />
+
+    <ImageView
+        android:id="@+id/img_TeacherProfile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="34dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_Fname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/profil" />
+
+    <TextView
+        android:id="@+id/tvProfileTeacher_zoom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="31dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_age"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_price" />
+
+    <TextView
+        android:id="@+id/tvProfileTeacher_Lname"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="18dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_teachclass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_Fname" />
+
+    <TextView
+        android:id="@+id/tvProfileTeacher_age"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="14dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/btn_E_teacher_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_zoom" />
+
+    <TextView
+        android:id="@+id/tvProfileTeacher_price"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="93dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_zoom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_teachclass" />
+
+    <TextView
+        android:id="@+id/tvProfileTeacher_teachclass"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="19dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_Lname" />
+
+    <TextView
+        android:id="@+id/tvProfileTeacher_subject"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:fontFamily="@font/nehama_webfont"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#1E5A7A"
+        app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_teachclass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_zoom"
+        app:layout_constraintVertical_bias="0.375" />
+
+    <Button
+        android:id="@+id/btn_E_teacher_profile"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="113dp"
+        android:background="@drawable/my_button_background"
+        android:fontFamily="@font/nehama_webfont"
+        android:text="עריכת פרופיל "
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.617"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_age" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

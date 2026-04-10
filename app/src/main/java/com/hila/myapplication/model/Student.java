@@ -1,19 +1,30 @@
 package com.hila.myapplication.model;
 
-public class Student  extends  User{
+import androidx.annotation.NonNull;
 
-    protected  String kita;
+import java.io.Serializable;
 
-    public Student(String id, String fname, String lname, String phone, String email, String password, String kita) {
-        super(id, fname, lname, phone, email, password);
+public class Student extends User implements Serializable {
+
+    protected String kita;
+
+    public Student() {
+        super();
+    }
+
+
+   // public Student(String id, String fname, String lname, String phone, String email, String password, String kita) {
+     //   super(id, fname, lname, phone, email, password);
+     //   this.kita = kita;
+  //  }
+
+    public Student(String id, String fname, String lname, String phone, String email, String password, String pic, String kita) {
+        super(id, fname, lname, phone, email, password, pic);
         this.kita = kita;
     }
 
     public Student(String kita) {
         this.kita = kita;
-    }
-
-    public Student() {
     }
 
     public String getKita() {
@@ -24,6 +35,7 @@ public class Student  extends  User{
         this.kita = kita;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Student{" +

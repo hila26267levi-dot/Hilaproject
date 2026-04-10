@@ -1,12 +1,12 @@
 package com.hila.myapplication.model;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Teacher extends User{
+public class Teacher extends User implements Serializable {
 
-    protected String born ;
-    protected ArrayList<String> professions ;
-    protected Double price ;
+    protected String age ;
+    protected String subject ;
+    protected double price ;
     protected String zoom ;
     protected String teachclass ;
 
@@ -14,45 +14,46 @@ public class Teacher extends User{
     public Teacher() {
     }
 
-    public Teacher(String id, String fname, String lname, String phone, String email, String password, String born, Double price, ArrayList<String> professions, String teachclass, String zoom) {
+
+    public Teacher(String id, String fname, String lname, String phone, String email, String password, String age, String subject, double price, String zoom, String teachclass) {
         super(id, fname, lname, phone, email, password);
-        this.born = born;
+        this.age = age;
+        this.subject = subject;
         this.price = price;
-        this.professions = professions;
-        this.teachclass = teachclass;
         this.zoom = zoom;
+        this.teachclass = teachclass;
     }
 
-    public String getBorn() {
-        return born;
+    public Teacher(String age, String subject, double price, String zoom, String teachclass) {
+        this.age = age;
+        this.subject = subject;
+        this.price = price;
+        this.zoom = zoom;
+        this.teachclass = teachclass;
     }
 
-    public void setBorn(String born) {
-        this.born = born;
+    public String getAge() {
+        return age;
     }
 
-    public Double getPrice() {
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
-    }
-
-    public ArrayList<String> getProfessions() {
-        return professions;
-    }
-
-    public void setProfessions(ArrayList<String> professions) {
-        this.professions = professions;
-    }
-
-    public String getTeachclass() {
-        return teachclass;
-    }
-
-    public void setTeachclass(String teachclass) {
-        this.teachclass = teachclass;
     }
 
     public String getZoom() {
@@ -63,20 +64,28 @@ public class Teacher extends User{
         this.zoom = zoom;
     }
 
+    public String getTeachclass() {
+        return teachclass;
+    }
+
+    public void setTeachclass(String teachclass) {
+        this.teachclass = teachclass;
+    }
+
     @Override
     public String toString() {
-        return "Teacher{" +
-                "born='" + born + '\'' +
-                ", professions=" + professions +
+        return "Teacher" +
+                ", age='" + age + '\'' +
+                ", subject='" + subject + '\'' +
                 ", price=" + price +
                 ", zoom='" + zoom + '\'' +
                 ", teachclass='" + teachclass + '\'' +
-                ", email='" + email + '\'' +
-                ", fname='" + fname + '\'' +
                 ", id='" + id + '\'' +
+                ", fname='" + fname + '\'' +
                 ", lname='" + lname + '\'' +
-                ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

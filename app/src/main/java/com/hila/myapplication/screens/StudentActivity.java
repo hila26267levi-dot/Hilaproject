@@ -32,7 +32,7 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
 
         if(v==btn_Studentpage_mylesson){
-            Intent intent = new Intent(StudentActivity.this,LessonActivity.class);
+            Intent intent = new Intent(StudentActivity.this,student_lesson_list.class);
             startActivity(intent);
         }
         if(v==    btn_studentpage_searchteacher){
@@ -52,7 +52,7 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
     //   של תלמיד תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.student_menu, menu);
         return true;
     }
 

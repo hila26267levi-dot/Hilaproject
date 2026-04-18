@@ -84,6 +84,8 @@ private void loadTeacherData() {
     teachclass.setText(currentTeacher.getTeachclass());
     subject.setText(currentTeacher.getSubject());
     zoom.setText(currentTeacher.getZoom());
+
+
 }
 
 // שמירת העריכה
@@ -92,7 +94,7 @@ private void saveTeacherProfile() {
 
 
 
-
+  //  validateInput(String fname, String lname, String price, String age) {
 
     // עדכון האובייקט
     currentTeacher.setFname(fname.getText().toString());
@@ -102,6 +104,7 @@ private void saveTeacherProfile() {
     currentTeacher.setTeachclass(teachclass.getText().toString());
     currentTeacher.setSubject(subject.getText().toString());
     currentTeacher.setZoom(zoom.getText().toString());
+
 
     // עדכון בFirebase
     databaseService.updateTeacher(currentTeacher, new DatabaseService.DatabaseCallback<Void>() {
@@ -121,6 +124,61 @@ private void saveTeacherProfile() {
 
 
 
+    //בדיקות תקינות
+    //בדיקות תקינות
+    public void validateInput(String fname, String lname, String price, String age) {
+        String nameRegex = "^[A-Za-z]+$";
+        String numberRegex = "^[0-9]+$";
+
+        // שם פרטי
+        if (fname.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!fname.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // שם משפחה
+        if (lname.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!lname.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // מחיר
+        if (price.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין מחיר!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!price.matches(numberRegex)) {
+            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // גיל
+        if (age.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין גיל!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!age.matches(numberRegex)) {
+            Toast.makeText(this, "שגיאה: גיל חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        int ageValue = Integer.parseInt(age);
+        if (ageValue < 10) {
+            Toast.makeText(this, "שגיאה: גיל חייב להיות 10 ומעלה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // אם הכל תקין
+        Toast.makeText(this, "כל הפרטים תקינים!", Toast.LENGTH_LONG).show();
+    }
 
 
 
@@ -132,7 +190,7 @@ private void saveTeacherProfile() {
     //   של מורה תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.teacher_menu, menu);
         return true;
     }
 

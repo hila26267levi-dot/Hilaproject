@@ -5,69 +5,59 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/pic2_for_pages"
     tools:context=".screens.studentpage">
 
-    <ImageView
-        android:id="@+id/pic2"
-        android:layout_width="457dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginBottom="23dp"
-        android:contentDescription="logo"
-        android:src="@drawable/pic2_for_pages"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-23dp" />
 
     <TextView
-        android:id="@+id/text"
-        android:layout_width="119dp"
+        android:id="@+id/title_student_page"
+        android:layout_width="150dp"
         android:layout_height="0dp"
-        android:layout_marginTop="66dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="147dp"
         android:fontFamily="@font/nehama_webfont"
         android:gravity="center"
         android:text="תלמיד:"
         android:textColor="@color/white"
         android:textSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_student_regisret1"
+        app:layout_constraintBottom_toTopOf="@+id/btn_student_login1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_student_login1"
-        android:layout_width="100dp"
+        android:layout_width="148dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="399dp"
+        android:layout_marginBottom="117dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text="התחברות"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_student_regisret1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_student_regisret1" />
+        app:layout_constraintTop_toBottomOf="@+id/title_student_page" />
 
     <Button
         android:id="@+id/btn_student_regisret1"
-        android:layout_width="100dp"
+        android:layout_width="148dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="403dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text="הרשמה"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btn_student_login1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_student_login1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

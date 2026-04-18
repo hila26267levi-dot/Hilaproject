@@ -45,7 +45,6 @@ public class TeacherLessonAdapter extends RecyclerView.Adapter<TeacherLessonAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TeacherLesson lesson = lessonList.get(position);
-
         holder.subjectText.setText(lesson.getSubject());
         holder.teacherText.setText(lesson.getTeacher().getFname()); // Assuming Teacher has getName()
         holder.dateText.setText(lesson.getDate());
@@ -53,6 +52,7 @@ public class TeacherLessonAdapter extends RecyclerView.Adapter<TeacherLessonAdap
         holder.statusText.setText(lesson.getStatus());
         holder.zoomHomeText.setText(lesson.getZoomORhome());
         holder.kitaText.setText(lesson.getKita());
+        holder.priceText.setText(String.valueOf(lesson.getPrice()));
         holder.itemView.setOnClickListener(v -> {
             if (onLessonClickListener != null) {
                 onLessonClickListener.onLessonClick(lesson);
@@ -75,10 +75,11 @@ public class TeacherLessonAdapter extends RecyclerView.Adapter<TeacherLessonAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView subjectText, teacherText, dateText, timeText, statusText, zoomHomeText, kitaText;
+        TextView subjectText, teacherText, dateText, timeText, statusText, zoomHomeText, kitaText, priceText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            subjectText = itemView.findViewById(R.id.subjectText);
             subjectText = itemView.findViewById(R.id.subjectText);
             teacherText = itemView.findViewById(R.id.teacherText);
             dateText = itemView.findViewById(R.id.dateText);
@@ -86,6 +87,7 @@ public class TeacherLessonAdapter extends RecyclerView.Adapter<TeacherLessonAdap
             statusText = itemView.findViewById(R.id.statusText);
             zoomHomeText = itemView.findViewById(R.id.zoomHomeText);
             kitaText = itemView.findViewById(R.id.kitaText);
+            priceText = itemView.findViewById(R.id.priceText);
         }
     }
 }

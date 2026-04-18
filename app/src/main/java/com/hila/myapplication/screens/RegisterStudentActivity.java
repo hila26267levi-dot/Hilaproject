@@ -1,5 +1,7 @@
 package com.hila.myapplication.screens;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,13 +61,16 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
             String password = edittext_password.getText().toString();
             String fName = edittext_fname.getText().toString();
             String lName = edittext_lname.getText().toString();
-            String kita = spKita.getSelectedItem().toString()+"";
-            String phone= edittext_phone.getText().toString();
+            String kita = spKita.getSelectedItem().toString() + "";
+            String phone = edittext_phone.getText().toString();
 
             Log.d(TAG, "onClick: Registering user...");
             /// Register user
-            registerUser(fName, lName, email, password, kita,phone);
+
+
+            registerUser(fName, lName, email, password, kita, phone);
         }
+
     }
 
 
@@ -84,6 +89,8 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
 
     private void createUserInDatabase(Student student) {
         databaseService.createNewStudent(student, new DatabaseService.DatabaseCallback<String>() {
+
+
             @Override
             public void onCompleted(String uid) {
                 Log.d(TAG, "createUserInDatabase: User created successfully");
@@ -106,6 +113,7 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
 
             @Override
             public void onFailed(Exception e) {
+
                 Log.e(TAG, "createUserInDatabase: Failed to create user", e);
                 /// show error message to user
                 Toast.makeText(RegisterStudentActivity.this, "Failed to register user", Toast.LENGTH_SHORT).show();
@@ -113,6 +121,46 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
 
             }
         });
+    }
+
+        public void validateInput(String phone, String fName, String lName, String email, String password) {
+        // הגדרות עבור Regex
+        String phoneRegex = "^[0-9]{10}$";
+        String nameRegex = "^[A-Za-z]+$";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+
+        // בדיקות עבור כל שדה
+        if (phone.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
+        } else if (!phone.matches(phoneRegex)) {
+            Toast.makeText(this, "שגיאה: מספר הטלפון חייב להיות בדיוק 10 מספרים!", Toast.LENGTH_LONG).show();
+        }
+
+        if (fName.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
+        } else if (!fName.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם פרטי חייב להיות מורכב מאותיות בלבד!", Toast.LENGTH_LONG).show();
+        }
+
+        if (lName.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
+        } else if (!lName.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם משפחה חייב להיות מורכב מאותיות בלבד!", Toast.LENGTH_LONG).show();
+        }
+
+        if (email.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין אימייל!", Toast.LENGTH_LONG).show();
+        } else if (!email.matches(emailRegex)) {
+            Toast.makeText(this, "שגיאה: אימייל חייב להיות כתובת Gmail תקנית (למשל: example@gmail.com)!", Toast.LENGTH_LONG).show();
+        }
+
+        if (password.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין סיסמה!", Toast.LENGTH_LONG).show();
+        } else if (password.length() < 6) {
+            Toast.makeText(this, "שגיאה: סיסמה חייבת להיות לפחות 6 תווים!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "כל הפרטים תקינים!", Toast.LENGTH_LONG).show();
+        }
     }
 
 

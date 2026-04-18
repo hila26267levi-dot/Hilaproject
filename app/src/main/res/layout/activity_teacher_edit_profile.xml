@@ -5,109 +5,142 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/pic16"
     tools:context=".screens.Teacher_edit_profile">
 
-    <ImageView
-        android:id="@+id/adutpic"
-        android:layout_width="431dp"
-        android:layout_height="722dp"
-        android:src="@drawable/adutpic"
-        tools:layout_editor_absoluteX="-10dp"
-        tools:layout_editor_absoluteY="4dp" />
 
     <EditText
         android:id="@+id/profile_Teacher_E_zoom"
-        android:layout_width="209dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="23dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="זום"
         android:textSize="17dp"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="532dp" />
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_btn"
+        app:layout_constraintEnd_toEndOf="@+id/profile_Teacher_E_price"
+        app:layout_constraintStart_toStartOf="@+id/profile_Teacher_E_teachclass"
+        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_subject" />
 
     <EditText
         android:id="@+id/profile_Teacher_E_subject"
-        android:layout_width="209dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="30dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="מקצוע"
         android:textSize="17dp"
-        tools:layout_editor_absoluteX="130dp"
-        tools:layout_editor_absoluteY="463dp" />
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_zoom"
+        app:layout_constraintEnd_toEndOf="@+id/profile_Teacher_E_price"
+        app:layout_constraintStart_toStartOf="@+id/profile_Teacher_E_price"
+        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_price" />
 
     <EditText
         android:id="@+id/profile_Teacher_E_Lname"
-        android:layout_width="209dp"
-        android:layout_height="50dp"
+        android:layout_width="207dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="33dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="שם משפחה"
         android:textSize="17dp"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="206dp" />
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_age"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_Fname" />
 
     <EditText
         android:id="@+id/profile_Teacher_E_price"
-        android:layout_width="209dp"
-        android:layout_height="50dp"
+        android:layout_width="214dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="29dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="מחיר"
         android:textSize="17dp"
-        tools:layout_editor_absoluteX="130dp"
-        tools:layout_editor_absoluteY="396dp" />
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_subject"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_teachclass" />
 
     <ImageView
         android:id="@+id/img_TeacherProfile"
-        android:layout_width="176dp"
-        android:layout_height="50dp"
-        app:srcCompat="@drawable/profil"
-        tools:layout_editor_absoluteX="117dp"
-        tools:layout_editor_absoluteY="90dp" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="219dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_Fname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/profil" />
 
     <EditText
         android:id="@+id/profile_Teacher_E_Fname"
-        android:layout_width="209dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="שם פרטי"
         android:textColor="#1E5A7A"
         android:textSize="17dp"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="148dp" />
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_Lname"
+        app:layout_constraintEnd_toEndOf="@+id/profile_Teacher_E_Lname"
+        app:layout_constraintStart_toStartOf="@+id/profile_Teacher_E_Lname"
+        app:layout_constraintTop_toBottomOf="@+id/img_TeacherProfile" />
 
     <EditText
         android:id="@+id/profile_Teacher_E_teachclass"
-        android:layout_width="209dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="33dp"
         android:ems="10"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="כיתות לימוד"
         android:inputType="text"
         android:textColor="#1E5A7A"
         android:textSize="17dp"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="330dp" />
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_price"
+        app:layout_constraintEnd_toEndOf="@+id/profile_Teacher_E_price"
+        app:layout_constraintStart_toStartOf="@+id/profile_Teacher_E_age"
+        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_age" />
 
     <EditText
         android:id="@+id/profile_Teacher_E_age"
-        android:layout_width="209dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="26dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="גיל"
         android:textSize="17dp"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="268dp" />
+        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_teachclass"
+        app:layout_constraintEnd_toEndOf="@+id/profile_Teacher_E_Lname"
+        app:layout_constraintStart_toStartOf="@+id/profile_Teacher_E_price"
+        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_Lname" />
 
     <Button
         android:id="@+id/profile_Teacher_E_btn"
-        android:layout_width="151dp"
-        android:layout_height="32dp"
+        android:layout_width="156dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="42dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/gevret_levin_alef"
         android:text="שמור פרופיל"
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="611dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_zoom" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

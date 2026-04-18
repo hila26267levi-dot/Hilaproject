@@ -27,6 +27,12 @@ public class Student extends User implements Serializable {
         this.kita = kita;
     }
 
+    public Student(Student student) {
+        super(student.id, student.fname, student.lname, student.phone, student.email);
+        this.kita = student.kita;
+
+    }
+
     public String getKita() {
         return kita;
     }
@@ -34,6 +40,8 @@ public class Student extends User implements Serializable {
     public void setKita(String kita) {
         this.kita = kita;
     }
+
+
 
     @NonNull
     @Override

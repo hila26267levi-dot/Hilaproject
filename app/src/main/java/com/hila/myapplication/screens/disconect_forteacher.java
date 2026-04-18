@@ -41,7 +41,7 @@ public class disconect_forteacher extends AppCompatActivity {
     //   של מורה תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.teacher_menu, menu);
         return true;
     }
 

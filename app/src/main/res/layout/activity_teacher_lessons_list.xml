@@ -8,12 +8,12 @@
     tools:context=".screens.TeacherLessonsList">
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/text_teacher_lessonlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
         android:fontFamily="@font/gevret_levin_alef"
-        android:text="רשימת השעורים שלי:"
+        android:text="רשימת השעורים של מורה:"
         android:textColor="#63B3D3"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/rvThecherLessonList"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/text_teacher_lessonlist" />
 
     <!-- בדף עיצוב חייבים לכתוב את המידות בצורה כזאת כי אם לא זה שגיאה כי נגיד בכתיבה כמו שהיה עם
      x ו y זה טעות כי מדף לדף זה משתנה ואז יש שגיאה  -->

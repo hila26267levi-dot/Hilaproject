@@ -126,53 +126,85 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
         etphone.setText(currentStudent.getPhone());
 
         etkita.setText(currentStudent.getKita());
+
+        if(currentStudent.getPic()!=null){
+            img.setImageBitmap(ImageUtil.convertFromivIPic(currentStudent.getPic()));
+
+
+        }
     }
 
     // שמירת העריכה
     private void saveStudentProfile() {
         if (currentStudent == null) return;
 
-        // עדכון האובייקט
-     fname=   etfname.getText().toString();
-
-     //בדיקה
-       lname=etlname.getText().toString();
-
+        //שמים את הנתונים החדשים שהתלמיד הקליט
+     fname=etfname.getText().toString();
+     lname=etlname.getText().toString();
        phone=etphone.getText().toString();
        kita=etkita.getText().toString();
-
-
 
         currentStudent.setFname(fname);
         currentStudent.setKita(kita);
         currentStudent.setPhone(phone);
         currentStudent.setLname(lname);
+
+//בדיקות תקינות
+       // Public void validateInput(String phone, String fname, String lname,String kita) {
+            // הגדרות עבור Regex
+            String phoneRegex = "^[0-9]{10}$";
+            String nameRegex = "^[A-Za-z]+$";
+            String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+
+            // בדיקות עבור כל שדה
+            if (phone.isEmpty()) {
+                Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
+            } else if (!phone.matches(phoneRegex)) {
+                Toast.makeText(this, "שגיאה: מספר הטלפון חייב להיות בדיוק 10 מספרים!", Toast.LENGTH_LONG).show();
+            }
+
+            if (fname.isEmpty()) {
+                Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
+            } else if (!fname.matches(nameRegex)) {
+                Toast.makeText(this, "שגיאה: שם פרטי חייב להיות מורכב מאותיות בלבד!", Toast.LENGTH_LONG).show();
+            }
+
+            if (lname.isEmpty()) {
+                Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
+            } else if (!lname.matches(nameRegex)) {
+                Toast.makeText(this, "שגיאה: שם משפחה חייב להיות מורכב מאותיות בלבד!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Toast.makeText(this, "כל הפרטים תקינים!", Toast.LENGTH_LONG).show();
+            }
+        //}
+
     // עדכון בFirebase
      databaseService.updateStudent(currentStudent,new DatabaseService.DatabaseCallback<Void>()
 
     {
         @Override
-        public void onCompleted (Void object){
+        public void onCompleted (Void object)
+        {
             Intent intent = new Intent(Student_edit_profile.this, StudentActivity.class);
             startActivity(intent);
-
-
-
         }
 
         @Override
-        public void onFailed (Exception e){
+        public void onFailed (Exception e)
+        {
 
-    }
+        }
     });
-}
+  }
 
 
 
         //   של תלמיד תפריט צד
         @Override
         public boolean onCreateOptionsMenu (Menu menu){
-            getMenuInflater().inflate(R.menu.main_menu, menu);
+            getMenuInflater().inflate(R.menu.student_menu, menu);
             return true;
         }
 
@@ -221,16 +253,16 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        if(v==btn_save) {
+        if(v==btn_save)
+        {
             saveStudentProfile();
         }
-      else  if(v==img){
+      else  if(v==img)
+      {
             imageChooser();
-
-
-
-        }
+      }
     }
+
     void imageChooser() {
 
         // create an instance of the
@@ -246,23 +278,31 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
 
     // this function is triggered when user
     // selects the image from the imageChooser
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK)
+        {
 
             // compare the resultCode with the
             // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE) {
+            if (requestCode == SELECT_PICTURE)
+            {
                 // Get the url of the image from data
                 Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri) {
+                if (null != selectedImageUri)
+                {
                     // update the preview image in the layout
                     img.setImageURI(selectedImageUri);
                 }
             }
         }
+
+        }
     }
 
 
-}
+
+
+

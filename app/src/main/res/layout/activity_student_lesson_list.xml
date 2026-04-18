@@ -9,11 +9,11 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="396dp"
-        android:layout_height="0dp"
+        android:layout_width="407dp"
+        android:layout_height="48dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:gravity="center"
-        android:text="רשימת תלמידים:"
+        android:text="רשימת שעורים שלך:"
         android:textColor="#3D87A6"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,8 +23,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcStudent_lesson_List"
-        android:layout_width="405dp"
-        android:layout_height="445dp"
+        android:layout_width="400dp"
+        android:layout_height="731dp"
         android:layout_marginStart="6dp"
         android:layout_marginTop="114dp"
         android:layout_marginEnd="6dp"
@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.706" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tv_student_lesson_count"

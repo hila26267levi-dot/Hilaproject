@@ -11,12 +11,12 @@ public class TeacherLesson implements Serializable {
     String time ;
     String date ;
     String status ;
-
+    double price ;
     String kita;
     Student student;
 
 
-    public TeacherLesson(String id, Teacher teacher, String subject, String zoomORhome, String time, String date, String status, String kita) {
+    public TeacherLesson(String id, Teacher teacher, String subject, String zoomORhome, String time, String date, String status, String kita, double price) {
         this.id = id;
         this.teacher = teacher;
         this.subject = subject;
@@ -25,9 +25,11 @@ public class TeacherLesson implements Serializable {
         this.date = date;
         this.status = status;
         this.kita = kita;
+        this.price = price;
     }
 
-    public TeacherLesson(String id, Teacher teacher, String subject, String zoomORhome, String time, String date, String status, String kita, Student student) {
+
+    public TeacherLesson(String id, Teacher teacher, String subject, String zoomORhome, String time, String date, String status, String kita,double price, Student student) {
         this.id = id;
         this.teacher = teacher;
         this.subject = subject;
@@ -36,6 +38,7 @@ public class TeacherLesson implements Serializable {
         this.date = date;
         this.status = status;
         this.kita = kita;
+        this.price = price;
         this.student = student;
     }
 
@@ -74,6 +77,10 @@ public class TeacherLesson implements Serializable {
         this.kita = kita;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public String getId() {
         return id;
     }
@@ -105,6 +112,9 @@ public class TeacherLesson implements Serializable {
     public String getKita() {
         return kita;
     }
+    public double getPrice() {
+        return price;
+    }
 
     public Student getStudent() {
         return student;
@@ -125,8 +135,10 @@ public class TeacherLesson implements Serializable {
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
                 ", kita='" + kita + '\'' +
+                ", price='" + price + '\'' +
                 ", student=" + student +
                 '}';
     }
 
 }
+

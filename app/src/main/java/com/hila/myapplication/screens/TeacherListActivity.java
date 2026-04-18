@@ -90,7 +90,7 @@ public class TeacherListActivity extends AppCompatActivity {
     //תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.student_menu, menu);
         return true;
     }
 

@@ -39,7 +39,7 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
 
     DatabaseService databaseService;
 
-    EditText   edittext_subgect,edittext_time,edittext_date,et_class;
+    EditText   edittext_subgect,edittext_time,edittext_date,et_class,edittext_price;
 
     Teacher teacher=null; ;
 
@@ -81,6 +81,7 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
         edittext_time = findViewById(R.id.et_timelesson_addlesson);
         edittext_subgect = findViewById(R.id.subjectlesson_addlesson);
         edittext_date= findViewById(R.id.et_datelesson_addlesson);
+        edittext_price= findViewById(R.id.et_pricelesson_addlesson);
         sp_teachway= findViewById(R.id.sp_Class_addlesson);
         sp_teachway.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
              @Override
@@ -134,11 +135,12 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
             String date = edittext_date.getText().toString();
             String time = edittext_time.getText().toString();
           //  String kita = sp_teachway.getSelectedItem().toString();
+        double price = Double.parseDouble(edittext_price.getText().toString());
             String lesson_id=databaseService.generatelessonId();
 
 
 
-        TeacherLesson  teacherLesson=new TeacherLesson( lesson_id,teacher,subject,ifzoom,time,date,"availbale",kite) ;
+        TeacherLesson  teacherLesson=new TeacherLesson( lesson_id,teacher,subject,ifzoom,time,date,"availbale",kite,price) ;
 
 databaseService.createNewLesson(teacherLesson, new DatabaseService.DatabaseCallback<Void>() {
     @Override
@@ -167,7 +169,7 @@ databaseService.createNewLesson(teacherLesson, new DatabaseService.DatabaseCallb
     //   של מורה תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.teacher_menu, menu);
         return true;
     }
 

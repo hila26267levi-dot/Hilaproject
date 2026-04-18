@@ -50,7 +50,7 @@ public class RegisterTeacherActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_teacher_register);//מציג את הדף של התצוגה ורק ככה אפשר לעשות קישור בין המשתניםש יצרתי לכאן למשתנים בעמוד  שהקוד הציג
+        setContentView(R.layout.activity_teacher_register);//מציג את הדף של התצוגה ורק ככה אפשר לעשות קישור בין המשתנים  שיצרתי לכאן למשתנים בעמוד  שהקוד הציג
         edittext_email = findViewById(R.id.et_teacher_email);
         edittext_fname = findViewById(R.id.et_teacher_fname);
         edittext_lname = findViewById(R.id.et_teacher_lname);
@@ -65,11 +65,7 @@ public class RegisterTeacherActivity extends AppCompatActivity implements View.O
         databaseService = DatabaseService.getInstance();
         rbyes= findViewById(R.id.rbYes);
         rbno= findViewById(R.id.rbNo);
-
-
-
         btnteacher = findViewById(R.id.btn_register);
-        /// set the click listener
         btnteacher.setOnClickListener(this);//זה אומר שצריך לעשות פעולב כאשר נלחץ על כפתור
         // כתוב this כי זה  בעמוד הז ה לכל view מסויים
         spsubject.setOnItemSelectedListener(this);
@@ -79,13 +75,13 @@ public class RegisterTeacherActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View v) {//זה הפעולה עצמה לכפתור
 
-        String zoom="no";
+        String zoom = "no";
         if (v.getId() == btnteacher.getId()) {
             Log.d(TAG, "onClick: Register button clicked");
 
-            /// get the input from the user
-             email = edittext_email.getText().toString();
-             password = edittext_password.getText().toString();
+            //פה שמים את הנתונים שהמשתמש הכניס
+            email = edittext_email.getText().toString();
+            password = edittext_password.getText().toString();
             String fName = edittext_fname.getText().toString();
             String lName = edittext_lname.getText().toString();
             String age = edittext_age.getText().toString();
@@ -93,32 +89,29 @@ public class RegisterTeacherActivity extends AppCompatActivity implements View.O
             String stprice = edittext_price.getText().toString();
             if (rbyes.isChecked())
 
-                 zoom="yes";
-            else  zoom="no";
-
+                zoom = "yes";
+            else zoom = "no";
 
 
             String teachclass = spteachclass.getSelectedItem().toString();
 
-            String subject2=edittext_subject.getText().toString();
-
-
-
-
+            String subject2 = edittext_subject.getText().toString();
 
 
             Log.d(TAG, "onClick: Registering user...");
 
             double price = Double.parseDouble(stprice);
 
-            /// Register user
-            registerUser(fName, lName, phone, email, password, age,subject2 , price, zoom, teachclass,"jkjk");
+            validateInput( phone,  fName,  lName,  email,  password,  stprice,  age);
+
+            registerUser(fName, lName, phone, email, password, age, subject2, price, zoom, teachclass, "jkjk");
 
         }
     }
 
 
-    /// Register the user
+
+    //הפעולה עצמה
     private void registerUser(String fname, String lname, String phone, String email, String password, String age,String subject, double price, String zoom, String teachclass,String id) {
         Log.d(TAG, "registerUser: Registering user...");
 
@@ -183,4 +176,97 @@ public class RegisterTeacherActivity extends AppCompatActivity implements View.O
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
+
+    //בדיקות תקינות
+    public void validateInput(String phone, String fName, String lName, String email, String password, String stprice, String age) {
+
+        String phoneRegex = "^[0-9]{10}$";
+        String nameRegex = "^[A-Za-z]+$";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+        String numberRegex = "^[0-9]+$";
+
+        // טלפון
+        if (phone.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!phone.matches(phoneRegex)) {
+            Toast.makeText(this, "שגיאה: מספר הטלפון חייב להיות בדיוק 10 ספרות!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // שם פרטי
+        if (fName.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!fName.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // שם משפחה
+        if (lName.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!lName.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // אימייל
+        if (email.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין אימייל!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!email.matches(emailRegex)) {
+            Toast.makeText(this, "שגיאה: יש להזין כתובת Gmail תקינה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // סיסמה
+        if (password.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין סיסמה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (password.length() < 6) {
+            Toast.makeText(this, "שגיאה: הסיסמה חייבת להכיל לפחות 6 תווים!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // מחיר
+        if (stprice.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין מחיר!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!stprice.matches(numberRegex)) {
+            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // גיל
+        if (age.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין גיל!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!age.matches(numberRegex)) {
+            Toast.makeText(this, "שגיאה: גיל חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        int ageValue = Integer.parseInt(age);
+        if (ageValue < 10) {
+            Toast.makeText(this, "שגיאה: גיל חייב להיות 10 ומעלה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // אם הכל תקין
+        Toast.makeText(this, "כל הפרטים תקינים!", Toast.LENGTH_LONG).show();
+    }
+
+    //כאן שולחים נתונים לפעולה שתכניס  את הנתונים שהכניס
+
 }

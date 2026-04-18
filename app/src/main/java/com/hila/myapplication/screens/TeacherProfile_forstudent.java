@@ -106,7 +106,7 @@ public class TeacherProfile_forstudent extends AppCompatActivity {
     //   של תלמיד תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.student_menu, menu);
         return true;
     }
 

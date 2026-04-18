@@ -15,6 +15,15 @@ public class Teacher extends User implements Serializable {
     }
 
 
+    public Teacher(Teacher teacher) {
+        super(teacher.id, teacher.fname, teacher.lname, teacher.phone, teacher.email);
+        this.age = teacher.age;
+        this.subject = teacher.subject;
+        this.price = teacher.price;
+        this.zoom = teacher.zoom;
+        this.teachclass = teacher.teachclass;
+    }
+
     public Teacher(String id, String fname, String lname, String phone, String email, String password, String age, String subject, double price, String zoom, String teachclass) {
         super(id, fname, lname, phone, email, password);
         this.age = age;

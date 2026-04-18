@@ -5,29 +5,20 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/adutpic"
     tools:context=".screens.AdutActivity">
 
 
     <ImageView
-        android:id="@+id/adutpic"
-        android:layout_width="0dp"
-        android:layout_height="670dp"
-        app:layout_constraintBaseline_toBaselineOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/adutpic" />
-
-    <ImageView
         android:id="@+id/img_text_adut"
-        android:layout_width="0dp"
-        android:layout_height="494dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="164dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="362dp"
+        android:layout_height="681dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="19dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/pic_text_adut" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

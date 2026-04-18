@@ -5,26 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/pic2_for_pages"
     tools:context=".screens.teacherpage">
 
-    <ImageView
-        android:id="@+id/pic2"
-        android:layout_width="455dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginBottom="27dp"
-        android:contentDescription="logo"
-        android:src="@drawable/pic2_for_pages"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-22dp" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/title_teacher_page"
         android:layout_width="119dp"
         android:layout_height="0dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginBottom="158dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="145dp"
         android:fontFamily="@font/nehama_webfont"
         android:gravity="center"
         android:text="מורה:"
@@ -40,7 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="111dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text="התחברות"
@@ -50,14 +40,15 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_teacher_regisret1"
         app:layout_constraintEnd_toEndOf="@+id/btn_teacher_regisret1"
         app:layout_constraintStart_toStartOf="@+id/btn_teacher_regisret1"
-        app:layout_constraintTop_toBottomOf="@+id/text" />
+        app:layout_constraintTop_toBottomOf="@+id/title_teacher_page" />
 
     <Button
         android:id="@+id/btn_teacher_regisret1"
-        android:layout_width="116dp"
+        android:layout_width="130dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="309dp"
+        android:layout_marginEnd="127dp"
+        android:layout_marginBottom="373dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text="הרשמה"
@@ -66,7 +57,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_teacher_login1" />
 
 

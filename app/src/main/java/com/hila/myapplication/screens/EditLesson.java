@@ -38,11 +38,11 @@ public class EditLesson extends AppCompatActivity implements View.OnClickListene
     private Button btnlesson;
 
 
-    EditText edittext_subgect, edittext_time, edittext_date, et_class;
+    EditText edittext_subgect, edittext_time, edittext_date, et_class,editText_price;
 
     Teacher teacher = null;
     ;
-
+double price ;
     Spinner sp_teachway;
 
     String subject = "";
@@ -78,8 +78,8 @@ public class EditLesson extends AppCompatActivity implements View.OnClickListene
             edittext_subgect.setText(theLesson.getSubject());
             edittext_time.setText(theLesson.getTime());
             edittext_date.setText(theLesson.getDate());
-        ifzoom=  theLesson.getZoomORhome();
-
+            editText_price.setText(String.valueOf(theLesson.getPrice()));
+           ifzoom=  theLesson.getZoomORhome();
             if( ifzoom.equals("למידה בזום"))
                 ck_zoom.setChecked(true);
             else  ck_zoom.setChecked(false);
@@ -92,6 +92,9 @@ public class EditLesson extends AppCompatActivity implements View.OnClickListene
         edittext_time = findViewById(R.id.et_timelesson_addlessonE);
         edittext_subgect = findViewById(R.id.subjectlesson_addlessonE);
         edittext_date = findViewById(R.id.et_datelesson_addlessonE);
+        editText_price= findViewById(R.id.et_pricelesson_addlesson);
+        btnlesson = findViewById(R.id.button_addlessonE);
+        ck_zoom = findViewById(R.id.ck_zoomE);
         sp_teachway = findViewById(R.id.sp_Class_addlessonE);
         sp_teachway.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -114,8 +117,7 @@ public class EditLesson extends AppCompatActivity implements View.OnClickListene
         });
 
 
-        btnlesson = findViewById(R.id.button_addlessonE);
-        ck_zoom = findViewById(R.id.ck_zoomE);
+
         ck_zoom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull CompoundButton buttonView, boolean isChecked) {
@@ -141,21 +143,29 @@ public class EditLesson extends AppCompatActivity implements View.OnClickListene
 
         /// get the input from the user
         String subject = edittext_subgect.getText().toString();
-       
         String date = edittext_date.getText().toString();
         String time = edittext_time.getText().toString();
         //  String kita = sp_teachway.getSelectedItem().toString();
 
         if(subject.isEmpty())//תנאים
-
         {
             Toast.makeText(this,"חובה לבחור מקצוע",LENGTH_LONG).show();
-        } else if (date.isEmpty()) {
-            Toast.makeText(this,"חובה לבחור מקצוע",LENGTH_LONG).show();
-        } else if (time.isEmpty()) {
-            
         }
-        TeacherLesson teacherLesson = new TeacherLesson(theLesson.getId(), theLesson.getTeacher(), subject, ifzoom, time, date, "availbale", kite);
+        else if (date.isEmpty())
+        {
+            Toast.makeText(this,"חובה לבחור תאריך",LENGTH_LONG).show();
+        }
+        else if (time.isEmpty())
+        {
+            Toast.makeText(this,"חובה לבחור שעה",LENGTH_LONG).show();
+        }
+
+
+
+
+
+
+        TeacherLesson teacherLesson = new TeacherLesson(theLesson.getId(), theLesson.getTeacher(), subject, ifzoom, time, date, "availbale", kite,price);
 
         databaseService.updateLesson(teacherLesson, new DatabaseService.DatabaseCallback<Void>() {
             @Override
@@ -178,7 +188,7 @@ public class EditLesson extends AppCompatActivity implements View.OnClickListene
     //   של מורה תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.teacher_menu, menu);
         return true;
     }
 

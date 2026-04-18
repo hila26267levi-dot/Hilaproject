@@ -5,17 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/pic8"
     tools:context=".screens.TeacherProfile_forstudent">
-
-    <ImageView
-        android:id="@+id/pic8"
-        android:layout_width="721dp"
-        android:layout_height="770dp"
-        android:contentDescription="logo"
-        android:src="@drawable/pic8"
-        app:layout_constraintBaseline_toBaselineOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-155dp" />
 
     <TextView
         android:id="@+id/tvProfileTeacher_forstudent_Fname"
@@ -27,6 +18,7 @@
         android:textColor="#1E5A7A"
         app:layout_constraintBottom_toTopOf="@+id/tvProfileTeacher_forstudent_Lname"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_TeacherProfile" />
 
@@ -73,8 +65,7 @@
         android:id="@+id/btnProfileTeacher_forstudent_hislessons"
         android:layout_width="127dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="129dp"
-        android:layout_marginBottom="173dp"
+        android:layout_marginBottom="168dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:gravity="center"
@@ -85,13 +76,14 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProfileTeacher_forstudent_subject" />
 
     <TextView
         android:id="@+id/tvProfileTeacher_forstudent_zoom"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="7dp"
         android:fontFamily="@font/nehama_webfont"
         android:gravity="center"
         android:text="TextView"
@@ -105,7 +97,7 @@
         android:id="@+id/tvProfileTeacher_forstudent_subject"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="155dp"
+        android:layout_marginBottom="160dp"
         android:fontFamily="@font/nehama_webfont"
         android:gravity="center"
         android:text="TextView"

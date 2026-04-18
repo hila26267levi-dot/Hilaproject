@@ -9,9 +9,8 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="396dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="528dp"
+        android:layout_width="408dp"
+        android:layout_height="71dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:gravity="center"
         android:text="רשימת תלמידים:"
@@ -24,18 +23,18 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcStudentList"
-        android:layout_width="405dp"
-        android:layout_height="445dp"
+        android:layout_width="415dp"
+        android:layout_height="643dp"
         android:layout_marginStart="6dp"
         android:layout_marginTop="114dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="114dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.312"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.706" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_student_count"
@@ -45,7 +44,9 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,17 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/pic8"
     tools:context=".screens.teacher_profile">
-
-    <ImageView
-        android:id="@+id/pic8"
-        android:layout_width="660dp"
-        android:layout_height="0dp"
-        android:contentDescription="logo"
-        android:src="@drawable/pic8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-125dp" />
 
 
     <TextView

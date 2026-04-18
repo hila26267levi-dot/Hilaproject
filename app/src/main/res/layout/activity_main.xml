@@ -8,103 +8,81 @@
     android:background="#D5ECF2"
     android:layoutDirection="rtl">
 
-    <!-- לוגו -->
 
-    <!-- כותרת ראשית -->+
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="82dp"
-        android:contentDescription="logo"
-        android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/btn_student"
-        app:layout_constraintEnd_toStartOf="@+id/title"
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="230dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:gravity="center"
+        android:text="ברוכים הבאים"
+        android:textColor="#1E5A7A"
+        android:textSize="38sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        android:layout_marginEnd="108dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/gevret_levin_alef"
-        android:text="ברוכים הבאים"
-        android:textColor="#1E5A7A"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/subtitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/logo"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- תת כותרת -->
-
-    <!-- כפתורים -->
-    <TextView
         android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="238dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:text="אמצו מורים פרטיים למגוון מקצועות"
         android:textColor="#1E5A7A"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_teacher"
-        app:layout_constraintEnd_toEndOf="@+id/btn_teacher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
-
 
     <Button
         android:id="@+id/btn_teacher"
-        android:layout_width="113dp"
+        android:layout_width="116dp"
         android:layout_height="44dp"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="91dp"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="65dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text="הנך מורה "
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_student"
+        app:layout_constraintBottom_toTopOf="@+id/studentImage"
+        app:layout_constraintEnd_toStartOf="@+id/btn_student"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitle" />
 
     <Button
         android:id="@+id/btn_student"
-        android:layout_width="107dp"
-        android:layout_height="42dp"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
         android:layout_gravity="center"
-        android:layout_marginStart="76dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="502dp"
+        android:layout_marginEnd="86dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text=" הנך תלמיד"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_teacher"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_teacher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_teacher" />
 
     <ImageView
         android:id="@+id/studentImage"
-        android:layout_width="219dp"
+        android:layout_width="250dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="192dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="60dp"
         android:contentDescription="student illustration"
         android:src="@drawable/student1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_teacher" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

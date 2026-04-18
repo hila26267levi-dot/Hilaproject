@@ -97,11 +97,16 @@ public class SetLesson extends AppCompatActivity implements View.OnClickListener
           @Override
           public void onCompleted(Student student) {
 
+              student=new Student(student);
+
               theLesson.setStudent(student);
               theLesson.setStatus("taken");
               databaseService.setLessonForStudent(theLesson, new DatabaseService.DatabaseCallback<Void>() {
                   @Override
                   public void onCompleted(Void object) {
+
+                      Intent go=new Intent(SetLesson.this,StudentActivity.class);
+                      startActivity(go);
 
                   }
 
@@ -125,7 +130,7 @@ public class SetLesson extends AppCompatActivity implements View.OnClickListener
     //   של תלמיד תפריט צד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.student_menu, menu);
         return true;
     }
 

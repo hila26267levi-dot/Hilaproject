@@ -42,7 +42,7 @@ public class DatabaseService {
     ///
     /// @see DatabaseService#readData(String)
     private static final String STUDENT_PATH = "students",
-    LESOON_THEACHER_PATH = "teacher_Lesson",
+            LESOON_THEACHER_PATH = "teacher_Lesson",
             LESOON_STUDENT_PATH = "student_Lesson",
 
 
@@ -468,7 +468,7 @@ public class DatabaseService {
     public  void  setLessonForStudent(@NotNull final TeacherLesson teacherLesson, @Nullable final DatabaseCallback<Void> callback){
 
         writeData(LESOON_THEACHER_PATH+"/"+teacherLesson.getTeacher().getId()+"/"+teacherLesson.getId(),teacherLesson,callback);
-        writeData(LESOON_STUDENT_PATH+"/"+teacherLesson.getStudent().getId()+"/"+teacherLesson.getTeacher().getId()+"/"+ teacherLesson.getId(),teacherLesson,callback);
+        writeData(LESOON_STUDENT_PATH+"/"+teacherLesson.getStudent().getId()+"/"+ teacherLesson.getId(),teacherLesson,callback);
 
     }
 
@@ -498,7 +498,7 @@ public class DatabaseService {
     /// @see List
     /// @see Student
     public void getStudentLessonList(  @NotNull final String sId,    @NotNull final DatabaseCallback<List<TeacherLesson>> callback) {
-        getDataList(LESOON_STUDENT_PATH+"/"+ sId , TeacherLesson.class, callback);
+        getDataList(LESOON_STUDENT_PATH+"/"+ sId, TeacherLesson.class, callback);
     }
 
 

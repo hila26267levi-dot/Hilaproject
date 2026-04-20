@@ -1,13 +1,16 @@
 package com.hila.myapplication.screens;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,7 +26,7 @@ import com.hila.myapplication.servicses.DatabaseService;
 import java.util.List;
 
 public class TeacherListActivity extends AppCompatActivity {
-
+    boolean isAdmin = false;
     private static final String TAG = "UsersListActivity";
     private TeacherAdapter teacherAdapter;
     private TextView tvUserCount;
@@ -43,7 +46,7 @@ public class TeacherListActivity extends AppCompatActivity {
 
 
         databaseService=DatabaseService.getInstance();
-
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
         rcTeacherList = findViewById(R.id.rcTeacherList);
         tvUserCount = findViewById(R.id.tv_teacher_count);
         rcTeacherList.setLayoutManager(new LinearLayoutManager(this));
@@ -61,7 +64,49 @@ public class TeacherListActivity extends AppCompatActivity {
 
             @Override
             public void onLongTeacherClick(Teacher teacher) {
+                if (isAdmin) {
 
+                    AlertDialog.Builder builder =
+                            new AlertDialog.Builder(TeacherListActivity.this);
+                    builder.setTitle("מחיקת מורה");
+                    builder.setMessage("האם אתה בטוח שברצונך למחוק את המורה "
+                            + teacher.getFname() + " " + teacher.getLname() + "?");
+
+                    builder.setPositiveButton("כן, מחק",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    databaseService.deleteTeacher(teacher.getId(),
+                                            new DatabaseService.DatabaseCallback<Void>() {
+                                                @Override
+                                                public void onCompleted(Void object) {
+                                                    teacherAdapter.removeTeacher(teacher);
+                                                    Toast.makeText(TeacherListActivity.this,
+                                                            "המורה נמחק בהצלחה",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onFailed(Exception e) {
+                                                    Toast.makeText(TeacherListActivity.this,
+                                                            "שגיאה במחיקה",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            });
+
+                    builder.setNegativeButton("ביטול",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    builder.show();
+                }
             }
 
 

@@ -46,7 +46,11 @@ public class TeacherLessonAdapter extends RecyclerView.Adapter<TeacherLessonAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TeacherLesson lesson = lessonList.get(position);
         holder.subjectText.setText(lesson.getSubject());
-        holder.teacherText.setText(lesson.getTeacher().getFname()); // Assuming Teacher has getName()
+        if (lesson.getTeacher() != null) {
+            holder.teacherText.setText(lesson.getTeacher().getFname());
+        } else {
+            holder.teacherText.setText("");
+        }
         holder.dateText.setText(lesson.getDate());
         holder.timeText.setText(lesson.getTime());
         holder.statusText.setText(lesson.getStatus());

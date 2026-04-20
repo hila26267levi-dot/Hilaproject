@@ -44,9 +44,8 @@ public class DatabaseService {
     private static final String STUDENT_PATH = "students",
             LESOON_THEACHER_PATH = "teacher_Lesson",
             LESOON_STUDENT_PATH = "student_Lesson",
-
-
-    TEACHER_PATH = "teacher";
+            TEACHER_PATH = "teacher",
+            ADMIN_PATH = "admin";
 
     /// callback interface for database operations
     ///
@@ -486,9 +485,6 @@ public class DatabaseService {
 
 
 
-
-
-
     /// get all the users from the database
     ///
     /// @param callback the callback to call when the operation is completed
@@ -513,7 +509,10 @@ public class DatabaseService {
         getDataList(LESOON_STUDENT_PATH+"/"+ sId, TeacherLesson.class, callback);
     }
 
-
+    public void getAdmin(String uid,
+                         DatabaseCallback<User> callback) {
+        getData(ADMIN_PATH + "/" + uid, User.class, callback);
+    }
 
 
 

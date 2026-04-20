@@ -2,15 +2,18 @@ package com.hila.myapplication.screens;
 
 import static android.widget.Toast.LENGTH_LONG;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -31,14 +34,12 @@ public class student_lesson_list extends AppCompatActivity {
 
     private static final String TAG = "StudentLessonList";
     private TeacherLessonAdapter teacherLessonAdapter;
-
     private DatabaseService databaseService;
 
-    RecyclerView rvStudentLessonList;//מציג את כל השעורים וממחזר את התצוגה שקיימת למידע החדש כאשר נגלול
-    List<TeacherLesson> lessonList = new ArrayList<>();//רשימה של שעורים של מורה
-    FirebaseAuth mAuth;// בזה נשתמש כדי לקחת את הזהות של המורה ככה נעשה לפי מורה זה רשימה של שעורים בשבילו
-    String sid="";
-
+    RecyclerView rvStudentLessonList;
+    List<TeacherLesson> lessonList = new ArrayList<>();
+    FirebaseAuth mAuth;
+    String sid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,93 +54,144 @@ public class student_lesson_list extends AppCompatActivity {
 
         rvStudentLessonList = findViewById(R.id.rcStudent_lesson_List);
         rvStudentLessonList.setLayoutManager(new LinearLayoutManager(this));
-//
-//
 
+        databaseService = DatabaseService.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        sid = mAuth.getUid();
 
+        // הגדרת האדפטר
+        teacherLessonAdapter = new TeacherLessonAdapter(lessonList,
+                new TeacherLessonAdapter.OnLessonClickListener() {
 
+                    @Override
+                    public void onLessonClick(TeacherLesson lesson) {
+                        // לחיצה רגילה — לא עושה כלום כרגע
+                    }
 
-        teacherLessonAdapter = new TeacherLessonAdapter(lessonList, new TeacherLessonAdapter.OnLessonClickListener() {
-            @Override
-            public void onLessonClick(TeacherLesson lesson) {
-// מורה לחיצה מביאה לעמוד עריכת השיעור
-//
-//
-//
-                //    Intent intent=new Intent(student_lesson_list.this,SetLesson.class);
+                    @Override
+                    public void onLongLessonClick(TeacherLesson lesson) {
 
-                //  intent.putExtra("Lesson",lesson);
+                        // Dialog אישור ביטול
+                        AlertDialog.Builder builder =
+                                new AlertDialog.Builder(student_lesson_list.this);
+                        builder.setTitle("ביטול שיעור");
+                        builder.setMessage("האם אתה בטוח שברצונך לבטל את השיעור?\n"
+                                + "מקצוע: " + lesson.getSubject() + "\n"
+                                + "תאריך: " + lesson.getDate() + "\n"
+                                + "שעה: " + lesson.getTime());
 
-                //   startActivity(intent);
+                        builder.setPositiveButton("כן, בטל שיעור",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
+                                        // שלב 1 — מחיקה מהרשימה המקומית
+                                        lessonList.remove(lesson);
+                                        teacherLessonAdapter.notifyDataSetChanged();
 
-           }
+                                        // שלב 2 — מחיקה מ-Firebase של התלמיד
+                                        // משתמשת ב-deleteData שכבר קיים ב-DatabaseService
+                                        databaseService.getStudentLessonList(sid,
+                                                new DatabaseService.DatabaseCallback<List<TeacherLesson>>() {
+                                            @Override
+                                            public void onCompleted(List<TeacherLesson> list) {
 
+                                                        // מוחקים את השיעור מהתלמיד
+                                                databaseService.deleteLessonForStudent();
+                                                        ("student_Lesson/" + sid + "/" + lesson.getId(),
+                                                                new DatabaseService.DatabaseCallback<Void>() {
+                                                                    @Override
+                                                                    public void onCompleted(Void object) {
 
+                                                                        // שלב 3 — מחזירים שיעור לפנוי אצל המורה
+                                                                        lesson.setStudent(null);
+                                                                        lesson.setStatus("availbale");
+                                                                        databaseService.updateLesson(lesson, new DatabaseService.DatabaseCallback<Void>() {
+                                                                            @Override
+                                                                            public void onCompleted(Void object) {
 
-            //מחיקת שיעור צריך להוסיף כזה תנאי גם למנהל מוסיפה תנאי ואז בודקת אם מדובר במנהל
-           @Override
-           public void onLongLessonClick(TeacherLesson lesson) {
+                                                                                // שלב 4 — SMS למורה
+                                                                                sendSmsToTeacher(lesson);
+                                                                            }
 
+                                                                            @Override
+                                                                            public void onFailed(Exception e) {
+                                                                            }
+                                                                        });
+                                                                    }
 
+                                                                    @Override
+                                                                    public void onFailed(Exception e) {
+                                                                    }
+                                                                });
+                                                    }
 
+                                                    @Override
+                                                    public void onFailed(Exception e) {
+                                                    }
+                                                });
+                                    }
+                                });
 
-           }
+                        builder.setNegativeButton("ביטול",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
 
+                        builder.show();
+                    }
+                });
 
-
-
-        });
-//
         rvStudentLessonList.setAdapter(teacherLessonAdapter);
 
+        // שליפת שיעורי התלמיד מ-Firebase
+        databaseService.getStudentLessonList(sid,
+                new DatabaseService.DatabaseCallback<List<TeacherLesson>>() {
+                    @Override
+                    public void onCompleted(List<TeacherLesson> lessonList2) {
+                        if (lessonList2 != null && lessonList2.size() > 0) {
+                            lessonList.addAll(lessonList2);
+                            teacherLessonAdapter.notifyDataSetChanged();
+                        }
+                    }
 
-
-
-
-        databaseService=DatabaseService.getInstance();
-
-
-            mAuth = FirebaseAuth.getInstance();
-            sid = mAuth.getUid();
-
-
-
-
-
-
-
-        databaseService.getStudentLessonList(sid, new DatabaseService.DatabaseCallback<List<TeacherLesson>>() {
-            @Override
-            public void onCompleted(List<TeacherLesson> lessonList2) {
-
-                if(lessonList2!=null&& lessonList2.size()>0) {
-
-                    lessonList.addAll(lessonList2);
-
-
-                    teacherLessonAdapter.notifyDataSetChanged();
-                }
-
-            }
-
-            @Override
-            public void onFailed(Exception e) {
-                Toast.makeText(student_lesson_list.this,"noLessons",LENGTH_LONG).show();
-
-            }
-        });
-
-
-
-
-
-
-
+                    @Override
+                    public void onFailed(Exception e) {
+                        Toast.makeText(student_lesson_list.this,
+                                "noLessons", LENGTH_LONG).show();
+                    }
+                });
     }
 
+    // פונקציה לשליחת SMS למורה
+    private void sendSmsToTeacher(TeacherLesson lesson) {
+        if (lesson.getTeacher() != null
+                && lesson.getTeacher().getPhone() != null) {
+            String message =
+                    "שלום " + lesson.getTeacher().getFname()
+                            + " " + lesson.getTeacher().getLname() + ",\n"
+                            + "לידיעתך, התלמיד "
+                            + lesson.getStudent().getFname()
+                            + " " + lesson.getStudent().getLname()
+                            + " ביטל את השיעור:\n"
+                            + "מקצוע: " + lesson.getSubject() + "\n"
+                            + "תאריך: " + lesson.getDate() + "\n"
+                            + "שעה: " + lesson.getTime() + "\n"
+                            + "השיעור חזר להיות פנוי.\n"
+                            + "בברכה";
 
-    //   של תלמיד תפריט צד
+            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+            smsIntent.setData(Uri.parse("smsto:"
+                    + lesson.getTeacher().getPhone()));
+            smsIntent.putExtra("sms_body", message);
+            startActivity(smsIntent);
+        }
+    }
+
+    // תפריט צד תלמיד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.student_menu, menu);
@@ -148,23 +200,18 @@ public class student_lesson_list extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == R.id.student_home) {
             Intent intent = new Intent(student_lesson_list.this, StudentActivity.class);
             startActivity(intent);
-
             return true;
         }
-
         if (id == R.id.student_searchteacher) {
             Intent intent = new Intent(student_lesson_list.this, TeacherListActivity.class);
             startActivity(intent);
-
             return true;
         }
-
         if (id == R.id.student_profile) {
             Intent intent = new Intent(student_lesson_list.this, StudentProfile.class);
             startActivity(intent);
@@ -185,9 +232,12 @@ public class student_lesson_list extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
+
+
+
+
 
 

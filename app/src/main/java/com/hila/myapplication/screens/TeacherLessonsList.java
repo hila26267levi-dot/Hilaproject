@@ -1,45 +1,37 @@
-package com.hila.myapplication.screens;
 
+        package com.hila.myapplication.screens;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
-import com.hila.myapplication.adapters.StudentAdapter;
-import com.hila.myapplication.adapters.TeacherAdapter;
 import com.hila.myapplication.adapters.TeacherLessonAdapter;
-import com.hila.myapplication.model.Teacher;
 import com.hila.myapplication.model.TeacherLesson;
 import com.hila.myapplication.servicses.DatabaseService;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class TeacherLessonsList extends AppCompatActivity {
 
-
-
     private static final String TAG = "UsersListActivity";
     private TeacherLessonAdapter teacherLessonAdapter;
-
     private DatabaseService databaseService;
 
-    RecyclerView rvLessonList;//מציג את כל השעורים וממחזר את התצוגה שקיימת למידע החדש כאשר נגלול
-    List<TeacherLesson> lessonList = new ArrayList<>();//רשימה של שעורים של מורה
-    FirebaseAuth mAuth;// בזה נשתמש כדי לקחת את הזהות של המורה ככה נעשה לפי מורה זה רשימה של שעורים בשבילו
-    String tid="";
+    RecyclerView rvLessonList;
+    List<TeacherLesson> lessonList = new ArrayList<>();
+    FirebaseAuth mAuth;
+    String tid = "";
     private Intent takeit;
-
-    boolean theOwner=false;
+    boolean theOwner = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,98 +46,130 @@ public class TeacherLessonsList extends AppCompatActivity {
 
         rvLessonList = findViewById(R.id.rvThecherLessonList);
         rvLessonList.setLayoutManager(new LinearLayoutManager(this));
-//
-//
 
+        databaseService = DatabaseService.getInstance();
 
-        databaseService=DatabaseService.getInstance();
-// from Student
-        takeit=getIntent();
-        tid=takeit.getStringExtra("teacherId");
+        // בדיקה אם הגיע מתלמיד או מורה
+        takeit = getIntent();
+        tid = takeit.getStringExtra("teacherId");
 
-// from Teacher
-        if(tid==null||tid.isEmpty()) {
+        if (tid == null || tid.isEmpty()) {
             mAuth = FirebaseAuth.getInstance();
             tid = mAuth.getUid();
-            theOwner=true;
+            theOwner = true;
         }
 
-        // Add lessons
-
-
-
+        // שליפת רשימת שיעורים מ-Firebase
         databaseService.getThecherLessonList(tid, new DatabaseService.DatabaseCallback<List<TeacherLesson>>() {
             @Override
             public void onCompleted(List<TeacherLesson> lessonList2) {
                 lessonList.addAll(lessonList2);
-
                 teacherLessonAdapter.notifyDataSetChanged();
-
             }
 
             @Override
             public void onFailed(Exception e) {
-
             }
         });
 
-
-
-
-
-
+        // הגדרת האדפטר
         teacherLessonAdapter = new TeacherLessonAdapter(lessonList, new TeacherLessonAdapter.OnLessonClickListener() {
+
             @Override
             public void onLessonClick(TeacherLesson lesson) {
-//אם מורה לחיצה מביאה לעמוד עריכת השיעור
-                if(theOwner){
-                    Intent intent=new Intent(TeacherLessonsList.this,EditLesson.class);
-
-                   intent.putExtra("Lesson",lesson);
-
+                if (theOwner) {
+                    // מורה — עריכת שיעור לחיצה קצרה
+                    Intent intent = new Intent(TeacherLessonsList.this, EditLesson.class);
+                    intent.putExtra("Lesson", lesson);
                     startActivity(intent);
-
-
-                }
-
-                // אם זה תלמיד מעביר לעמוד קביעת שיעור
-                else{
-
-
-                    Intent intent=new Intent(TeacherLessonsList.this,SetLesson.class);
-
-                    intent.putExtra("Lesson",lesson);
-
+                } else {
+                    // תלמיד —מעביר לדף קביעת שיעור בלחיצה
+                    Intent intent = new Intent(TeacherLessonsList.this, SetLesson.class);
+                    intent.putExtra("Lesson", lesson);
                     startActivity(intent);
-
-
                 }
-
-
             }
-//מחיקת שיעור צריך להוסיף כזה תנאי גם למנהל מוסיפה תנאי ואז בודקת אם מדובר במנהל
+            //בלחיצה ארוכה של מורה
             @Override
             public void onLongLessonClick(TeacherLesson lesson) {
-                    if(theOwner){
-                        lessonList.remove(lesson);
-                        teacherLessonAdapter.notifyDataSetChanged();
+                if (theOwner) {
+
+                    // Dialog אישור מחיקה
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TeacherLessonsList.this);
+                    builder.setTitle("מחיקת שיעור");
+                    builder.setMessage("האם אתה בטוח שברצונך למחוק את השיעור?");
+
+                    builder.setPositiveButton("כן, מחק", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // מחיקה מהרשימה המקומית
+                            lessonList.remove(lesson);
+                            teacherLessonAdapter.notifyDataSetChanged();
+                            sendSmsToStudent(lesson);
+                            // מחיקה מ-Firebase
+                            databaseService.deleteLessonForStudent(lesson, new DatabaseService.DatabaseCallback<Void>() {
+                                @Override
+                                public void onCompleted(Void object) {
+
+                                    // שליחת SMS לתלמיד אם השיעור היה תפוס
+                                    Intent intent = new Intent(TeacherLessonsList.this, TeacherActivity.class);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailed(Exception e) {
+                                }
+                            });
+                        }
+                    });
+
+                    builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.show();
 
 
-                    }
-
-
-
+                }
             }
-
-
-
-
         });
 
         rvLessonList.setAdapter(teacherLessonAdapter);
+    }
 
+    // פונקציה לשליחת SMS לתלמיד
+    private void sendSmsToStudent(TeacherLesson lesson) {
 
+        // שולחים רק אם השיעור היה תפוס ויש טלפון לתלמיד
+        if (lesson.getStudent() != null
+                && lesson.getStudent().getPhone() != null) {
 
+            // בניית ההודעה
+            String message =
+                    "שלום " + lesson.getStudent().getFname()
+                            + " " + lesson.getStudent().getLname() + ",\n"
+                            + "לידיעתך, השיעור הבא בוטל:\n"
+                            + "מקצוע: " + lesson.getSubject() + "\n"
+                            + "תאריך: " + lesson.getDate() + "\n"
+                            + "שעה: " + lesson.getTime() + "\n"
+                            + "מורה: " + lesson.getTeacher().getFname()
+                            + " " + lesson.getTeacher().getLname() + "\n"
+                            + "בברכה";
 
+            // פתיחת אפליקציית SMS
+            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+            smsIntent.setData(Uri.parse("smsto:" + lesson.getStudent().getPhone()));
+            smsIntent.putExtra("sms_body", message);
+            startActivity(smsIntent);
+        }
+    }
 }
-}
+
+
+
+
+

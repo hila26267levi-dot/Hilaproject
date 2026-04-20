@@ -41,7 +41,6 @@ public class User implements Serializable {
         this.lname = user.lname;
         this.phone = user.phone;
         this.email = user.email;
-
         this.pic = user.pic;
     }
 

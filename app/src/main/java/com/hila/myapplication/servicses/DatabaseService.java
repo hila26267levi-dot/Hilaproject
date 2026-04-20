@@ -474,8 +474,12 @@ public class DatabaseService {
 
     public  void  deleteLessonForStudent(@NotNull final TeacherLesson teacherLesson, @Nullable final DatabaseCallback<Void> callback){
 
-        deleteData(LESOON_THEACHER_PATH+"/"+teacherLesson.getTeacher().getId()+"/"+teacherLesson.getId(),callback);
-        deleteData(LESOON_STUDENT_PATH+"/"+teacherLesson.getStudent().getId()+"/"+ teacherLesson.getId(),callback);
+
+        deleteData(LESOON_STUDENT_PATH+ "/"+teacherLesson.getStudent().getId()+"/"+ teacherLesson.getId(),callback);
+
+
+        writeData(LESOON_THEACHER_PATH+"/"+teacherLesson.getTeacher().getId()+"/"+teacherLesson.getId(),teacherLesson,callback);
+
 
     }
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,24 +24,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 import com.hila.myapplication.adapters.ImageUtil;
 import com.hila.myapplication.model.Student;
-import com.hila.myapplication.model.Student;
 import com.hila.myapplication.servicses.DatabaseService;
 
 public class Student_edit_profile extends AppCompatActivity implements View.OnClickListener {
+
     EditText etkita, etfname, etlname, etphone;
     Button btn_save;
     Student currentStudent;
     String uid;
-
     String kita, fname, lname, phone;
     private DatabaseService databaseService;
 
     private ActivityResultLauncher<Intent> captureImageLauncher;
-    /// Activity result launcher for capturing image from camera
-
-    private Button btnGallery, btnCamera, btnAddItem;
-    // constant to compare
-    // the activity result code
     int SELECT_PICTURE = 200;
     private ImageView img;
 
@@ -51,16 +44,15 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_student_edit_profile);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-
-        /// request permission for the camera and storage
         ImageUtil.requestPermission(this);
-
-        /// get the instance of the database service
         databaseService = DatabaseService.getInstance();
 
-
-        /// register the activity result launcher for capturing image from camera
         captureImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -70,238 +62,196 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
                     }
                 });
 
-
-
-
-        //   String imagePic = ImageUtil.convertTo64Base(img);
-
-
-        // אתחול Firebase service
-        databaseService = DatabaseService.getInstance();
-        //חיבור שדות 
         etfname = findViewById(R.id.profile_student_E_Fname);
         etlname = findViewById(R.id.profile_student_E_Lname);
         etphone = findViewById(R.id.profile_student_E_phone);
-
         etkita = findViewById(R.id.profile_student_E_class);
         btn_save = findViewById(R.id.btnSaveprofile_student);
+        img = findViewById(R.id.img_StudentProfile);
 
         btn_save.setOnClickListener(this);
-       img=findViewById(R.id.img_StudentProfile);
-       img.setOnClickListener(this);
+        img.setOnClickListener(this);
 
-        // קבלת ה-UID של המשתמש הנוכחי
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Toast.makeText(this, "שגיאה: משתמש לא מחובר", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, loginActivity.class));
+            finish();
+            return;
+        }
+
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // משיכת המורה הנוכחי מהFirebase
         databaseService.getStudent(uid, new DatabaseService.DatabaseCallback<Student>() {
             @Override
             public void onCompleted(Student student) {
                 currentStudent = student;
-                loadStudentData();
-
+                if (student != null) {
+                    loadStudentData();
+                } else {
+                    Toast.makeText(Student_edit_profile.this,
+                            "לא נמצאו פרטי תלמיד", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailed(Exception e) {
-
+                Toast.makeText(Student_edit_profile.this,
+                        "שגיאה בטעינת הפרטים", Toast.LENGTH_SHORT).show();
             }
         });
-
-        // כפתור שמירה
-
-
     }
 
-
-
-
-
-    // firebaseפונקציה הזאת לוקחת את המורה מה
-// וממלאת את הטופס כדי שהמשתמש יראה את הפרטים שלו
     private void loadStudentData() {
         if (currentStudent == null) return;
         etfname.setText(currentStudent.getFname());
         etlname.setText(currentStudent.getLname());
         etphone.setText(currentStudent.getPhone());
-
         etkita.setText(currentStudent.getKita());
-
-        if(currentStudent.getPic()!=null){
+        if (currentStudent.getPic() != null) {
             img.setImageBitmap(ImageUtil.convertFromivIPic(currentStudent.getPic()));
-
-
         }
     }
 
-    // שמירת העריכה
     private void saveStudentProfile() {
-        if (currentStudent == null) return;
+        if (currentStudent == null) {
+            Toast.makeText(this, "שגיאה: לא נטענו פרטי תלמיד", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        //שמים את הנתונים החדשים שהתלמיד הקליט
-     fname=etfname.getText().toString();
-     lname=etlname.getText().toString();
-       phone=etphone.getText().toString();
-       kita=etkita.getText().toString();
+        fname = etfname.getText().toString().trim();
+        lname = etlname.getText().toString().trim();
+        phone = etphone.getText().toString().trim();
+        kita = etkita.getText().toString().trim();
+
+        // בדיקות תקינות
+        if (!validateInput(fname, lname, phone, kita)) return;
 
         currentStudent.setFname(fname);
-        currentStudent.setKita(kita);
-        currentStudent.setPhone(phone);
         currentStudent.setLname(lname);
+        currentStudent.setPhone(phone);
+        currentStudent.setKita(kita);
 
-//בדיקות תקינות
-       // Public void validateInput(String phone, String fname, String lname,String kita) {
-            // הגדרות עבור Regex
-            String phoneRegex = "^[0-9]{10}$";
-            String nameRegex = "^[A-Za-z]+$";
-            String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
-
-            // בדיקות עבור כל שדה
-            if (phone.isEmpty()) {
-                Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
-            } else if (!phone.matches(phoneRegex)) {
-                Toast.makeText(this, "שגיאה: מספר הטלפון חייב להיות בדיוק 10 מספרים!", Toast.LENGTH_LONG).show();
-            }
-
-            if (fname.isEmpty()) {
-                Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
-            } else if (!fname.matches(nameRegex)) {
-                Toast.makeText(this, "שגיאה: שם פרטי חייב להיות מורכב מאותיות בלבד!", Toast.LENGTH_LONG).show();
-            }
-
-            if (lname.isEmpty()) {
-                Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
-            } else if (!lname.matches(nameRegex)) {
-                Toast.makeText(this, "שגיאה: שם משפחה חייב להיות מורכב מאותיות בלבד!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                Toast.makeText(this, "כל הפרטים תקינים!", Toast.LENGTH_LONG).show();
-            }
-        //}
-
-    // עדכון בFirebase
-     databaseService.updateStudent(currentStudent,new DatabaseService.DatabaseCallback<Void>()
-
-    {
-        @Override
-        public void onCompleted (Void object)
-        {
-            Intent intent = new Intent(Student_edit_profile.this, StudentActivity.class);
-            startActivity(intent);
+        // שמירת תמונה אם שונתה
+        String pic = ImageUtil.convertTo64Base(img);
+        if (pic != null) {
+            currentStudent.setPic(pic);
         }
 
-        @Override
-        public void onFailed (Exception e)
-        {
-
-        }
-    });
-  }
-
-
-
-        //   של תלמיד תפריט צד
-        @Override
-        public boolean onCreateOptionsMenu (Menu menu){
-            getMenuInflater().inflate(R.menu.student_menu, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-
-            int id = item.getItemId();
-
-            if (id == R.id.student_home) {
+        databaseService.updateStudent(currentStudent, new DatabaseService.DatabaseCallback<Void>() {
+            @Override
+            public void onCompleted(Void object) {
+                Toast.makeText(Student_edit_profile.this,
+                        "הפרופיל עודכן בהצלחה!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Student_edit_profile.this, StudentActivity.class);
                 startActivity(intent);
-
-                return true;
+                finish();
             }
 
-            if (id == R.id.student_searchteacher) {
-                Intent intent = new Intent(Student_edit_profile.this, TeacherListActivity.class);
-                startActivity(intent);
+            @Override
+            public void onFailed(Exception e) {
+                Toast.makeText(Student_edit_profile.this,
+                        "שגיאה בשמירת הפרופיל, נסה שוב", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-                return true;
-            }
+    public boolean validateInput(String fnameVal, String lnameVal, String phoneVal, String kitaVal) {
+        String nameRegex = "^[A-Za-zא-ת]+$";
 
-            if (id == R.id.student_profile) {
-                Intent intent = new Intent(Student_edit_profile.this, StudentProfile.class);
-                startActivity(intent);
-                return true;
-            }
-            if (id == R.id.student_disconect) {
-                Intent intent = new Intent(Student_edit_profile.this, disconect_forstudent.class);
-                startActivity(intent);
-                return true;
-            }
-            if (id == R.id.student_mylesson) {
-                Intent intent = new Intent(Student_edit_profile.this, student_lesson_list.class);
-                startActivity(intent);
-                return true;
-            }
-            if (id == R.id.student_adut) {
-                Intent intent = new Intent(Student_edit_profile.this, AdutActivity.class);
-                startActivity(intent);
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
+        if (fnameVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
+            return false;
         }
+        if (!fnameVal.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (lnameVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!lnameVal.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (phoneVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!phoneVal.matches("^05[0-9]{8}$")) {
+            Toast.makeText(this, "שגיאה: מספר הטלפון חייב להתחיל ב-05 ולהכיל 10 ספרות!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (kitaVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין כיתה!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public void onClick(View v) {
-        if(v==btn_save)
-        {
+        if (v == btn_save) {
             saveStudentProfile();
-        }
-      else  if(v==img)
-      {
+        } else if (v == img) {
             imageChooser();
-      }
+        }
     }
 
     void imageChooser() {
-
-        // create an instance of the
-        // intent of the type image
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+        startActivityForResult(Intent.createChooser(i, "בחר תמונה"), SELECT_PICTURE);
     }
 
-    // this function is triggered when user
-    // selects the image from the imageChooser
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK)
-        {
-
-            // compare the resultCode with the
-            // SELECT_PICTURE constant
-            if (requestCode == SELECT_PICTURE)
-            {
-                // Get the url of the image from data
-                Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri)
-                {
-                    // update the preview image in the layout
-                    img.setImageURI(selectedImageUri);
-                }
+        if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE) {
+            Uri selectedImageUri = data.getData();
+            if (selectedImageUri != null) {
+                img.setImageURI(selectedImageUri);
             }
         }
-
-        }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.student_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.student_home) {
+            startActivity(new Intent(this, StudentActivity.class));
+            return true;
+        }
+        if (id == R.id.student_searchteacher) {
+            startActivity(new Intent(this, TeacherListActivity.class));
+            return true;
+        }
+        if (id == R.id.student_profile) {
+            startActivity(new Intent(this, StudentProfile.class));
+            return true;
+        }
+        if (id == R.id.student_disconect) {
+            startActivity(new Intent(this, disconect_forstudent.class));
+            return true;
+        }
+        if (id == R.id.student_mylesson) {
+            startActivity(new Intent(this, student_lesson_list.class));
+            return true;
+        }
+        if (id == R.id.student_adut) {
+            startActivity(new Intent(this, AdutActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}
 
 
 

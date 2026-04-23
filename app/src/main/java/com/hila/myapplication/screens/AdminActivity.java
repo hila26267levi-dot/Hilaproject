@@ -1,6 +1,5 @@
 package com.hila.myapplication.screens;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,23 +7,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.hila.myapplication.R;
-import com.hila.myapplication.adapters.StudentAdapter;
-import com.hila.myapplication.adapters.TeacherAdapter;
-import com.hila.myapplication.model.Student;
-import com.hila.myapplication.model.Teacher;
 import com.hila.myapplication.servicses.DatabaseService;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 public class AdminActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -53,24 +42,21 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v == btn_maneger_teacher) {
-            // מעבר לרשימת מורים עם אפשרות מחיקה
             openTeacherListForAdmin();
-        }
-        if (v == btn_maneger_student) {
-            // מעבר לרשימת תלמידים עם אפשרות מחיקה
+        } else if (v == btn_maneger_student) {
             openStudentListForAdmin();
         }
     }
 
     private void openTeacherListForAdmin() {
         Intent intent = new Intent(AdminActivity.this, TeacherListActivity.class);
-        intent.putExtra("isAdmin", true); // מסמן שזה מנהל
+        intent.putExtra("isAdmin", true);
         startActivity(intent);
     }
 
     private void openStudentListForAdmin() {
         Intent intent = new Intent(AdminActivity.this, StudentListActivity.class);
-        intent.putExtra("isAdmin", true); // מסמן שזה מנהל
+        intent.putExtra("isAdmin", true);
         startActivity(intent);
     }
 }

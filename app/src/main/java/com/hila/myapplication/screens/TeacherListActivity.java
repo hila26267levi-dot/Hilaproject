@@ -26,8 +26,9 @@ import com.hila.myapplication.servicses.DatabaseService;
 import java.util.List;
 
 public class TeacherListActivity extends AppCompatActivity {
+
     boolean isAdmin = false;
-    private static final String TAG = "UsersListActivity";
+    private static final String TAG = "TeacherListActivity";
     private TeacherAdapter teacherAdapter;
     private TextView tvUserCount;
     private RecyclerView rcTeacherList;
@@ -44,77 +45,58 @@ public class TeacherListActivity extends AppCompatActivity {
             return insets;
         });
 
-
-        databaseService=DatabaseService.getInstance();
+        databaseService = DatabaseService.getInstance();
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+
         rcTeacherList = findViewById(R.id.rcTeacherList);
         tvUserCount = findViewById(R.id.tv_teacher_count);
         rcTeacherList.setLayoutManager(new LinearLayoutManager(this));
+
         teacherAdapter = new TeacherAdapter(new TeacherAdapter.OnTeacherClickListener() {
             @Override
             public void onTeacherClick(Teacher teacher) {
-
-
-                Intent  go=new Intent(TeacherListActivity.this,  TeacherProfile_forstudent.class);
+                Intent go = new Intent(TeacherListActivity.this, TeacherProfile_forstudent.class);
                 go.putExtra("teacherId", teacher.getId());
                 startActivity(go);
-
-
             }
 
             @Override
             public void onLongTeacherClick(Teacher teacher) {
-                if (isAdmin) {
+                if (!isAdmin) return;
 
-                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(TeacherListActivity.this);
-                    builder.setTitle("מחיקת מורה");
-                    builder.setMessage("האם אתה בטוח שברצונך למחוק את המורה "
-                            + teacher.getFname() + " " + teacher.getLname() + "?");
+                new AlertDialog.Builder(TeacherListActivity.this)
+                        .setTitle("מחיקת מורה")
+                        .setMessage("האם אתה בטוח שברצונך למחוק את המורה "
+                                + teacher.getFname() + " " + teacher.getLname() + "?")
+                        .setPositiveButton("כן, מחק", (dialog, which) -> {
+                            databaseService.deleteTeacher(teacher.getId(),
+                                    new DatabaseService.DatabaseCallback<Void>() {
+                                        @Override
+                                        public void onCompleted(Void object) {
+                                            teacherAdapter.removeTeacher(teacher);
+                                            int newCount = teacherAdapter.getItemCount();
+                                            tvUserCount.setText("סה\"כ מורים: " + newCount);
+                                            Toast.makeText(TeacherListActivity.this,
+                                                    "המורה " + teacher.getFname() + " נמחק בהצלחה",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
 
-                    builder.setPositiveButton("כן, מחק",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    databaseService.deleteTeacher(teacher.getId(),
-                                            new DatabaseService.DatabaseCallback<Void>() {
-                                                @Override
-                                                public void onCompleted(Void object) {
-                                                    teacherAdapter.removeTeacher(teacher);
-                                                    Toast.makeText(TeacherListActivity.this,
-                                                            "המורה נמחק בהצלחה",
-                                                            Toast.LENGTH_SHORT).show();
-                                                }
-
-                                                @Override
-                                                public void onFailed(Exception e) {
-                                                    Toast.makeText(TeacherListActivity.this,
-                                                            "שגיאה במחיקה",
-                                                            Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                }
-                            });
-
-                    builder.setNegativeButton("ביטול",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-
-                    builder.show();
-                }
+                                        @Override
+                                        public void onFailed(Exception e) {
+                                            Log.e(TAG, "Failed to delete teacher", e);
+                                            Toast.makeText(TeacherListActivity.this,
+                                                    "שגיאה במחיקת המורה, נסה שוב",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        })
+                        .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
+                        .show();
             }
-
-
         });
 
         rcTeacherList.setAdapter(teacherAdapter);
     }
-
 
     @Override
     protected void onResume() {
@@ -123,16 +105,18 @@ public class TeacherListActivity extends AppCompatActivity {
             @Override
             public void onCompleted(List<Teacher> teachers) {
                 teacherAdapter.setTeacherList(teachers);
-                tvUserCount.setText("Total users: " + teachers.size());
+                tvUserCount.setText("סה\"כ מורים: " + teachers.size());
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to get users list", e);
+                Log.e(TAG, "Failed to get teacher list", e);
+                Toast.makeText(TeacherListActivity.this,
+                        "שגיאה בטעינת רשימת המורים", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    //תפריט צד
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.student_menu, menu);
@@ -141,40 +125,27 @@ public class TeacherListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         if (id == R.id.student_home) {
-            Intent intent = new Intent(TeacherListActivity.this, StudentActivity.class);
-            startActivity(intent);
-
+            startActivity(new Intent(this, StudentActivity.class));
             return true;
         }
-
         if (id == R.id.student_searchteacher) {
-            Intent intent = new Intent(TeacherListActivity.this, TeacherListActivity.class);
-            startActivity(intent);
-
+            startActivity(new Intent(this, TeacherListActivity.class));
             return true;
         }
-
         if (id == R.id.student_profile) {
-            Intent intent = new Intent(TeacherListActivity.this, TeacherListActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, StudentProfile.class));
             return true;
         }
         if (id == R.id.student_disconect) {
-            Intent intent = new Intent(TeacherListActivity.this, disconect_forstudent.class);
-            startActivity(intent);
+            startActivity(new Intent(this, disconect_forstudent.class));
             return true;
         }
         if (id == R.id.student_mylesson) {
-            Intent intent = new Intent(TeacherListActivity.this, student_lesson_list.class);
-            startActivity(intent);
+            startActivity(new Intent(this, student_lesson_list.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

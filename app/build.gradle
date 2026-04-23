@@ -5,9 +5,7 @@ plugins {
 
 android {
     namespace 'com.hila.myapplication'
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.hila.myapplication"
@@ -39,12 +37,8 @@ dependencies {
     implementation libs.firebase.auth
     implementation libs.firebase.database
     implementation libs.recyclerview
-    implementation libs.play.services.maps3d
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-
     implementation libs.gson
-
-    implementation libs.material3
 }

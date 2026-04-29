@@ -258,8 +258,8 @@ public class RegisterTeacherActivity extends AppCompatActivity implements View.O
         }
 
         int ageValue = Integer.parseInt(age);
-        if (ageValue < 10) {
-            Toast.makeText(this, "שגיאה: גיל חייב להיות 10 ומעלה!", Toast.LENGTH_LONG).show();
+        if (ageValue < 18) {
+            Toast.makeText(this, "שגיאה: גיל חייב להיות 18 ומעלה!", Toast.LENGTH_LONG).show();
             return;
         }
 

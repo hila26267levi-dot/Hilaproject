@@ -10,8 +10,8 @@
 
     <TextView
         android:id="@+id/subjectlesson_addlessonSet"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="33dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="מקצוע שיעור"
@@ -23,8 +23,8 @@
 
     <TextView
         android:id="@+id/etGradeClassSet"
-        android:layout_width="100dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="49dp"
         android:layout_marginBottom="21dp"
         android:ems="10"
@@ -37,8 +37,8 @@
 
     <TextView
         android:id="@+id/et_timelesson_addlessonSet"
-        android:layout_width="100dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="34dp"
         android:fontFamily="@font/gevret_levin_alef"
@@ -50,8 +50,8 @@
 
     <TextView
         android:id="@+id/et_datelesson_addlessonSet"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
         android:layout_marginTop="221dp"
         android:layout_marginBottom="39dp"
         android:fontFamily="@font/gevret_levin_alef"
@@ -65,7 +65,7 @@
     <Button
         android:id="@+id/btnSetLesson"
         android:layout_width="150dp"
-        android:layout_height="0dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         android:layout_marginBottom="212dp"
         android:background="@drawable/my_button_background"

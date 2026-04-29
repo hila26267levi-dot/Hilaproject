@@ -1,7 +1,6 @@
 package com.hila.myapplication.screens;
 
 import static android.widget.Toast.LENGTH_LONG;
-
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.DialogInterface;
@@ -57,19 +56,17 @@ public class student_lesson_list extends AppCompatActivity {
         databaseService = DatabaseService.getInstance();
         mAuth = FirebaseAuth.getInstance();
         sid = mAuth.getUid();
-        // הגדרת האדפטר
+
         teacherLessonAdapter = new TeacherLessonAdapter(lessonList,
                 new TeacherLessonAdapter.OnLessonClickListener() {
 
                     @Override
                     public void onLessonClick(TeacherLesson lesson) {
-                        // לחיצה רגילה — לא עושה כלום כרגע
+                        // לחיצה רגילה — לא עושה כלום
                     }
 
                     @Override
                     public void onLongLessonClick(TeacherLesson lesson) {
-
-                        // Dialog אישור ביטול
                         AlertDialog.Builder builder =
                                 new AlertDialog.Builder(student_lesson_list.this);
                         builder.setTitle("ביטול שיעור");
@@ -82,22 +79,21 @@ public class student_lesson_list extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-
-                                        // שלב 1 — מחיקה מהרשימה המקומית
+                                        // הסרה מהרשימה המקומית
                                         lessonList.remove(lesson);
                                         teacherLessonAdapter.notifyDataSetChanged();
 
-                                        // שלב 2 — מחיקה מ-Firebase של התלמיד
-                                        // משתמשת ב-deleteData שכבר קיים ב-DatabaseService
-                                        sendSmsToTeacher(lesson);                                                    // שלב 3 — מחזירים שיעור לפנוי אצל המורה
+                                        // שליחת SMS למורה
+                                        sendSmsToTeacher(lesson);
 
+                                        // החזרת השיעור לפנוי ומחיקת התלמיד ממנו
                                         lesson.setStatus("availbale");
+                                        lesson.setStudent(null);
+
                                         databaseService.deleteLessonForStudent(lesson, new DatabaseService.DatabaseCallback<Void>() {
                                             @Override
                                             public void onCompleted(Void object) {
-
-                                                // שלב 4 — SMS למורה
-
+                                                // הושלם בהצלחה
                                             }
 
                                             @Override
@@ -105,10 +101,7 @@ public class student_lesson_list extends AppCompatActivity {
                                             }
                                         });
                                     }
-
-
                                 });
-
 
                         builder.setNegativeButton("ביטול",
                                 new DialogInterface.OnClickListener() {
@@ -119,13 +112,10 @@ public class student_lesson_list extends AppCompatActivity {
                                 });
                         builder.show();
                     }
-
                 });
-
 
         rvStudentLessonList.setAdapter(teacherLessonAdapter);
 
-// שליפת שיעורי התלמיד מ-Firebase
         databaseService.getStudentLessonList(sid,
                 new DatabaseService.DatabaseCallback<List<TeacherLesson>>() {
                     @Override
@@ -144,74 +134,70 @@ public class student_lesson_list extends AppCompatActivity {
                 });
     }
 
-// פונקציה לשליחת SMS למורה
-private void sendSmsToTeacher(TeacherLesson lesson) {
-    if (lesson.getTeacher() != null
-            && lesson.getTeacher().getPhone() != null) {
-        String message =
-                "שלום " + lesson.getTeacher().getFname()
-                        + " " + lesson.getTeacher().getLname() + ",\n"
-                        + "לידיעתך, התלמיד "
-                        + lesson.getStudent().getFname()
-                        + " " + lesson.getStudent().getLname()
-                        + " ביטל את השיעור:\n"
-                        + "מקצוע: " + lesson.getSubject() + "\n"
-                        + "תאריך: " + lesson.getDate() + "\n"
-                        + "שעה: " + lesson.getTime() + "\n"
-                        + "השיעור חזר להיות פנוי.\n"
-                        + "בברכה";
+    private void sendSmsToTeacher(TeacherLesson lesson) {
+        if (lesson.getTeacher() != null && lesson.getTeacher().getPhone() != null) {
+            String message =
+                    "שלום " + lesson.getTeacher().getFname()
+                            + " " + lesson.getTeacher().getLname() + ",\n"
+                            + "לידיעתך, התלמיד "
+                            + lesson.getStudent().getFname()
+                            + " " + lesson.getStudent().getLname()
+                            + " ביטל את השיעור:\n"
+                            + "מקצוע: " + lesson.getSubject() + "\n"
+                            + "תאריך: " + lesson.getDate() + "\n"
+                            + "שעה: " + lesson.getTime() + "\n"
+                            + "השיעור חזר להיות פנוי.\n"
+                            + "בברכה";
 
-        Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-        smsIntent.setData(Uri.parse("smsto:"
-                + lesson.getTeacher().getPhone()));
-        smsIntent.putExtra("sms_body", message);
-        startActivity(smsIntent);
+            Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+            smsIntent.setData(Uri.parse("smsto:" + lesson.getTeacher().getPhone()));
+            smsIntent.putExtra("sms_body", message);
+            startActivity(smsIntent);
+        }
     }
-}
 
-// תפריט צד תלמיד
-@Override
-public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.student_menu, menu);
-    return true;
-}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.student_menu, menu);
+        return true;
+    }
 
-@Override
-public boolean onOptionsItemSelected(MenuItem item) {
-    int id = item.getItemId();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-    if (id == R.id.student_home) {
-        Intent intent = new Intent(student_lesson_list.this, StudentActivity.class);
-        startActivity(intent);
-        return true;
+        if (id == R.id.student_home) {
+            Intent intent = new Intent(student_lesson_list.this, StudentActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.student_searchteacher) {
+            Intent intent = new Intent(student_lesson_list.this, TeacherListActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.student_profile) {
+            Intent intent = new Intent(student_lesson_list.this, StudentProfile.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.student_disconect) {
+            Intent intent = new Intent(student_lesson_list.this, disconect_forstudent.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.student_mylesson) {
+            Intent intent = new Intent(student_lesson_list.this, student_lesson_list.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.student_adut) {
+            Intent intent = new Intent(student_lesson_list.this, AdutActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
-    if (id == R.id.student_searchteacher) {
-        Intent intent = new Intent(student_lesson_list.this, TeacherListActivity.class);
-        startActivity(intent);
-        return true;
-    }
-    if (id == R.id.student_profile) {
-        Intent intent = new Intent(student_lesson_list.this, StudentProfile.class);
-        startActivity(intent);
-        return true;
-    }
-    if (id == R.id.student_disconect) {
-        Intent intent = new Intent(student_lesson_list.this, disconect_forstudent.class);
-        startActivity(intent);
-        return true;
-    }
-    if (id == R.id.student_mylesson) {
-        Intent intent = new Intent(student_lesson_list.this, student_lesson_list.class);
-        startActivity(intent);
-        return true;
-    }
-    if (id == R.id.student_adut) {
-        Intent intent = new Intent(student_lesson_list.this, AdutActivity.class);
-        startActivity(intent);
-        return true;
-    }
-    return super.onOptionsItemSelected(item);
-}
 }
 
 

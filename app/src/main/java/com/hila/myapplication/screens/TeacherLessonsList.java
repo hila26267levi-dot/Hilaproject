@@ -1,5 +1,4 @@
-
-        package com.hila.myapplication.screens;
+package com.hila.myapplication.screens;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,6 +27,7 @@ public class TeacherLessonsList extends AppCompatActivity {
 
     RecyclerView rvLessonList;
     List<TeacherLesson> lessonList = new ArrayList<>();
+    List<TeacherLesson> filterlist = new ArrayList<>();
     FirebaseAuth mAuth;
     String tid = "";
     private Intent takeit;
@@ -49,7 +49,6 @@ public class TeacherLessonsList extends AppCompatActivity {
 
         databaseService = DatabaseService.getInstance();
 
-        // בדיקה אם הגיע מתלמיד או מורה
         takeit = getIntent();
         tid = takeit.getStringExtra("teacherId");
 
@@ -57,14 +56,17 @@ public class TeacherLessonsList extends AppCompatActivity {
             mAuth = FirebaseAuth.getInstance();
             tid = mAuth.getUid();
             theOwner = true;
+
         }
 
         // שליפת רשימת שיעורים מ-Firebase
         databaseService.getThecherLessonList(tid, new DatabaseService.DatabaseCallback<List<TeacherLesson>>() {
             @Override
             public void onCompleted(List<TeacherLesson> lessonList2) {
+
                 lessonList.addAll(lessonList2);
-                teacherLessonAdapter.notifyDataSetChanged();
+
+                setFilterlist();
             }
 
             @Override
@@ -78,23 +80,19 @@ public class TeacherLessonsList extends AppCompatActivity {
             @Override
             public void onLessonClick(TeacherLesson lesson) {
                 if (theOwner) {
-                    // מורה — עריכת שיעור לחיצה קצרה
                     Intent intent = new Intent(TeacherLessonsList.this, EditLesson.class);
                     intent.putExtra("Lesson", lesson);
                     startActivity(intent);
                 } else {
-                    // תלמיד —מעביר לדף קביעת שיעור בלחיצה
                     Intent intent = new Intent(TeacherLessonsList.this, SetLesson.class);
                     intent.putExtra("Lesson", lesson);
                     startActivity(intent);
                 }
             }
-            //בלחיצה ארוכה של מורה
+
             @Override
             public void onLongLessonClick(TeacherLesson lesson) {
                 if (theOwner) {
-
-                    // Dialog אישור מחיקה
                     AlertDialog.Builder builder = new AlertDialog.Builder(TeacherLessonsList.this);
                     builder.setTitle("מחיקת שיעור");
                     builder.setMessage("האם אתה בטוח שברצונך למחוק את השיעור?");
@@ -102,17 +100,12 @@ public class TeacherLessonsList extends AppCompatActivity {
                     builder.setPositiveButton("כן, מחק", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
-                            // מחיקה מהרשימה המקומית
                             lessonList.remove(lesson);
                             teacherLessonAdapter.notifyDataSetChanged();
                             sendSmsToStudent(lesson);
-                            // מחיקה מ-Firebase
                             databaseService.deleteLessonForStudent(lesson, new DatabaseService.DatabaseCallback<Void>() {
                                 @Override
                                 public void onCompleted(Void object) {
-
-                                    // שליחת SMS לתלמיד אם השיעור היה תפוס
                                     Intent intent = new Intent(TeacherLessonsList.this, TeacherActivity.class);
                                     startActivity(intent);
                                 }
@@ -132,8 +125,6 @@ public class TeacherLessonsList extends AppCompatActivity {
                     });
 
                     builder.show();
-
-
                 }
             }
         });
@@ -141,14 +132,28 @@ public class TeacherLessonsList extends AppCompatActivity {
         rvLessonList.setAdapter(teacherLessonAdapter);
     }
 
-    // פונקציה לשליחת SMS לתלמיד
+
+    private void setFilterlist(){
+
+
+        for (TeacherLesson lesson : lessonList) {
+            if (theOwner) {
+                // מורה רואה את כל השיעורים שלו
+                filterlist.add(lesson);
+            } else {
+                // תלמיד רואה רק שיעורים פנויים
+                if (lesson.getStatus() == null || lesson.getStatus().equals("availbale")) {
+                    filterlist.add(lesson);
+                }
+            }
+        }
+
+        teacherLessonAdapter.setLessonList(filterlist);
+        teacherLessonAdapter.notifyDataSetChanged();
+    }
+
     private void sendSmsToStudent(TeacherLesson lesson) {
-
-        // שולחים רק אם השיעור היה תפוס ויש טלפון לתלמיד
-        if (lesson.getStudent() != null
-                && lesson.getStudent().getPhone() != null) {
-
-            // בניית ההודעה
+        if (lesson.getStudent() != null && lesson.getStudent().getPhone() != null) {
             String message =
                     "שלום " + lesson.getStudent().getFname()
                             + " " + lesson.getStudent().getLname() + ",\n"
@@ -160,7 +165,6 @@ public class TeacherLessonsList extends AppCompatActivity {
                             + " " + lesson.getTeacher().getLname() + "\n"
                             + "בברכה";
 
-            // פתיחת אפליקציית SMS
             Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
             smsIntent.setData(Uri.parse("smsto:" + lesson.getStudent().getPhone()));
             smsIntent.putExtra("sms_body", message);
@@ -168,8 +172,6 @@ public class TeacherLessonsList extends AppCompatActivity {
         }
     }
 }
-
-
 
 
 

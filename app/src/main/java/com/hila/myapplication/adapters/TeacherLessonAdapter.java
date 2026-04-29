@@ -34,6 +34,15 @@ public class TeacherLessonAdapter extends RecyclerView.Adapter<TeacherLessonAdap
         this.onLessonClickListener = onLessonClickListener;
     }
 
+
+    public List<TeacherLesson> getLessonList() {
+        return lessonList;
+    }
+
+    public void setLessonList(List<TeacherLesson> lessonList) {
+        this.lessonList = lessonList;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

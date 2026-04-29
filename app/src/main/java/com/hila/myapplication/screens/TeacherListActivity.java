@@ -59,7 +59,7 @@ public class TeacherListActivity extends AppCompatActivity {
                 go.putExtra("teacherId", teacher.getId());
                 startActivity(go);
             }
-
+//מחיקה של מורה על ידי המנהל
             @Override
             public void onLongTeacherClick(Teacher teacher) {
                 if (!isAdmin) return;

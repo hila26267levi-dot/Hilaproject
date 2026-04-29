@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,13 +9,16 @@
 
     <LinearLayout
         android:id="@+id/main"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingStart="30dp"
-        android:paddingEnd="30dp"
         android:paddingTop="180dp"
-        android:paddingBottom="30dp">
+        android:paddingEnd="30dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/img_TeacherProfile"
@@ -31,11 +34,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:fontFamily="@font/gevret_levin_alef"
-            android:hint="שם פרטי"
-            android:textColor="#1E5A7A"
-            android:textSize="17sp"
             android:gravity="end"
-            android:inputType="text" />
+            android:hint="שם פרטי"
+            android:inputType="text"
+            android:textColor="#1E5A7A"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/profile_Teacher_E_Lname"
@@ -43,10 +46,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:fontFamily="@font/gevret_levin_alef"
-            android:hint="שם משפחה"
-            android:textSize="17sp"
             android:gravity="end"
-            android:inputType="text" />
+            android:hint="שם משפחה"
+            android:inputType="text"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/profile_Teacher_E_age"
@@ -54,20 +57,20 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:fontFamily="@font/gevret_levin_alef"
-            android:hint="גיל"
-            android:textSize="17sp"
             android:gravity="end"
-            android:inputType="number" />
+            android:hint="גיל"
+            android:inputType="number"
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:fontFamily="@font/gevret_levin_alef"
+            android:gravity="end"
             android:text="כיתות לימוד:"
             android:textColor="#1E5A7A"
-            android:textSize="15sp"
-            android:gravity="end"
-            android:layout_marginBottom="4dp" />
+            android:textSize="15sp" />
 
         <Spinner
             android:id="@+id/sp_teachclass_edit"
@@ -82,13 +85,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:fontFamily="@font/gevret_levin_alef"
+            android:gravity="end"
             android:hint="כיתות שנבחרו"
             android:textColor="#1E5A7A"
-            android:textSize="17sp"
-            android:gravity="end"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/profile_Teacher_E_price"
@@ -96,20 +99,20 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:fontFamily="@font/gevret_levin_alef"
-            android:hint="מחיר"
-            android:textSize="17sp"
             android:gravity="end"
-            android:inputType="numberDecimal" />
+            android:hint="מחיר"
+            android:inputType="numberDecimal"
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:fontFamily="@font/gevret_levin_alef"
+            android:gravity="end"
             android:text="מקצוע:"
             android:textColor="#1E5A7A"
-            android:textSize="15sp"
-            android:gravity="end"
-            android:layout_marginBottom="4dp" />
+            android:textSize="15sp" />
 
         <Spinner
             android:id="@+id/sp_subject_edit"
@@ -124,12 +127,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:hint="מקצועות שנבחרו"
-            android:textSize="17sp"
-            android:gravity="end"
             android:focusable="false"
-            android:focusableInTouchMode="false" />
+            android:focusableInTouchMode="false"
+            android:fontFamily="@font/gevret_levin_alef"
+            android:gravity="end"
+            android:hint="מקצועות שנבחרו"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/profile_Teacher_E_zoom"
@@ -137,10 +140,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/gevret_levin_alef"
-            android:hint="זום (yes/no)"
-            android:textSize="17sp"
             android:gravity="end"
-            android:inputType="text" />
+            android:hint="זום (yes/no)"
+            android:inputType="text"
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/profile_Teacher_E_btn"
@@ -154,5 +157,4 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,7 +57,7 @@ public class StudentListActivity extends AppCompatActivity {
                 go.putExtra("studentId", student.getId());
                 startActivity(go);
             }
-
+//מחיקה של תלמיד על ידי מנהל
             @Override
             public void onLongStudentClick(Student student) {
                 if (!isAdmin) return;

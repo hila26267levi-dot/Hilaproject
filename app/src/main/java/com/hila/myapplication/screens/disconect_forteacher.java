@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,11 +38,8 @@ public class disconect_forteacher extends AppCompatActivity {
         btn_disconect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // התנתקות מ-Firebase
                 FirebaseAuth.getInstance().signOut();
 
-                // מחיקת פרטי הכניסה מ-SharedPreferences
                 SharedPreferences sharedPreferences =
                         getSharedPreferences("myPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -49,10 +47,11 @@ public class disconect_forteacher extends AppCompatActivity {
                 editor.remove("password");
                 editor.apply();
 
-                // מעבר למסך הראשי
+                Toast.makeText(disconect_forteacher.this,
+                        "התנתקות בוצעה בהצלחה", Toast.LENGTH_LONG).show();
+
                 Intent intent = new Intent(disconect_forteacher.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
@@ -67,30 +66,24 @@ public class disconect_forteacher extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.teacher_home) {
-            Intent intent = new Intent(disconect_forteacher.this, TeacherActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(disconect_forteacher.this, TeacherActivity.class));
             return true;
         }
         if (id == R.id.teacher_profile) {
-            Intent intent = new Intent(disconect_forteacher.this, teacher_profile.class);
-            startActivity(intent);
+            startActivity(new Intent(disconect_forteacher.this, teacher_profile.class));
             return true;
         }
         if (id == R.id.teacher_mylesson) {
-            Intent intent = new Intent(disconect_forteacher.this, TeacherLessonsList.class);
-            startActivity(intent);
+            startActivity(new Intent(disconect_forteacher.this, TeacherLessonsList.class));
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            Intent intent = new Intent(disconect_forteacher.this, disconect_forteacher.class);
-            startActivity(intent);
+            startActivity(new Intent(disconect_forteacher.this, disconect_forteacher.class));
             return true;
         }
         if (id == R.id.teacher_adut) {
-            Intent intent = new Intent(disconect_forteacher.this, AdutActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(disconect_forteacher.this, AdutActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

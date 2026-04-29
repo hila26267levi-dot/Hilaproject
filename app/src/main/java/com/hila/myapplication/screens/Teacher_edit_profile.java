@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,21 +25,20 @@ import com.hila.myapplication.servicses.DatabaseService;
 public class Teacher_edit_profile extends AppCompatActivity implements View.OnClickListener {
 
     EditText fname, zoom, lname, age, price, teachclass, subject;
+    Spinner sp_teachclass_edit, sp_subject_edit;
     Teacher currentTeacher;
     String uid;
     Button btn_save;
     private DatabaseService databaseService;
+
+    String selectedTeachclass = "";
+    String selectedSubject = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_teacher_edit_profile);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         databaseService = DatabaseService.getInstance();
 
@@ -50,6 +51,36 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
         zoom = findViewById(R.id.profile_Teacher_E_zoom);
         btn_save = findViewById(R.id.profile_Teacher_E_btn);
         btn_save.setOnClickListener(this);
+
+        // ספינר כיתות לימוד
+        sp_teachclass_edit = findViewById(R.id.sp_teachclass_edit);
+        sp_teachclass_edit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    String kit = (String) parent.getItemAtPosition(position);
+                    selectedTeachclass += kit + ", ";
+                    teachclass.setText(selectedTeachclass);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // ספינר מקצוע
+        sp_subject_edit = findViewById(R.id.sp_subject_edit);
+        sp_subject_edit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    String subj = (String) parent.getItemAtPosition(position);
+                    selectedSubject += subj + ", ";
+                    subject.setText(selectedSubject);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Toast.makeText(this, "שגיאה: משתמש לא מחובר", Toast.LENGTH_SHORT).show();
@@ -87,7 +118,11 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
         age.setText(currentTeacher.getAge());
         price.setText(String.valueOf(currentTeacher.getPrice()));
         teachclass.setText(currentTeacher.getTeachclass());
+        selectedTeachclass = currentTeacher.getTeachclass() != null ?
+                currentTeacher.getTeachclass() : "";
         subject.setText(currentTeacher.getSubject());
+        selectedSubject = currentTeacher.getSubject() != null ?
+                currentTeacher.getSubject() : "";
         zoom.setText(currentTeacher.getZoom());
     }
 
@@ -101,27 +136,73 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
         String lnameVal = lname.getText().toString().trim();
         String ageVal = age.getText().toString().trim();
         String priceVal = price.getText().toString().trim();
-        String teachclassVal = teachclass.getText().toString().trim();
-        String subjectVal = subject.getText().toString().trim();
         String zoomVal = zoom.getText().toString().trim();
 
         // בדיקות תקינות
-        if (!validateInput(fnameVal, lnameVal, priceVal, ageVal)) return;
+        String nameRegex = "^[A-Za-zא-ת]+$";
 
-        double priceDouble;
-        try {
-            priceDouble = Double.parseDouble(priceVal);
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר", Toast.LENGTH_LONG).show();
+        if (fnameVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
             return;
         }
+        if (!fnameVal.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (lnameVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!lnameVal.matches(nameRegex)) {
+            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (ageVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין גיל!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!ageVal.matches("^[0-9]+$")) {
+            Toast.makeText(this, "שגיאה: גיל חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        int ageValue = Integer.parseInt(ageVal);
+        if (ageValue < 18) {
+            Toast.makeText(this, "שגיאה: גיל חייב להיות 18 ומעלה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        // בדיקת כיתות לימוד — חובה מהספינר
+        if (selectedTeachclass.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה לבחור כיתות לימוד!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (priceVal.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה להזין מחיר!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        try {
+            double p = Double.parseDouble(priceVal);
+            if (p <= 0) {
+                Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר חיובי!", Toast.LENGTH_LONG).show();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        // בדיקת מקצוע — חובה מהספינר
+        if (selectedSubject.isEmpty()) {
+            Toast.makeText(this, "שגיאה: חובה לבחור מקצוע מהרשימה!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        double priceDouble = Double.parseDouble(priceVal);
 
         currentTeacher.setFname(fnameVal);
         currentTeacher.setLname(lnameVal);
         currentTeacher.setAge(ageVal);
         currentTeacher.setPrice(priceDouble);
-        currentTeacher.setTeachclass(teachclassVal);
-        currentTeacher.setSubject(subjectVal);
+        currentTeacher.setTeachclass(selectedTeachclass);
+        currentTeacher.setSubject(selectedSubject);
         currentTeacher.setZoom(zoomVal);
 
         databaseService.updateTeacher(currentTeacher, new DatabaseService.DatabaseCallback<Void>() {
@@ -129,8 +210,7 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
             public void onCompleted(Void object) {
                 Toast.makeText(Teacher_edit_profile.this,
                         "הפרופיל עודכן בהצלחה!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Teacher_edit_profile.this, TeacherActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(Teacher_edit_profile.this, TeacherActivity.class));
                 finish();
             }
 
@@ -140,50 +220,6 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
                         "שגיאה בשמירת הפרופיל, נסה שוב", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public boolean validateInput(String fnameVal, String lnameVal, String priceVal, String ageVal) {
-        String nameRegex = "^[A-Za-zא-ת]+$";
-        String numberRegex = "^[0-9]+(\\.[0-9]+)?$";
-
-        if (fnameVal.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!fnameVal.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (lnameVal.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!lnameVal.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (priceVal.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין מחיר!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!priceVal.matches(numberRegex)) {
-            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (ageVal.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין גיל!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!ageVal.matches("^[0-9]+$")) {
-            Toast.makeText(this, "שגיאה: גיל חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        int ageValue = Integer.parseInt(ageVal);
-        if (ageValue < 10) {
-            Toast.makeText(this, "שגיאה: גיל חייב להיות 10 ומעלה!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
     }
 
     @Override

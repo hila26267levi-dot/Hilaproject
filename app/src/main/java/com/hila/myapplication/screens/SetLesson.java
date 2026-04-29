@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,23 +27,13 @@ public class SetLesson extends AppCompatActivity implements View.OnClickListener
 
     private DatabaseService databaseService;
     Intent takeit;
-
     TeacherLesson theLesson = null;
-
     private Button btnSEtLesson;
-
-
     TextView edittext_subgect, edittext_time, edittext_date, et_class;
-
     Teacher teacher = null;
-    ;
-
     Spinner sp_teachway;
-
     String subject = "";
-
     String ifzoom = "";
-
     CheckBox ck_zoom;
     private String kite = "";
 
@@ -58,29 +49,25 @@ public class SetLesson extends AppCompatActivity implements View.OnClickListener
         });
 
         databaseService = DatabaseService.getInstance();
-
         initViews();
 
         takeit = getIntent();
         theLesson = (TeacherLesson) takeit.getSerializableExtra("Lesson");
 
-
         if (theLesson != null) {
-
             et_class.setText(theLesson.getKita());
             edittext_subgect.setText(theLesson.getSubject());
             edittext_time.setText(theLesson.getTime());
             edittext_date.setText(theLesson.getDate());
-            ifzoom=  theLesson.getZoomORhome();
-
-            if( ifzoom.equals("למידה בזום"))
+            ifzoom = theLesson.getZoomORhome();
+            if (ifzoom.equals("למידה בזום"))
                 ck_zoom.setChecked(true);
-            else  ck_zoom.setChecked(false);
+            else
+                ck_zoom.setChecked(false);
         }
     }
 
     private void initViews() {
-
         et_class = findViewById(R.id.etGradeClassSet);
         edittext_time = findViewById(R.id.et_timelesson_addlessonSet);
         edittext_subgect = findViewById(R.id.subjectlesson_addlessonSet);
@@ -92,42 +79,38 @@ public class SetLesson extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        databaseService.getStudent(new DatabaseService.DatabaseCallback<Student>() {
+            @Override
+            public void onCompleted(Student student) {
+                student = new Student(student);
+                theLesson.setStudent(student);
+                theLesson.setStatus("taken");
+                databaseService.setLessonForStudent(theLesson, new DatabaseService.DatabaseCallback<Void>() {
+                    @Override
+                    public void onCompleted(Void object) {
+                        // הודעה שהשיעור נקבע בהצלחה
+                        Toast.makeText(SetLesson.this,
+                                "השיעור נקבע בהצלחה!", Toast.LENGTH_LONG).show();
+                        Intent go = new Intent(SetLesson.this, StudentActivity.class);
+                        startActivity(go);
+                    }
 
-      databaseService.getStudent(new DatabaseService.DatabaseCallback<Student>() {
-          @Override
-          public void onCompleted(Student student) {
+                    @Override
+                    public void onFailed(Exception e) {
+                        Toast.makeText(SetLesson.this,
+                                "שגיאה בקביעת השיעור", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
 
-              student=new Student(student);
-
-              theLesson.setStudent(student);
-              theLesson.setStatus("taken");
-              databaseService.setLessonForStudent(theLesson, new DatabaseService.DatabaseCallback<Void>() {
-                  @Override
-                  public void onCompleted(Void object) {
-
-                      Intent go=new Intent(SetLesson.this,StudentActivity.class);
-                      startActivity(go);
-
-                  }
-
-                  @Override
-                  public void onFailed(Exception e) {
-
-                  }
-              });
-
-          }
-
-          @Override
-          public void onFailed(Exception e) {
-
-          }
-      });
-
-
-
+            @Override
+            public void onFailed(Exception e) {
+                Toast.makeText(SetLesson.this,
+                        "שגיאה בטעינת פרטי תלמיד", Toast.LENGTH_LONG).show();
+            }
+        });
     }
-    //   של תלמיד תפריט צד
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.student_menu, menu);
@@ -136,45 +119,31 @@ public class SetLesson extends AppCompatActivity implements View.OnClickListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         if (id == R.id.student_home) {
-            Intent intent = new Intent(SetLesson.this, StudentActivity.class);
-            startActivity(intent);
-
+            startActivity(new Intent(SetLesson.this, StudentActivity.class));
             return true;
         }
-
         if (id == R.id.student_searchteacher) {
-            Intent intent = new Intent(SetLesson.this, TeacherListActivity.class);
-            startActivity(intent);
-
+            startActivity(new Intent(SetLesson.this, TeacherListActivity.class));
             return true;
         }
-
         if (id == R.id.student_profile) {
-            Intent intent = new Intent(SetLesson.this, StudentProfile.class);
-            startActivity(intent);
+            startActivity(new Intent(SetLesson.this, StudentProfile.class));
             return true;
         }
         if (id == R.id.student_disconect) {
-            Intent intent = new Intent(SetLesson.this, disconect_forstudent.class);
-            startActivity(intent);
+            startActivity(new Intent(SetLesson.this, disconect_forstudent.class));
             return true;
         }
         if (id == R.id.student_mylesson) {
-            Intent intent = new Intent(SetLesson.this, student_lesson_list.class);
-            startActivity(intent);
+            startActivity(new Intent(SetLesson.this, student_lesson_list.class));
             return true;
         }
         if (id == R.id.student_adut) {
-            Intent intent = new Intent(SetLesson.this, AdutActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(SetLesson.this, AdutActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

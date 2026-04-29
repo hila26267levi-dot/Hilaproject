@@ -16,8 +16,14 @@ import com.hila.myapplication.R;
 import com.hila.myapplication.adapters.TeacherLessonAdapter;
 import com.hila.myapplication.model.TeacherLesson;
 import com.hila.myapplication.servicses.DatabaseService;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class TeacherLessonsList extends AppCompatActivity {
 
@@ -27,7 +33,6 @@ public class TeacherLessonsList extends AppCompatActivity {
 
     RecyclerView rvLessonList;
     List<TeacherLesson> lessonList = new ArrayList<>();
-    List<TeacherLesson> filterlist = new ArrayList<>();
     FirebaseAuth mAuth;
     String tid = "";
     private Intent takeit;
@@ -56,17 +61,50 @@ public class TeacherLessonsList extends AppCompatActivity {
             mAuth = FirebaseAuth.getInstance();
             tid = mAuth.getUid();
             theOwner = true;
-
         }
 
-        // שליפת רשימת שיעורים מ-Firebase
         databaseService.getThecherLessonList(tid, new DatabaseService.DatabaseCallback<List<TeacherLesson>>() {
             @Override
             public void onCompleted(List<TeacherLesson> lessonList2) {
+                // תאריך היום בפורמט dd.MM
+                Calendar todayCal = Calendar.getInstance();
+                int todayDay = todayCal.get(Calendar.DAY_OF_MONTH);
+                int todayMonth = todayCal.get(Calendar.MONTH) + 1; // ינואר = 0
 
-                lessonList.addAll(lessonList2);
+                for (TeacherLesson lesson : lessonList2) {
 
-                setFilterlist();
+                    if (theOwner) {
+                        // מורה רואה את כל השיעורים שלו ללא סינון
+                        lessonList.add(lesson);
+                    } else {
+                        // תלמיד — רואה רק שיעורים פנויים שהתאריך לא עבר
+                        boolean dateExpired = false;
+                        try {
+                            if (lesson.getDate() != null && !lesson.getDate().isEmpty()) {
+                                // פורמט dd.MM
+                                String[] parts = lesson.getDate().split("\\.");
+                                if (parts.length == 2) {
+                                    int lessonDay = Integer.parseInt(parts[0].trim());
+                                    int lessonMonth = Integer.parseInt(parts[1].trim());
+
+                                    if (lessonMonth < todayMonth) {
+                                        dateExpired = true;
+                                    } else if (lessonMonth == todayMonth && lessonDay < todayDay) {
+                                        dateExpired = true;
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            // תאריך לא תקין — מציג את השיעור
+                        }
+
+                        if (!dateExpired &&
+                                (lesson.getStatus() == null || lesson.getStatus().equals("availbale"))) {
+                            lessonList.add(lesson);
+                        }
+                    }
+                }
+                teacherLessonAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -74,7 +112,6 @@ public class TeacherLessonsList extends AppCompatActivity {
             }
         });
 
-        // הגדרת האדפטר
         teacherLessonAdapter = new TeacherLessonAdapter(lessonList, new TeacherLessonAdapter.OnLessonClickListener() {
 
             @Override
@@ -132,26 +169,6 @@ public class TeacherLessonsList extends AppCompatActivity {
         rvLessonList.setAdapter(teacherLessonAdapter);
     }
 
-
-    private void setFilterlist(){
-
-
-        for (TeacherLesson lesson : lessonList) {
-            if (theOwner) {
-                // מורה רואה את כל השיעורים שלו
-                filterlist.add(lesson);
-            } else {
-                // תלמיד רואה רק שיעורים פנויים
-                if (lesson.getStatus() == null || lesson.getStatus().equals("availbale")) {
-                    filterlist.add(lesson);
-                }
-            }
-        }
-
-        teacherLessonAdapter.setLessonList(filterlist);
-        teacherLessonAdapter.notifyDataSetChanged();
-    }
-
     private void sendSmsToStudent(TeacherLesson lesson) {
         if (lesson.getStudent() != null && lesson.getStudent().getPhone() != null) {
             String message =
@@ -171,7 +188,44 @@ public class TeacherLessonsList extends AppCompatActivity {
             startActivity(smsIntent);
         }
     }
-}
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.teacher_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.teacher_home) {
+            Intent intent = new Intent(TeacherLessonsList.this, TeacherActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.teacher_profile) {
+            Intent intent = new Intent(TeacherLessonsList.this, teacher_profile.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.teacher_mylesson) {
+            Intent intent = new Intent(TeacherLessonsList.this, TeacherLessonsList.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.teacher_disconect) {
+            Intent intent = new Intent(TeacherLessonsList.this, disconect_forteacher.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.teacher_adut) {
+            Intent intent = new Intent(TeacherLessonsList.this, AdutActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}
 
 

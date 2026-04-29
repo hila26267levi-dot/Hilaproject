@@ -8,15 +8,14 @@
     android:background="@drawable/pic6"
     tools:context=".screens.Addnewlesson">
 
-
-    <EditText
-        android:id="@+id/subjectlesson_addlesson"
+    <Spinner
+        android:id="@+id/sp_subject_addlesson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="11dp"
         android:layout_marginBottom="20dp"
+        android:entries="@array/Arrsubject"
         android:fontFamily="@font/gevret_levin_alef"
-        android:hint="מקצוע שיעור"
         app:layout_constraintBottom_toTopOf="@+id/et_datelesson_addlesson"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -52,7 +51,7 @@
         android:layout_marginTop="272dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/gevret_levin_alef"
-        android:hint="תאריך השיעור"
+        android:hint="תאריך השיעור dd.MM"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,6 +106,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_pricelesson_addlesson" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

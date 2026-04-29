@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    Button btnTeacher, btnStudent  ;
+    Button btnTeacher, btnStudent ,btnlogin_mainpage ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         btnStudent = findViewById(R.id.btn_student);
         btnTeacher = findViewById(R.id.btn_teacher);
+        btnlogin_mainpage = findViewById(R.id.btn_login_mainpage1);
+        btnlogin_mainpage.setOnClickListener(MainActivity.this);
         btnStudent.setOnClickListener(MainActivity.this);
         btnTeacher.setOnClickListener(MainActivity.this);
     }
@@ -28,11 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == btnStudent.getId()) {
-            Intent intent = new Intent(MainActivity.this, studentpage.class);
+            Intent intent = new Intent(MainActivity.this, RegisterStudentActivity.class);
             startActivity(intent);
         }
         else if (v.getId() == btnTeacher.getId()) {
-            Intent intent = new Intent(MainActivity.this, teacherpage.class);
+            Intent intent = new Intent(MainActivity.this,RegisterTeacherActivity.class);
+            startActivity(intent);
+        }
+        else if (v.getId() == btnlogin_mainpage.getId()) {
+            Intent intent = new Intent(MainActivity.this, loginActivity.class);
             startActivity(intent);
         }
     }

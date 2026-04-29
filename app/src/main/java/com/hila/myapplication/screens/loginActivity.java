@@ -27,6 +27,9 @@ public class loginActivity extends AppCompatActivity {
     Button log_btn;
     SharedPreferences sharedPreferences;
 
+    // משתנה שמציין מי לחץ — מורה או תלמיד
+    String userType = ""; // "student" או "teacher"
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,10 @@ public class loginActivity extends AppCompatActivity {
         et_email.setText(sharedPreferences.getString("email", ""));
         et_password.setText(sharedPreferences.getString("password", ""));
 
+        // קבלת סוג המשתמש מהIntent
+        userType = getIntent().getStringExtra("userType");
+        if (userType == null) userType = "";
+
         log_btn = findViewById(R.id.btn_login);
 
         log_btn.setOnClickListener(new View.OnClickListener() {
@@ -57,14 +64,22 @@ public class loginActivity extends AppCompatActivity {
     }
 
     private void login() {
-        String email = et_email.getText().toString() + "";
-        String password = et_password.getText().toString() + "";
+        String email = et_email.getText().toString();
+        String password = et_password.getText().toString();
+
+        if (email.isEmpty()) {
+            Toast.makeText(this, "חובה להזין אימייל", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (password.isEmpty()) {
+            Toast.makeText(this, "חובה להזין סיסמה", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         DatabaseService.getInstance().LoginUser(email, password,
                 new DatabaseService.DatabaseCallback<String>() {
                     @Override
                     public void onCompleted(String uid) {
-
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("email", email);
                         editor.putString("password", password);
@@ -76,8 +91,7 @@ public class loginActivity extends AppCompatActivity {
                     @Override
                     public void onFailed(Exception e) {
                         Toast.makeText(loginActivity.this,
-                                "אימייל או סיסמה שגויים",
-                                Toast.LENGTH_SHORT).show();
+                                "אימייל או סיסמה שגויים", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -91,8 +105,15 @@ public class loginActivity extends AppCompatActivity {
                             getTeacherFromDB(uid);
                             return;
                         }
-                        Intent intent = new Intent(loginActivity.this,
-                                StudentActivity.class);
+                        // נמצא תלמיד
+                        if (userType.equals("teacher")) {
+                            // לחץ על מורה אבל הוא תלמיד
+                            Toast.makeText(loginActivity.this,
+                                    "שגיאה: משתמש זה רשום כתלמיד ולא כמורה",
+                                    Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Intent intent = new Intent(loginActivity.this, StudentActivity.class);
                         startActivity(intent);
                     }
 
@@ -112,8 +133,15 @@ public class loginActivity extends AppCompatActivity {
                             getAdminFromDB(uid);
                             return;
                         }
-                        Intent intent = new Intent(loginActivity.this,
-                                TeacherActivity.class);
+                        // נמצא מורה
+                        if (userType.equals("student")) {
+                            // לחץ על תלמיד אבל הוא מורה
+                            Toast.makeText(loginActivity.this,
+                                    "שגיאה: משתמש זה רשום כמורה ולא כתלמיד",
+                                    Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Intent intent = new Intent(loginActivity.this, TeacherActivity.class);
                         startActivity(intent);
                     }
 
@@ -135,61 +163,17 @@ public class loginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Intent intent = new Intent(loginActivity.this,
-                                AdminActivity.class);
+                        Intent intent = new Intent(loginActivity.this, AdminActivity.class);
                         startActivity(intent);
                     }
 
                     @Override
                     public void onFailed(Exception e) {
                         Toast.makeText(loginActivity.this,
-                                "שגיאה בכניסה למערכת",
-                                Toast.LENGTH_SHORT).show();
+                                "שגיאה בכניסה למערכת", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    // תפריט צד — שהיה בדף המקורי
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.student_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.student_home) {
-            Intent intent = new Intent(loginActivity.this, StudentActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.student_searchteacher) {
-            Intent intent = new Intent(loginActivity.this, TeacherListActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.student_profile) {
-            Intent intent = new Intent(loginActivity.this, StudentProfile.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.student_disconect) {
-            Intent intent = new Intent(loginActivity.this, disconect_forstudent.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.student_mylesson) {
-            Intent intent = new Intent(loginActivity.this, student_lesson_list.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.student_adut) {
-            Intent intent = new Intent(loginActivity.this, AdutActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

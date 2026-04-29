@@ -35,17 +35,17 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "RegisterActivity";
 
     private Button btnlesson;
-
     DatabaseService databaseService;
 
-    EditText edittext_subgect, edittext_time, edittext_date, et_class, edittext_price;
+    EditText edittext_time, edittext_date, et_class, edittext_price;
 
     Teacher teacher = null;
 
     Spinner sp_teachway;
+    Spinner sp_subject_addlesson;
 
-    String subject = "";
     String ifzoom = "";
+    String selectedSubject = "";
 
     CheckBox ck_zoom;
     private String kite = "";
@@ -75,11 +75,11 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
 
         et_class = findViewById(R.id.etGradeClass);
         edittext_time = findViewById(R.id.et_timelesson_addlesson);
-        edittext_subgect = findViewById(R.id.subjectlesson_addlesson);
         edittext_date = findViewById(R.id.et_datelesson_addlesson);
         edittext_price = findViewById(R.id.et_pricelesson_addlesson);
-        sp_teachway = findViewById(R.id.sp_Class_addlesson);
 
+        // ספינר כיתה
+        sp_teachway = findViewById(R.id.sp_Class_addlesson);
         sp_teachway.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -87,6 +87,23 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
                     String kit = (String) parent.getItemAtPosition(position);
                     kite += kit + ", ";
                     et_class.setText(kite);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        // ספינר מקצוע
+        sp_subject_addlesson = findViewById(R.id.sp_subject_addlesson);
+        sp_subject_addlesson.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    selectedSubject = (String) parent.getItemAtPosition(position);
+                } else {
+                    selectedSubject = "";
                 }
             }
 
@@ -111,11 +128,11 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
         btnlesson.setOnClickListener(this);
     }
 
-    private boolean validateInput(String subject, String date, String time, String priceStr) {
+    private boolean validateInput(String date, String time, String priceStr) {
 
-        // בדיקת מקצוע — חובה
-        if (subject.isEmpty()) {
-            Toast.makeText(this, "חובה להזין מקצוע", LENGTH_LONG).show();
+        // בדיקת מקצוע — חובה מהספינר
+        if (selectedSubject.isEmpty()) {
+            Toast.makeText(this, "חובה לבחור מקצוע מהרשימה", LENGTH_LONG).show();
             return false;
         }
 
@@ -140,7 +157,6 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
 
-            // בדיקה שהתאריך לא עבר
             Calendar todayCal = Calendar.getInstance();
             int todayDay = todayCal.get(Calendar.DAY_OF_MONTH);
             int todayMonth = todayCal.get(Calendar.MONTH) + 1;
@@ -192,7 +208,7 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
 
         // בדיקת דרך למידה — חובה לסמן
         if (ifzoom.isEmpty()) {
-            Toast.makeText(this, "חובה לבחור דרך למידה (זום או ביקור בבית)", LENGTH_LONG).show();
+            Toast.makeText(this, "חובה לבחור דרך למידה", LENGTH_LONG).show();
             return false;
         }
 
@@ -203,12 +219,11 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         Log.d(TAG, "onClick: Register button clicked");
 
-        String subject = edittext_subgect.getText().toString();
         String date = edittext_date.getText().toString();
         String time = edittext_time.getText().toString();
         String priceStr = edittext_price.getText().toString();
 
-        if (!validateInput(subject, date, time, priceStr)) {
+        if (!validateInput(date, time, priceStr)) {
             return;
         }
 
@@ -216,16 +231,7 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
         String lesson_id = databaseService.generatelessonId();
 
         TeacherLesson teacherLesson = new TeacherLesson(
-                lesson_id,
-                teacher,
-                subject,
-                ifzoom,
-                time,
-                date,
-                "availbale",
-                kite,
-                price
-        );
+                lesson_id, teacher, selectedSubject, ifzoom, time, date, "availbale", kite, price);
 
         databaseService.createNewLesson(teacherLesson, new DatabaseService.DatabaseCallback<Void>() {
             @Override
@@ -240,8 +246,6 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(Addnewlesson.this, "שגיאה בהוספת השיעור", LENGTH_LONG).show();
             }
         });
-
-        Log.d(TAG, "onClick: Registering lesson...");
     }
 
     @Override
@@ -253,35 +257,28 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.teacher_home) {
-            Intent intent = new Intent(Addnewlesson.this, TeacherActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(Addnewlesson.this, TeacherActivity.class));
             return true;
         }
         if (id == R.id.teacher_profile) {
-            Intent intent = new Intent(Addnewlesson.this, teacher_profile.class);
-            startActivity(intent);
+            startActivity(new Intent(Addnewlesson.this, teacher_profile.class));
             return true;
         }
         if (id == R.id.teacher_mylesson) {
-            Intent intent = new Intent(Addnewlesson.this, TeacherLessonsList.class);
-            startActivity(intent);
+            startActivity(new Intent(Addnewlesson.this, TeacherLessonsList.class));
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            Intent intent = new Intent(Addnewlesson.this, disconect_forteacher.class);
-            startActivity(intent);
+            startActivity(new Intent(Addnewlesson.this, disconect_forteacher.class));
             return true;
         }
         if (id == R.id.teacher_adut) {
-            Intent intent = new Intent(Addnewlesson.this, AdutActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(Addnewlesson.this, AdutActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 }
-
 
 

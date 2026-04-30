@@ -9,76 +9,81 @@
     tools:context=".screens.SetLesson">
 
     <TextView
-        android:id="@+id/subjectlesson_addlessonSet"
+        android:id="@+id/et_datelesson_addlessonSet"
         android:layout_width="150dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="תאריך השיעור"
+        android:textColor="#1E5A7A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/subjectlesson_addlessonSet"
+        android:layout_width="149dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="50dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="מקצוע שיעור"
         android:textColor="#1E5A7A"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.812"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.234" />
+        app:layout_constraintTop_toBottomOf="@+id/et_datelesson_addlessonSet" />
+
+    <TextView
+        android:id="@+id/et_timelesson_addlessonSet"
+        android:layout_width="158dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="55dp"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="זמן השיעור"
+        android:textColor="#1E5A7A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subjectlesson_addlessonSet" />
 
     <TextView
         android:id="@+id/etGradeClassSet"
         android:layout_width="150dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="50dp"
         android:ems="10"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="כיתה"
         android:inputType="text"
-        tools:layout_editor_absoluteX="255dp"
-        tools:layout_editor_absoluteY="419dp" />
-
-    <TextView
-        android:id="@+id/et_timelesson_addlessonSet"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/gevret_levin_alef"
-        android:hint="זמן השיעור"
-        android:textColor="#1E5A7A"
-        tools:layout_editor_absoluteX="213dp"
-        tools:layout_editor_absoluteY="290dp" />
-
-    <TextView
-        android:id="@+id/et_datelesson_addlessonSet"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/gevret_levin_alef"
-        android:hint="תאריך השיעור"
-        android:textColor="#1E5A7A"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.783"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168" />
+        app:layout_constraintTop_toBottomOf="@+id/et_timelesson_addlessonSet" />
+
+    <CheckBox
+        android:id="@+id/ck_zoomSet"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="50dp"
+        android:enabled="false"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="האם זום"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etGradeClassSet" />
 
     <Button
         android:id="@+id/btnSetLesson"
         android:layout_width="150dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="164dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text="  קביעת שיעור"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="649dp" />
-
-    <CheckBox
-        android:id="@+id/ck_zoomSet"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:enabled="false"
-        android:fontFamily="@font/gevret_levin_alef"
-        android:hint="האם זום"
-        tools:layout_editor_absoluteX="188dp"
-        tools:layout_editor_absoluteY="477dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

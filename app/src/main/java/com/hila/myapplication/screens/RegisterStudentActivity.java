@@ -65,7 +65,9 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
 
     private void registerUser(String fname, String lname, String email, String password, String kita, String phone) {
         Log.d(TAG, "registerUser: Registering user...");
-        Student student = new Student("99", fname, lname, phone, email, password, kita, "jjj");
+
+
+            Student student = new Student("99", fname, lname, phone, email, password, "", kita);
         Log.d(TAG, student.toString());
         createUserInDatabase(student);
     }

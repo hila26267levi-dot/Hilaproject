@@ -43,7 +43,7 @@ Button btn_mylessson, btn_addlesoon , btn_myprofile ;
     }
     public void goMyProfile(View v) {
 
-        Intent intent = new Intent(TeacherActivity.this, TeacherProfile_forstudent.class);
+        Intent intent = new Intent(TeacherActivity.this, teacher_profile.class);
         startActivity(intent);
     }
     //   של מורה תפריט צד

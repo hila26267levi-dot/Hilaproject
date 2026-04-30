@@ -45,6 +45,12 @@ public class User implements Serializable {
     }
 
 
+    public User(String email, String password, String fname) {
+        this.email = email;
+        this.password = password;
+        this.fname = fname;
+    }
+
     public User() {
     }
 

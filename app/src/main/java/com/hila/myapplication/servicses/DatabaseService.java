@@ -265,6 +265,42 @@ public class DatabaseService {
                                 if (callback != null) callback.onFailed(e);
                             }
                         });
+
+
+
+                    } else {
+                        Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                        if (callback != null)
+                            callback.onFailed(task.getException());
+                    }
+                });
+    }
+
+
+
+    public void createNewAdmin(@NotNull final User user,
+                                 @Nullable final DatabaseCallback<String> callback) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("TAG", "createUserWithEmail:success");
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        user.setId(uid);
+                        writeData(ADMIN_PATH + "/" + uid, user, new DatabaseCallback<Void>() {
+                            @Override
+                            public void onCompleted(Void v) {
+                                if (callback != null) callback.onCompleted(uid);
+                            }
+
+                            @Override
+                            public void onFailed(Exception e) {
+                                if (callback != null) callback.onFailed(e);
+                            }
+                        });
+
+
+
                     } else {
                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
                         if (callback != null)
@@ -335,11 +371,11 @@ public class DatabaseService {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("TAG", "createUserWithEmail:success");
+                        Log.d("TAG", "signinUserWithEmail:success");
                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         callback.onCompleted(uid);
                     } else {
-                        Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                        Log.w("TAG", "signinUserWithEmail:failure", task.getException());
                         if (callback != null)
                             callback.onFailed(task.getException());
                     }

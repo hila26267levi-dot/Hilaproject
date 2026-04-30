@@ -63,12 +63,8 @@
         <activity
             android:name=".screens.StudentActivity"
             android:exported="false" />
-        <activity
-            android:name=".screens.studentpage"
-            android:exported="false" />
-        <activity
-            android:name=".screens.teacherpage"
-            android:exported="false" />
+
+
         <activity
             android:name=".screens.TeacherListActivity"
             android:exported="false" />
@@ -76,7 +72,7 @@
             android:name=".screens.StudentListActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.activity_teacher_list"
+            android:name=".screens.teacher_profile"
             android:exported="false" />
         <activity
             android:name=".screens.loginActivity"

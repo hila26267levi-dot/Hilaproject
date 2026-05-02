@@ -8,7 +8,6 @@
     android:background="@drawable/pic16"
     tools:context=".screens.Student_edit_profile">
 
-
     <ImageView
         android:id="@+id/img_StudentProfile"
         android:layout_width="243dp"
@@ -36,16 +35,27 @@
         app:layout_constraintTop_toBottomOf="@+id/img_StudentProfile" />
 
     <EditText
-        android:id="@+id/profile_student_E_class"
+        android:id="@+id/profile_student_E_Lname"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="33dp"
+        android:fontFamily="@font/gevret_levin_alef"
+        android:hint="שם משפחה"
+        android:textSize="17dp"
+        app:layout_constraintBottom_toTopOf="@+id/spstudent_kita"
+        app:layout_constraintEnd_toEndOf="@+id/spstudent_kita"
+        app:layout_constraintStart_toStartOf="@+id/spstudent_kita"
+        app:layout_constraintTop_toBottomOf="@+id/profile_student_E_Fname" />
+
+    <!-- *** הוחלף EditText של כיתה בספינר — אותו ספינר שיש בדף ההרשמה *** -->
+    <Spinner
+        android:id="@+id/spstudent_kita"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="41dp"
         android:ems="10"
         android:fontFamily="@font/gevret_levin_alef"
-        android:hint="כיתה"
-        android:inputType="text"
-        android:textColor="#1E5A7A"
-        android:textSize="17dp"
+        android:entries="@array/my_items"
         app:layout_constraintBottom_toTopOf="@+id/profile_student_E_phone"
         app:layout_constraintEnd_toEndOf="@+id/profile_student_E_phone"
         app:layout_constraintStart_toStartOf="@+id/btnSaveprofile_student"
@@ -62,20 +72,7 @@
         android:textSize="17dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSaveprofile_student"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_student_E_class" />
-
-    <EditText
-        android:id="@+id/profile_student_E_Lname"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="33dp"
-        android:fontFamily="@font/gevret_levin_alef"
-        android:hint="שם משפחה"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toTopOf="@+id/profile_student_E_class"
-        app:layout_constraintEnd_toEndOf="@+id/profile_student_E_class"
-        app:layout_constraintStart_toStartOf="@+id/profile_student_E_class"
-        app:layout_constraintTop_toBottomOf="@+id/profile_student_E_Fname" />
+        app:layout_constraintTop_toBottomOf="@+id/spstudent_kita" />
 
     <Button
         android:id="@+id/btnSaveprofile_student"
@@ -93,4 +90,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_student_E_phone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

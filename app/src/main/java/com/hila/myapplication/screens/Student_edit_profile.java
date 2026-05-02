@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,7 +30,8 @@ import com.hila.myapplication.servicses.DatabaseService;
 
 public class Student_edit_profile extends AppCompatActivity implements View.OnClickListener {
 
-    EditText etkita, etfname, etlname, etphone;
+    EditText etfname, etlname, etphone;
+    Spinner spkita; // *** שונה מ-EditText ל-Spinner ***
     Button btn_save;
     Student currentStudent;
     String uid;
@@ -62,12 +65,12 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
                     }
                 });
 
-        etfname = findViewById(R.id.profile_student_E_Fname);
-        etlname = findViewById(R.id.profile_student_E_Lname);
-        etphone = findViewById(R.id.profile_student_E_phone);
-        etkita = findViewById(R.id.profile_student_E_class);
+        etfname  = findViewById(R.id.profile_student_E_Fname);
+        etlname  = findViewById(R.id.profile_student_E_Lname);
+        etphone  = findViewById(R.id.profile_student_E_phone);
+        spkita   = findViewById(R.id.spstudent_kita); // *** ספינר במקום EditText ***
         btn_save = findViewById(R.id.btnSaveprofile_student);
-        img = findViewById(R.id.img_StudentProfile);
+        img      = findViewById(R.id.img_StudentProfile);
 
         btn_save.setOnClickListener(this);
         img.setOnClickListener(this);
@@ -103,10 +106,24 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
 
     private void loadStudentData() {
         if (currentStudent == null) return;
+
         etfname.setText(currentStudent.getFname());
         etlname.setText(currentStudent.getLname());
         etphone.setText(currentStudent.getPhone());
-        etkita.setText(currentStudent.getKita());
+
+        // *** טעינת הכיתה הקיימת לתוך הספינר ***
+        // הספינר כבר מחובר ל-@array/my_items דרך ה-XML,
+        // אז רק צריך לבחור את הפריט המתאים
+        if (currentStudent.getKita() != null) {
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                    this, R.array.my_items, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spkita.setAdapter(adapter);
+
+            int pos = adapter.getPosition(currentStudent.getKita());
+            if (pos >= 0) spkita.setSelection(pos);
+        }
+
         if (currentStudent.getPic() != null) {
             img.setImageBitmap(ImageUtil.convertFromivIPic(currentStudent.getPic()));
         }
@@ -121,9 +138,10 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
         fname = etfname.getText().toString().trim();
         lname = etlname.getText().toString().trim();
         phone = etphone.getText().toString().trim();
-        kita = etkita.getText().toString().trim();
+        // *** קריאת הכיתה מהספינר ***
+        kita  = spkita.getSelectedItem() != null ? spkita.getSelectedItem().toString() : "";
 
-        // בדיקות תקינות
+        // בדיקות תקינות — אם נכשל, עוצרים כאן
         if (!validateInput(fname, lname, phone, kita)) return;
 
         currentStudent.setFname(fname);
@@ -142,8 +160,7 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
             public void onCompleted(Void object) {
                 Toast.makeText(Student_edit_profile.this,
                         "הפרופיל עודכן בהצלחה!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Student_edit_profile.this, StudentActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(Student_edit_profile.this, StudentActivity.class));
                 finish();
             }
 
@@ -155,37 +172,47 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
         });
     }
 
+    // בדיקות תקינות — זהות לדף ההרשמה RegisterStudentActivity
     public boolean validateInput(String fnameVal, String lnameVal, String phoneVal, String kitaVal) {
+
         String nameRegex = "^[A-Za-zא-ת]+$";
 
+        // שם פרטי
         if (fnameVal.isEmpty()) {
             Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (!fnameVal.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד (עברית או אנגלית)!", Toast.LENGTH_LONG).show();
             return false;
         }
+
+        // שם משפחה
         if (lnameVal.isEmpty()) {
             Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (!lnameVal.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד (עברית או אנגלית)!", Toast.LENGTH_LONG).show();
             return false;
         }
+
+        // טלפון — זהה לדף ההרשמה: מתחיל ב-05, בדיוק 10 ספרות
         if (phoneVal.isEmpty()) {
             Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (!phoneVal.matches("^05[0-9]{8}$")) {
-            Toast.makeText(this, "שגיאה: מספר הטלפון חייב להתחיל ב-05 ולהכיל 10 ספרות!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "שגיאה: מספר הטלפון חייב להתחיל ב-05 ולהכיל בדיוק 10 ספרות!", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (kitaVal.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין כיתה!", Toast.LENGTH_LONG).show();
+
+        // *** כיתה — חובה לבחור מהספינר, לא להשאיר על "בחר כיתה" ***
+        if (kitaVal.isEmpty() || kitaVal.equals("בחר כיתה")) {
+            Toast.makeText(this, "שגיאה: חובה לבחור כיתה!", Toast.LENGTH_LONG).show();
             return false;
         }
+
         return true;
     }
 
@@ -252,7 +279,6 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
         return super.onOptionsItemSelected(item);
     }
 }
-
 
 
 

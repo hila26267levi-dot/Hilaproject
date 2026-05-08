@@ -55,9 +55,14 @@ public class TeacherListActivity extends AppCompatActivity {
         teacherAdapter = new TeacherAdapter(new TeacherAdapter.OnTeacherClickListener() {
             @Override
             public void onTeacherClick(Teacher teacher) {
-                Intent go = new Intent(TeacherListActivity.this, TeacherProfile_forstudent.class);
-                go.putExtra("teacherId", teacher.getId());
-                startActivity(go);
+                // מנהל — לחיצה קצרה לא עושה כלום
+                // תלמיד — עובר לפרופיל המורה
+                if (!isAdmin) {
+                    Intent go = new Intent(TeacherListActivity.this, TeacherProfile_forstudent.class);
+                    go.putExtra("teacherId", teacher.getId());
+                    startActivity(go);
+                }
+                // אם isAdmin == true, לא קורה כלום בלחיצה קצרה
             }
 
             @Override
@@ -136,7 +141,6 @@ public class TeacherListActivity extends AppCompatActivity {
         startActivity(smsIntent);
     }
 
-    // תפריט צד — מנהל או תלמיד לפי isAdmin
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isAdmin) {
@@ -153,7 +157,12 @@ public class TeacherListActivity extends AppCompatActivity {
 
         // תפריט מנהל
         if (id == R.id.admin) {
-            Intent intent = new Intent(TeacherListActivity.this, AdminActivity.class);
+            startActivity(new Intent(TeacherListActivity.this, AdminActivity.class));
+            return true;
+        }
+        if (id == R.id.admin_disconect) {
+            Intent intent = new Intent(TeacherListActivity.this, disconect_foradmin.class);
+            intent.putExtra("isAdmin", true);
             startActivity(intent);
             return true;
         }
@@ -164,41 +173,29 @@ public class TeacherListActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.admin_disconect) {
-            Intent intent = new Intent(TeacherListActivity.this, disconect_foradmin.class);
-            startActivity(intent);
-            return true;
-        }
-
         // תפריט תלמיד
         if (id == R.id.student_home) {
-            Intent intent = new Intent(TeacherListActivity.this, StudentActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherListActivity.this, StudentActivity.class));
             return true;
         }
         if (id == R.id.student_searchteacher) {
-            Intent intent = new Intent(TeacherListActivity.this, TeacherListActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherListActivity.this, TeacherListActivity.class));
             return true;
         }
         if (id == R.id.student_profile) {
-            Intent intent = new Intent(TeacherListActivity.this, StudentProfile.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherListActivity.this, StudentProfile.class));
             return true;
         }
         if (id == R.id.student_disconect) {
-            Intent intent = new Intent(TeacherListActivity.this, disconect_forstudent.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherListActivity.this, disconect_forstudent.class));
             return true;
         }
         if (id == R.id.student_mylesson) {
-            Intent intent = new Intent(TeacherListActivity.this, student_lesson_list.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherListActivity.this, student_lesson_list.class));
             return true;
         }
         if (id == R.id.student_adut) {
-            Intent intent = new Intent(TeacherListActivity.this, AdutActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherListActivity.this, AdutActivity.class));
             return true;
         }
 

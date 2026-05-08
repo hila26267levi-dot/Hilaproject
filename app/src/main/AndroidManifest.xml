@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name=".screens.disconect_foradmin"
+            android:name=".screens.StudentListActivity"
             android:exported="false" />
         <activity
             android:name=".screens.TeacherLessonList_forStudent"
@@ -66,13 +66,16 @@
             android:name=".screens.StudentActivity"
             android:exported="false" />
         <activity
+            android:name=".screens.studentpage"
+            android:exported="false" />
+        <activity
+            android:name=".screens.teacherpage"
+            android:exported="false" />
+        <activity
             android:name=".screens.TeacherListActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.StudentListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.teacher_profile"
+            android:name=".screens.activity_teacher_list"
             android:exported="false" />
         <activity
             android:name=".screens.loginActivity"
@@ -94,7 +97,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

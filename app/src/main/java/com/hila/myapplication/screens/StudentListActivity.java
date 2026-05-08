@@ -55,9 +55,7 @@ public class StudentListActivity extends AppCompatActivity {
         studentAdapter = new StudentAdapter(new StudentAdapter.OnStudentClickListener() {
             @Override
             public void onStudentClick(Student student) {
-                Intent go = new Intent(StudentListActivity.this, StudentProfile.class);
-                go.putExtra("studentId", student.getId());
-                startActivity(go);
+                // לחיצה קצרה — לא עושה כלום למנהל
             }
 
             @Override
@@ -136,7 +134,7 @@ public class StudentListActivity extends AppCompatActivity {
         startActivity(smsIntent);
     }
 
-    // תפריט צד — מנהל בלבד (דף זה נגיש רק למנהל)
+    // תפריט צד מנהל בלבד
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.admin_menu, menu);
@@ -148,22 +146,22 @@ public class StudentListActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.admin) {
-            Intent intent = new Intent(StudentListActivity.this, AdminActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(StudentListActivity.this, AdminActivity.class));
             return true;
         }
         if (id == R.id.admin_disconect) {
-            Intent intent = new Intent(StudentListActivity.this, TeacherListActivity.class);
+            Intent intent = new Intent(StudentListActivity.this, disconect_foradmin.class);
             intent.putExtra("isAdmin", true);
             startActivity(intent);
             return true;
         }
         if (id == R.id.admin_adut) {
-            Intent intent = new Intent(StudentListActivity.this, StudentListActivity.class);
+            Intent intent = new Intent(StudentListActivity.this, AdutActivity.class);
             intent.putExtra("isAdmin", true);
             startActivity(intent);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

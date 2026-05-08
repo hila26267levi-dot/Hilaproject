@@ -26,29 +26,26 @@ import com.hila.myapplication.model.Teacher;
 import com.hila.myapplication.model.TeacherLesson;
 import com.hila.myapplication.servicses.DatabaseService;
 
-import java.util.Calendar;
-
-import static android.widget.Toast.LENGTH_LONG;
-
 public class Addnewlesson extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "RegisterActivity";
+    private static final String TAG = "Addnewlesson";
 
     private Button btnlesson;
+
     DatabaseService databaseService;
 
-    EditText edittext_time, edittext_date, et_class, edittext_price;
+    EditText edittext_subgect, edittext_time, edittext_date, et_class, edittext_price;
 
     Teacher teacher = null;
 
     Spinner sp_teachway;
-    Spinner sp_subject_addlesson;
+    Spinner sp_subject; // ספינר מקצועות
 
     String ifzoom = "";
-    String selectedSubject = "";
 
     CheckBox ck_zoom;
     private String kite = "";
+    private String selectedSubject = ""; // המקצוע שנבחר
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +67,19 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onFailed(Exception e) {
+                Log.e(TAG, "Failed to get teacher", e);
             }
         });
 
         et_class = findViewById(R.id.etGradeClass);
         edittext_time = findViewById(R.id.et_timelesson_addlesson);
+        edittext_subgect = findViewById(R.id.subjectlesson_addlesson);
         edittext_date = findViewById(R.id.et_datelesson_addlesson);
         edittext_price = findViewById(R.id.et_pricelesson_addlesson);
-
-        // ספינר כיתה
         sp_teachway = findViewById(R.id.sp_Class_addlesson);
+        sp_subject = findViewById(R.id.sp_subject_addlesson); // ספינר מקצועות חדש
+
+        // ספינר כיתות
         sp_teachway.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -95,15 +95,13 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // ספינר מקצוע
-        sp_subject_addlesson = findViewById(R.id.sp_subject_addlesson);
-        sp_subject_addlesson.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        // ספינר מקצועות
+        sp_subject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     selectedSubject = (String) parent.getItemAtPosition(position);
-                } else {
-                    selectedSubject = "";
+                    edittext_subgect.setText(selectedSubject);
                 }
             }
 
@@ -120,7 +118,7 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
                 if (isChecked) {
                     ifzoom = "למידה בזום";
                 } else {
-                    ifzoom = "מגיע לבית התלמיד";
+                    ifzoom = "מגיע לבית התלמיד ";
                 }
             }
         });
@@ -128,126 +126,111 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
         btnlesson.setOnClickListener(this);
     }
 
-    private boolean validateInput(String date, String time, String priceStr) {
-
-        // בדיקת מקצוע — חובה מהספינר
-        if (selectedSubject.isEmpty()) {
-            Toast.makeText(this, "חובה לבחור מקצוע מהרשימה", LENGTH_LONG).show();
-            return false;
-        }
-
-        // בדיקת תאריך — חובה ופורמט dd.MM ותאריך לא עבר
-        if (date.isEmpty()) {
-            Toast.makeText(this, "חובה להזין תאריך", LENGTH_LONG).show();
-            return false;
-        }
-
-        if (!date.matches("^\\d{1,2}\\.\\d{1,2}$")) {
-            Toast.makeText(this, "פורמט תאריך לא תקין, יש להזין בפורמט dd.MM (לדוגמה: 25.4)", LENGTH_LONG).show();
-            return false;
-        }
-
+    /**
+     * בדיקת תקינות שעה בפורמט HH:mm
+     * שעות: 0-23, דקות: 0-59
+     */
+    private boolean isValidTime(String time) {
+        if (time == null || time.isEmpty()) return false;
+        if (!time.matches("^\\d{1,2}:\\d{2}$")) return false;
+        String[] parts = time.split(":");
         try {
-            String[] parts = date.split("\\.");
-            int lessonDay = Integer.parseInt(parts[0].trim());
-            int lessonMonth = Integer.parseInt(parts[1].trim());
-
-            if (lessonMonth < 1 || lessonMonth > 12 || lessonDay < 1 || lessonDay > 31) {
-                Toast.makeText(this, "תאריך לא תקין", LENGTH_LONG).show();
-                return false;
-            }
-
-            Calendar todayCal = Calendar.getInstance();
-            int todayDay = todayCal.get(Calendar.DAY_OF_MONTH);
-            int todayMonth = todayCal.get(Calendar.MONTH) + 1;
-
-            if (lessonMonth < todayMonth ||
-                    (lessonMonth == todayMonth && lessonDay < todayDay)) {
-                Toast.makeText(this, "שגיאה: התאריך שהזנת כבר עבר", LENGTH_LONG).show();
-                return false;
-            }
-
-        } catch (Exception e) {
-            Toast.makeText(this, "פורמט תאריך לא תקין", LENGTH_LONG).show();
-            return false;
-        }
-
-        // בדיקת שעה — חובה, פורמט HH:MM
-        if (time.isEmpty()) {
-            Toast.makeText(this, "חובה להזין שעה", LENGTH_LONG).show();
-            return false;
-        }
-
-        if (!time.matches("^\\d{1,2}:\\d{2}$")) {
-            Toast.makeText(this, "פורמט שעה לא תקין, יש להזין בפורמט HH:MM (לדוגמה: 10:30)", LENGTH_LONG).show();
-            return false;
-        }
-
-        // בדיקת מחיר — חובה ומספר חיובי
-        if (priceStr.isEmpty()) {
-            Toast.makeText(this, "חובה להזין מחיר", LENGTH_LONG).show();
-            return false;
-        }
-
-        try {
-            double p = Double.parseDouble(priceStr);
-            if (p <= 0) {
-                Toast.makeText(this, "מחיר חייב להיות מספר חיובי", LENGTH_LONG).show();
-                return false;
-            }
+            int hours = Integer.parseInt(parts[0]);
+            int minutes = Integer.parseInt(parts[1]);
+            return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר", LENGTH_LONG).show();
             return false;
         }
-
-        // בדיקת כיתה — חובה לבחור
-        if (kite.isEmpty()) {
-            Toast.makeText(this, "חובה לבחור כיתה", LENGTH_LONG).show();
-            return false;
-        }
-
-        // בדיקת דרך למידה — חובה לסמן
-        if (ifzoom.isEmpty()) {
-            Toast.makeText(this, "חובה לבחור דרך למידה", LENGTH_LONG).show();
-            return false;
-        }
-
-        return true;
     }
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "onClick: Register button clicked");
+        Log.d(TAG, "onClick: Add lesson button clicked");
 
-        String date = edittext_date.getText().toString();
-        String time = edittext_time.getText().toString();
-        String priceStr = edittext_price.getText().toString();
+        String subject = edittext_subgect.getText().toString().trim();
+        String date = edittext_date.getText().toString().trim();
+        String time = edittext_time.getText().toString().trim();
+        String priceStr = edittext_price.getText().toString().trim();
+        String kita = et_class.getText().toString().trim();
 
-        if (!validateInput(date, time, priceStr)) {
+        // בדיקות תקינות
+        if (selectedSubject.isEmpty() || selectedSubject.equals("בחר מקצוע ")) {
+            Toast.makeText(this, "חובה לבחור מקצוע מהרשימה", Toast.LENGTH_LONG).show();
             return;
         }
 
-        double price = Double.parseDouble(priceStr);
+        if (date.isEmpty()) {
+            Toast.makeText(this, "חובה להזין תאריך", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (time.isEmpty()) {
+            Toast.makeText(this, "חובה להזין שעה", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!isValidTime(time)) {
+            Toast.makeText(this, "שגיאה: השעה חייבת להיות בפורמט תקין (HH:mm), שעות 0-23, דקות 0-59", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (priceStr.isEmpty()) {
+            Toast.makeText(this, "חובה להזין מחיר", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        double price;
+        try {
+            price = Double.parseDouble(priceStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "מחיר חייב להיות מספר תקין", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (kita.isEmpty()) {
+            Toast.makeText(this, "חובה לבחור כיתה", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (teacher == null) {
+            Toast.makeText(this, "שגיאה: לא ניתן לטעון פרטי מורה", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String lesson_id = databaseService.generatelessonId();
 
         TeacherLesson teacherLesson = new TeacherLesson(
-                lesson_id, teacher, selectedSubject, ifzoom, time, date, "availbale", kite, price);
+                lesson_id,
+                teacher,
+                selectedSubject,
+                ifzoom,
+                time,
+                date,
+                "availbale",
+                kita,
+                price
+        );
 
         databaseService.createNewLesson(teacherLesson, new DatabaseService.DatabaseCallback<Void>() {
             @Override
             public void onCompleted(Void object) {
-                Toast.makeText(Addnewlesson.this, "השיעור נוסף בהצלחה!", LENGTH_LONG).show();
-                Intent intent = new Intent(Addnewlesson.this, TeacherLessonsList.class);
+                Toast.makeText(Addnewlesson.this, "השיעור נוסף בהצלחה!", Toast.LENGTH_SHORT).show();
+                // איפוס הטופס על ידי טעינה מחדש של הדף
+                Intent intent = new Intent(Addnewlesson.this, Addnewlesson.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
             public void onFailed(Exception e) {
-                Toast.makeText(Addnewlesson.this, "שגיאה בהוספת השיעור", LENGTH_LONG).show();
+                Toast.makeText(Addnewlesson.this, "שגיאה בהוספת השיעור", Toast.LENGTH_SHORT).show();
             }
         });
+
+        Log.d(TAG, "onClick: Lesson being added...");
     }
 
+    // תפריט צד מורה
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.teacher_menu, menu);
@@ -257,28 +240,33 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.teacher_home) {
-            startActivity(new Intent(Addnewlesson.this, TeacherActivity.class));
+            Intent intent = new Intent(Addnewlesson.this, TeacherActivity.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.teacher_profile) {
-            startActivity(new Intent(Addnewlesson.this, teacher_profile.class));
+            Intent intent = new Intent(Addnewlesson.this, teacher_profile.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.teacher_mylesson) {
-            startActivity(new Intent(Addnewlesson.this, TeacherLessonsList.class));
+            Intent intent = new Intent(Addnewlesson.this, TeacherLessonsList.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            startActivity(new Intent(Addnewlesson.this, disconect_forteacher.class));
+            Intent intent = new Intent(Addnewlesson.this, disconect_forteacher.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.teacher_adut) {
-            startActivity(new Intent(Addnewlesson.this, AdutActivity.class));
+            Intent intent = new Intent(Addnewlesson.this, AdutActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 }
-
 

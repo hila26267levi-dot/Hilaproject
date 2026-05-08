@@ -11,87 +11,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity
-            android:name=".screens.StudentListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.TeacherLessonList_forStudent"
-            android:exported="false" />
-        <activity
-            android:name=".screens.TeacherLessonList_forTeacher"
-            android:exported="false" />
-        <activity
-            android:name=".screens.Teacher_edit_profile"
-            android:exported="false" />
-        <activity
-            android:name=".screens.Student_edit_profile"
-            android:exported="false" />
-        <activity
-            android:name=".screens.disconect_forstudent"
-            android:exported="false" />
-        <activity
-            android:name=".screens.student_lesson_list"
-            android:exported="false" />
-        <activity
-            android:name=".screens.LessonActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LessonActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.SetLesson"
-            android:exported="false" />
-        <activity
-            android:name=".screens.EditLesson"
-            android:exported="false" />
-        <activity
-            android:name=".screens.TeacherLessonsList"
-            android:exported="false" />
-        <activity
-            android:name=".screens.Addnewlesson"
-            android:exported="false" />
-        <activity
-            android:name=".screens.TeacherActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.StudentProfile"
-            android:exported="false" />
-        <activity
-            android:name=".screens.TeacherProfile_forstudent"
-            android:exported="false" />
-        <activity
-            android:name=".screens.AdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.StudentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.studentpage"
-            android:exported="false" />
-        <activity
-            android:name=".screens.teacherpage"
-            android:exported="false" />
-        <activity
-            android:name=".screens.TeacherListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.activity_teacher_list"
-            android:exported="false" />
-        <activity
-            android:name=".screens.loginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.RegisterStudentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.Splash"
-            android:exported="false" />
-        <activity
-            android:name=".screens.AdutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".screens.RegisterTeacherActivity"
-            android:exported="false" />
+
+        <activity android:name=".screens.TeacherLessonList_forStudent" android:exported="false" />
+        <activity android:name=".screens.TeacherLessonList_forTeacher" android:exported="false" />
+        <activity android:name=".screens.Teacher_edit_profile" android:exported="false" />
+        <activity android:name=".screens.Student_edit_profile" android:exported="false" />
+        <activity android:name=".screens.disconect_forstudent" android:exported="false" />
+        <activity android:name=".screens.disconect_forteacher" android:exported="false" />
+        <activity android:name=".screens.disconect_foradmin" android:exported="false" />
+        <activity android:name=".screens.student_lesson_list" android:exported="false" />
+        <activity android:name=".screens.LessonActivity" android:exported="false" />
+        <activity android:name=".LessonActivity" android:exported="false" />
+        <activity android:name=".screens.SetLesson" android:exported="false" />
+        <activity android:name=".screens.EditLesson" android:exported="false" />
+        <activity android:name=".screens.TeacherLessonsList" android:exported="false" />
+        <activity android:name=".screens.Addnewlesson" android:exported="false" />
+        <activity android:name=".screens.TeacherActivity" android:exported="false" />
+        <activity android:name=".screens.StudentProfile" android:exported="false" />
+        <activity android:name=".screens.TeacherProfile_forstudent" android:exported="false" />
+        <activity android:name=".screens.AdminActivity" android:exported="false" />
+        <activity android:name=".screens.StudentActivity" android:exported="false" />
+        <activity android:name=".screens.studentpage" android:exported="false" />
+        <activity android:name=".screens.teacherpage" android:exported="false" />
+        <activity android:name=".screens.TeacherListActivity" android:exported="false" />
+        <activity android:name=".screens.StudentListActivity" android:exported="false" />
+        <activity android:name=".screens.activity_teacher_list" android:exported="false" />
+        <activity android:name=".screens.loginActivity" android:exported="false" />
+        <activity android:name=".screens.RegisterStudentActivity" android:exported="false" />
+        <activity android:name=".screens.Splash" android:exported="false" />
+        <activity android:name=".screens.AdutActivity" android:exported="false" />
+        <activity android:name=".screens.RegisterTeacherActivity" android:exported="false" />
+        <activity android:name=".screens.teacher_profile" android:exported="false" />
+        <activity android:name=".screens.AdutActivity" android:exported="false" />
+
         <activity
             android:name=".screens.MainActivity"
             android:exported="true">
@@ -100,6 +52,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

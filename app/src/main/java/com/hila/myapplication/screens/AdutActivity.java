@@ -15,6 +15,8 @@ import com.hila.myapplication.R;
 
 public class AdutActivity extends AppCompatActivity {
 
+    private String userType = "student"; // ברירת מחדל
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,56 +27,90 @@ public class AdutActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // קבל את סוג המשתמש מה-Intent
+        String type = getIntent().getStringExtra("userType");
+        if (type != null) {
+            userType = type;
+        }
     }
-    //   של תלמיד תפריט צד
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.student_menu, menu);
+        if ("teacher".equals(userType)) {
+            getMenuInflater().inflate(R.menu.teacher_menu, menu);
+        } else if ("admin".equals(userType)) {
+            getMenuInflater().inflate(R.menu.admin_menu, menu);
+        } else {
+            // student
+            getMenuInflater().inflate(R.menu.student_menu, menu);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
+        // ---- תפריט תלמיד ----
         if (id == R.id.student_home) {
-            Intent intent = new Intent(AdutActivity.this, StudentActivity.class);
-            startActivity(intent);
-
+            startActivity(new Intent(AdutActivity.this, StudentActivity.class));
             return true;
         }
-
         if (id == R.id.student_searchteacher) {
-            Intent intent = new Intent(AdutActivity.this, TeacherLessonsList.class);
-            startActivity(intent);
-
+            startActivity(new Intent(AdutActivity.this, TeacherListActivity.class));
             return true;
         }
-
         if (id == R.id.student_profile) {
-            Intent intent = new Intent(AdutActivity.this, StudentProfile.class);
-            startActivity(intent);
+            startActivity(new Intent(AdutActivity.this, StudentProfile.class));
             return true;
         }
         if (id == R.id.student_disconect) {
-            Intent intent = new Intent(AdutActivity.this, disconect_forstudent.class);
-            startActivity(intent);
+            startActivity(new Intent(AdutActivity.this, disconect_forstudent.class));
             return true;
         }
         if (id == R.id.student_mylesson) {
-            Intent intent = new Intent(AdutActivity.this, student_lesson_list.class);
-            startActivity(intent);
+            startActivity(new Intent(AdutActivity.this, student_lesson_list.class));
             return true;
         }
         if (id == R.id.student_adut) {
-            Intent intent = new Intent(AdutActivity.this, AdutActivity.class);
-            startActivity(intent);
+            return true; // כבר כאן
+        }
+
+        // ---- תפריט מורה ----
+        if (id == R.id.teacher_home) {
+            startActivity(new Intent(AdutActivity.this, TeacherActivity.class));
+            return true;
+        }
+        if (id == R.id.teacher_profile) {
+            startActivity(new Intent(AdutActivity.this, teacher_profile.class));
+            return true;
+        }
+        if (id == R.id.teacher_mylesson) {
+            startActivity(new Intent(AdutActivity.this, TeacherLessonsList.class));
+            return true;
+        }
+        if (id == R.id.teacher_disconect) {
+            startActivity(new Intent(AdutActivity.this, disconect_forteacher.class));
+            return true;
+        }
+        if (id == R.id.teacher_adut) {
+            return true; // כבר כאן
+        }
+
+        // ---- תפריט מנהל ----
+        if (id == R.id.admin) {
+            startActivity(new Intent(AdutActivity.this, AdminActivity.class));
+            return true;
+        }
+        if (id == R.id.admin_adut) {
+            return true; // כבר כאן
+        }
+        if (id == R.id.admin_disconect) {
+            startActivity(new Intent(AdutActivity.this, disconect_foradmin.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-    
-    
 }

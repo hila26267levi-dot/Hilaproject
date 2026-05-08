@@ -14,9 +14,9 @@ import com.hila.myapplication.R;
 import com.hila.myapplication.servicses.DatabaseService;
 
 public class TeacherActivity extends AppCompatActivity {
-Button btn_mylessson, btn_addlesoon , btn_myprofile ;
+
+    Button btn_addlesoon;
     private DatabaseService databaseService;
-    private View v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,29 +24,20 @@ Button btn_mylessson, btn_addlesoon , btn_myprofile ;
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_teacher);
         btn_addlesoon = findViewById(R.id.btn_teacher_addlesoon);
-
-
-
-
     }
 
     public void goAddLesson(View v) {
-
-            Intent intent = new Intent(TeacherActivity.this, Addnewlesson.class);
-            startActivity(intent);
+        startActivity(new Intent(TeacherActivity.this, Addnewlesson.class));
     }
 
     public void goMyLesson(View v) {
-
-        Intent intent = new Intent(TeacherActivity.this, TeacherLessonsList.class);
-        startActivity(intent);
+        startActivity(new Intent(TeacherActivity.this, TeacherLessonsList.class));
     }
+
     public void goMyProfile(View v) {
-
-        Intent intent = new Intent(TeacherActivity.this, teacher_profile.class);
-        startActivity(intent);
+        startActivity(new Intent(TeacherActivity.this, teacher_profile.class));
     }
-    //   של מורה תפריט צד
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.teacher_menu, menu);
@@ -55,39 +46,29 @@ Button btn_mylessson, btn_addlesoon , btn_myprofile ;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         if (id == R.id.teacher_home) {
-            Intent intent = new Intent(TeacherActivity.this,TeacherActivity.class);
-            startActivity(intent);
-
+            startActivity(new Intent(TeacherActivity.this, TeacherActivity.class));
             return true;
         }
-
         if (id == R.id.teacher_profile) {
-            Intent intent = new Intent(TeacherActivity.this, teacher_profile.class);
-            startActivity(intent);
-
+            startActivity(new Intent(TeacherActivity.this, teacher_profile.class));
             return true;
         }
-
         if (id == R.id.teacher_mylesson) {
-            Intent intent = new Intent(TeacherActivity.this, TeacherLessonsList.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherActivity.this, TeacherLessonsList.class));
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            Intent intent = new Intent(TeacherActivity.this, disconect_forteacher.class);
-            startActivity(intent);
+            startActivity(new Intent(TeacherActivity.this, disconect_forteacher.class));
             return true;
         }
         if (id == R.id.teacher_adut) {
             Intent intent = new Intent(TeacherActivity.this, AdutActivity.class);
+            intent.putExtra("userType", "teacher");
             startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

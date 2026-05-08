@@ -10,5 +10,10 @@
         android:id="@+id/admin_adut"
 
         android:title="אדות" />
+    <item
+        android:id="@+id/admin_disconect"
+
+        android:title="התנתקות" />
+
 
 </menu>

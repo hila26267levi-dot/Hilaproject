@@ -78,6 +78,10 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(AdminActivity.this, AdutActivity.class));
             return true;
         }
+        if (id == R.id.admin_disconect) {
+            startActivity(new Intent(AdminActivity.this, disconect_foradmin.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

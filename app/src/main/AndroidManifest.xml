@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-
+        <activity
+            android:name=".screens.disconect_foradmin"
+            android:exported="false" />
         <activity
             android:name=".screens.TeacherLessonList_forStudent"
             android:exported="false" />
@@ -63,8 +65,6 @@
         <activity
             android:name=".screens.StudentActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".screens.TeacherListActivity"
             android:exported="false" />
@@ -94,6 +94,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -2,6 +2,7 @@ package com.hila.myapplication.screens;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,7 +48,6 @@ public class TeacherListActivity extends AppCompatActivity {
 
         databaseService = DatabaseService.getInstance();
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
-
         rcTeacherList = findViewById(R.id.rcTeacherList);
         tvUserCount = findViewById(R.id.tv_teacher_count);
         rcTeacherList.setLayoutManager(new LinearLayoutManager(this));
@@ -59,39 +59,48 @@ public class TeacherListActivity extends AppCompatActivity {
                 go.putExtra("teacherId", teacher.getId());
                 startActivity(go);
             }
-//מחיקה של מורה על ידי המנהל
+
             @Override
             public void onLongTeacherClick(Teacher teacher) {
-                if (!isAdmin) return;
+                if (isAdmin) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TeacherListActivity.this);
+                    builder.setTitle("מחיקת מורה");
+                    builder.setMessage("האם אתה בטוח שברצונך למחוק את המורה "
+                            + teacher.getFname() + " " + teacher.getLname() + "?");
 
-                new AlertDialog.Builder(TeacherListActivity.this)
-                        .setTitle("מחיקת מורה")
-                        .setMessage("האם אתה בטוח שברצונך למחוק את המורה "
-                                + teacher.getFname() + " " + teacher.getLname() + "?")
-                        .setPositiveButton("כן, מחק", (dialog, which) -> {
+                    builder.setPositiveButton("כן, מחק", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
                             databaseService.deleteTeacher(teacher.getId(),
                                     new DatabaseService.DatabaseCallback<Void>() {
                                         @Override
                                         public void onCompleted(Void object) {
                                             teacherAdapter.removeTeacher(teacher);
-                                            int newCount = teacherAdapter.getItemCount();
-                                            tvUserCount.setText("סה\"כ מורים: " + newCount);
                                             Toast.makeText(TeacherListActivity.this,
-                                                    "המורה " + teacher.getFname() + " נמחק בהצלחה",
+                                                    "המורה נמחק בהצלחה",
                                                     Toast.LENGTH_SHORT).show();
+                                            sendSmsToDeletedUser(teacher.getPhone(), teacher.getFname());
                                         }
 
                                         @Override
                                         public void onFailed(Exception e) {
-                                            Log.e(TAG, "Failed to delete teacher", e);
                                             Toast.makeText(TeacherListActivity.this,
-                                                    "שגיאה במחיקת המורה, נסה שוב",
+                                                    "שגיאה במחיקה",
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     });
-                        })
-                        .setNegativeButton("ביטול", (dialog, which) -> dialog.dismiss())
-                        .show();
+                        }
+                    });
+
+                    builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.show();
+                }
             }
         });
 
@@ -110,42 +119,89 @@ public class TeacherListActivity extends AppCompatActivity {
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to get teacher list", e);
-                Toast.makeText(TeacherListActivity.this,
-                        "שגיאה בטעינת רשימת המורים", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Failed to get teachers list", e);
             }
         });
     }
 
+    private void sendSmsToDeletedUser(String phone, String fname) {
+        if (phone == null || phone.isEmpty()) return;
+        String message = "שלום " + fname + ",\n"
+                + "לידיעתך, חשבונך באפליקציה נמחק על ידי מנהל המערכת.\n"
+                + "אינך רשאי/ת להמשיך להשתמש באפליקציה.\n"
+                + "בברכה, צוות האפליקציה";
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+        smsIntent.setData(Uri.parse("smsto:" + phone));
+        smsIntent.putExtra("sms_body", message);
+        startActivity(smsIntent);
+    }
+
+    // תפריט צד — מנהל או תלמיד לפי isAdmin
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.student_menu, menu);
+        if (isAdmin) {
+            getMenuInflater().inflate(R.menu.admin_menu, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.student_menu, menu);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        // תפריט מנהל
+        if (id == R.id.admin) {
+            Intent intent = new Intent(TeacherListActivity.this, AdminActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.admin_adut) {
+            Intent intent = new Intent(TeacherListActivity.this, AdutActivity.class);
+            intent.putExtra("isAdmin", true);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.admin_disconect) {
+            Intent intent = new Intent(TeacherListActivity.this, disconect_foradmin.class);
+            startActivity(intent);
+            return true;
+        }
+
+        // תפריט תלמיד
         if (id == R.id.student_home) {
-            startActivity(new Intent(this, StudentActivity.class));
+            Intent intent = new Intent(TeacherListActivity.this, StudentActivity.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.student_searchteacher) {
-            startActivity(new Intent(this, TeacherListActivity.class));
+            Intent intent = new Intent(TeacherListActivity.this, TeacherListActivity.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.student_profile) {
-            startActivity(new Intent(this, StudentProfile.class));
+            Intent intent = new Intent(TeacherListActivity.this, StudentProfile.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.student_disconect) {
-            startActivity(new Intent(this, disconect_forstudent.class));
+            Intent intent = new Intent(TeacherListActivity.this, disconect_forstudent.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.student_mylesson) {
-            startActivity(new Intent(this, student_lesson_list.class));
+            Intent intent = new Intent(TeacherListActivity.this, student_lesson_list.class);
+            startActivity(intent);
             return true;
         }
+        if (id == R.id.student_adut) {
+            Intent intent = new Intent(TeacherListActivity.this, AdutActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

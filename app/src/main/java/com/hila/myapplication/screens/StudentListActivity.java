@@ -48,61 +48,86 @@ public class StudentListActivity extends AppCompatActivity {
 
         databaseService = DatabaseService.getInstance();
         isAdmin = getIntent().getBooleanExtra("isAdmin", false);
+
         rcStudentList = findViewById(R.id.rcStudentList);
         tvUserCount = findViewById(R.id.tv_student_count);
         rcStudentList.setLayoutManager(new LinearLayoutManager(this));
 
         studentAdapter = new StudentAdapter(new StudentAdapter.OnStudentClickListener() {
+
+            // לחיצה קצרה — לא עושה כלום
             @Override
             public void onStudentClick(Student student) {
-                // לחיצה קצרה — לא עושה כלום למנהל
+                // intentionally empty
             }
 
+            // לחיצה ארוכה — מנהל בלבד: אישור מחיקה + SMS
             @Override
             public void onLongStudentClick(Student student) {
-                if (isAdmin) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(StudentListActivity.this);
-                    builder.setTitle("מחיקת תלמיד");
-                    builder.setMessage("האם אתה בטוח שברצונך למחוק את התלמיד "
-                            + student.getFname() + " " + student.getLname() + "?");
+                if (!isAdmin) return;
 
-                    builder.setPositiveButton("כן, מחק", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            databaseService.deleteStudent(student.getId(),
-                                    new DatabaseService.DatabaseCallback<Void>() {
-                                        @Override
-                                        public void onCompleted(Void object) {
-                                            studentAdapter.removeStudent(student);
-                                            Toast.makeText(StudentListActivity.this,
-                                                    "התלמיד נמחק בהצלחה",
-                                                    Toast.LENGTH_SHORT).show();
-                                            sendSmsToDeletedUser(student.getPhone(), student.getFname());
-                                        }
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(StudentListActivity.this);
+                builder.setTitle("מחיקת תלמיד");
+                builder.setMessage("האם אתה בטוח שברצונך למחוק את התלמיד "
+                        + student.getFname() + " " + student.getLname() + "?");
 
-                                        @Override
-                                        public void onFailed(Exception e) {
-                                            Toast.makeText(StudentListActivity.this,
-                                                    "שגיאה במחיקה",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    });
+                builder.setPositiveButton("כן, מחק",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                databaseService.deleteStudent(student.getId(),
+                                        new DatabaseService.DatabaseCallback<Void>() {
+                                            @Override
+                                            public void onCompleted(Void object) {
+                                                studentAdapter.removeStudent(student);
+                                                Toast.makeText(StudentListActivity.this,
+                                                        "התלמיד נמחק בהצלחה",
+                                                        Toast.LENGTH_SHORT).show();
+                                                // שליחת SMS לתלמיד שנמחק
+                                                sendSmsToStudent(student);
+                                            }
 
-                    builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                                            @Override
+                                            public void onFailed(Exception e) {
+                                                Toast.makeText(StudentListActivity.this,
+                                                        "שגיאה במחיקה",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        });
 
-                    builder.show();
-                }
+                builder.setNegativeButton("ביטול",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builder.show();
             }
         });
 
         rcStudentList.setAdapter(studentAdapter);
+    }
+
+    // שליחת SMS לתלמיד שנמחק
+    private void sendSmsToStudent(Student student) {
+        if (student == null || student.getPhone() == null
+                || student.getPhone().isEmpty()) return;
+
+        String message =
+                "שלום " + student.getFname() + " " + student.getLname() + ",\n"
+                        + "לידיעתך, חשבונך הוסר מהאפליקציה על ידי מנהל המערכת.\n"
+                        + "לפרטים נוספים פנה למנהל.\n"
+                        + "בברכה";
+
+        Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
+        smsIntent.setData(Uri.parse("smsto:" + student.getPhone()));
+        smsIntent.putExtra("sms_body", message);
+        startActivity(smsIntent);
     }
 
     @Override
@@ -112,29 +137,17 @@ public class StudentListActivity extends AppCompatActivity {
             @Override
             public void onCompleted(List<Student> students) {
                 studentAdapter.setStudentList(students);
-                tvUserCount.setText("סה\"כ תלמידים: " + students.size());
+                tvUserCount.setText("סך הכל תלמידים: " + students.size());
             }
 
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "Failed to get students list", e);
+                Log.e(TAG, "Failed to get student list", e);
             }
         });
     }
 
-    private void sendSmsToDeletedUser(String phone, String fname) {
-        if (phone == null || phone.isEmpty()) return;
-        String message = "שלום " + fname + ",\n"
-                + "לידיעתך, חשבונך באפליקציה נמחק על ידי מנהל המערכת.\n"
-                + "אינך רשאי/ת להמשיך להשתמש באפליקציה.\n"
-                + "בברכה, צוות האפליקציה";
-        Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-        smsIntent.setData(Uri.parse("smsto:" + phone));
-        smsIntent.putExtra("sms_body", message);
-        startActivity(smsIntent);
-    }
-
-    // תפריט צד מנהל בלבד
+    // תפריט מנהל
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.admin_menu, menu);
@@ -144,24 +157,20 @@ public class StudentListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.admin) {
             startActivity(new Intent(StudentListActivity.this, AdminActivity.class));
             return true;
         }
-        if (id == R.id.admin_disconect) {
-            Intent intent = new Intent(StudentListActivity.this, disconect_foradmin.class);
-            intent.putExtra("isAdmin", true);
-            startActivity(intent);
-            return true;
-        }
         if (id == R.id.admin_adut) {
             Intent intent = new Intent(StudentListActivity.this, AdutActivity.class);
-            intent.putExtra("isAdmin", true);
+            intent.putExtra("userType", "admin");
             startActivity(intent);
             return true;
         }
-
+        if (id == R.id.admin_disconect) {
+            startActivity(new Intent(StudentListActivity.this, disconect_foradmin.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -8,5 +8,19 @@
     tools:context=".screens.Splash">
 
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="91dp"
+        android:layout_height="85dp"
+        tools:layout_editor_absoluteX="160dp"
+        tools:layout_editor_absoluteY="589dp" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="227dp"
+        android:layout_height="466dp"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="92dp"
+        tools:layout_editor_absoluteY="98dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -207,7 +207,6 @@
                     android:layout_height="48dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@drawable/input_readonly_background"
                     android:layout_marginBottom="10dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
@@ -303,7 +302,6 @@
                     android:layout_height="48dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@drawable/input_readonly_background"
                     android:layout_marginBottom="10dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
@@ -341,12 +339,17 @@
                     android:paddingEnd="12dp">
 
                     <Spinner
-                        android:id="@+id/profile_Teacher_E_zoom"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:entries="@array/"
-                        android:background="@null"
-                        android:layoutDirection="rtl" />
+                        android:id="@+id/spZoomEdit"
+                        android:layout_width="309dp"
+                        android:layout_height="62dp"
+                        android:layout_marginStart="2dp"
+                     android:layout_marginEnd="40dp"
+                        android:entries="@array/Arrzoom"
+                        android:fontFamily="@font/gevret_levin_alef"
+                        app:layout_constraintBottom_toTopOf="@+id/profile_Teacher_E_btn"
+                        app:layout_constraintEnd_toEndOf="@+id/profile_Teacher_E_price"
+                        app:layout_constraintStart_toStartOf="@+id/profile_Teacher_E_teachclass"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_Teacher_E_subject" />
                 </LinearLayout>
 
                 <!-- כפתור שמירה -->

@@ -1,4 +1,3 @@
-
 package com.hila.myapplication.screens;
 
 import android.content.Intent;
@@ -8,14 +7,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.hila.myapplication.R;
 import com.hila.myapplication.model.Student;
-import com.hila.myapplication.screens.StudentActivity;
 import com.hila.myapplication.servicses.DatabaseService;
+import com.hila.myapplication.utils.ImageHelper;
 
 public class RegisterStudentActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "RegisterActivity";
@@ -24,6 +26,8 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
     DatabaseService databaseService;
     EditText edittext_email, edittext_fname, edittext_lname, edittext_password, edittext_phone;
     Spinner spKita;
+    ImageButton profileImageButton;
+    String imageBase64 = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +41,23 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
         edittext_password = findViewById(R.id.et_student_password);
         spKita = findViewById(R.id.spstudent_kita);
         edittext_phone = findViewById(R.id.et_student_phone);
+        profileImageButton = findViewById(R.id.profile);
+
+        profileImageButton.setOnClickListener(v -> ImageHelper.openGallery(this));
 
         databaseService = DatabaseService.getInstance();
-
         btn_student = findViewById(R.id.btn_register);
         btn_student.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String result = ImageHelper.handleActivityResult(this, requestCode, resultCode, data);
+        if (result != null) {
+            imageBase64 = result;
+            profileImageButton.setImageBitmap(ImageHelper.base64ToBitmap(result));
+        }
     }
 
     @Override
@@ -56,25 +72,22 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
             String kita = spKita.getSelectedItem().toString();
             String phone = edittext_phone.getText().toString();
 
-            // קודם כל בדיקת תקינות - רק אם עובר נמשיך לרישום
             if (validateInput(phone, fName, lName, email, password, kita)) {
                 registerUser(fName, lName, email, password, kita, phone);
             }
         }
     }
 
-    private void registerUser(String fname, String lname, String email, String password, String kita, String phone) {
+    private void registerUser(String fname, String lname, String email,
+                              String password, String kita, String phone) {
         Log.d(TAG, "registerUser: Registering user...");
-
-
-            Student student = new Student("99", fname, lname, phone, email, password, "", kita);
+        Student student = new Student("99", fname, lname, phone, email, password, imageBase64, kita);
         Log.d(TAG, student.toString());
         createUserInDatabase(student);
     }
 
     private void createUserInDatabase(Student student) {
         databaseService.createNewStudent(student, new DatabaseService.DatabaseCallback<String>() {
-
             @Override
             public void onCompleted(String uid) {
                 Log.d(TAG, "createUserInDatabase: User created successfully");
@@ -98,61 +111,20 @@ public class RegisterStudentActivity extends AppCompatActivity implements View.O
         });
     }
 
-    // מחזירה true אם הכל תקין, false אם יש שגיאה
-    public boolean validateInput(String phone, String fName, String lName, String email, String password, String kita) {
-
-        // שם פרטי - חובה, רק אותיות עברית או אנגלית
+    public boolean validateInput(String phone, String fName, String lName,
+                                 String email, String password, String kita) {
         String nameRegex = "^[A-Za-zא-ת]+$";
-        if (fName.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (!fName.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד (עברית או אנגלית)!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // שם משפחה - חובה, רק אותיות עברית או אנגלית
-        if (lName.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (!lName.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד (עברית או אנגלית)!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // טלפון - חובה, מתחיל ב-05, רק מספרים, בדיוק 10 ספרות
-        if (phone.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (!phone.matches("^05[0-9]{8}$")) {
-            Toast.makeText(this, "שגיאה: מספר הטלפון חייב להתחיל ב-05 ולהכיל בדיוק 10 ספרות!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // כיתה - חובה לבחור
-        if (kita.isEmpty() || kita.equals("בחר כיתה")) {
-            Toast.makeText(this, "שגיאה: חובה לבחור כיתה!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // אימייל - חובה, פורמט Gmail תקני
-        if (email.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין אימייל!", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            Toast.makeText(this, "שגיאה: האימייל חייב להיות כתובת Gmail תקנית (לדוגמה: example@gmail.com)!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // סיסמא - חובה, לפחות 6 תווים
-        if (password.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין סיסמה!", Toast.LENGTH_LONG).show();
-            return false;
-        } else if (password.length() < 6) {
-            Toast.makeText(this, "שגיאה: הסיסמה חייבת להכיל לפחות 6 תווים!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        return true; // כל הפרטים תקינים
+        if (fName.isEmpty()) { Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show(); return false; }
+        if (!fName.matches(nameRegex)) { Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show(); return false; }
+        if (lName.isEmpty()) { Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show(); return false; }
+        if (!lName.matches(nameRegex)) { Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show(); return false; }
+        if (phone.isEmpty()) { Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show(); return false; }
+        if (!phone.matches("^05[0-9]{8}$")) { Toast.makeText(this, "שגיאה: טלפון חייב להתחיל ב-05 ולהכיל 10 ספרות!", Toast.LENGTH_LONG).show(); return false; }
+        if (kita.isEmpty() || kita.equals("בחר כיתה")) { Toast.makeText(this, "שגיאה: חובה לבחור כיתה!", Toast.LENGTH_LONG).show(); return false; }
+        if (email.isEmpty()) { Toast.makeText(this, "שגיאה: חובה להזין אימייל!", Toast.LENGTH_LONG).show(); return false; }
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) { Toast.makeText(this, "שגיאה: יש להזין Gmail תקינה!", Toast.LENGTH_LONG).show(); return false; }
+        if (password.isEmpty()) { Toast.makeText(this, "שגיאה: חובה להזין סיסמה!", Toast.LENGTH_LONG).show(); return false; }
+        if (password.length() < 6) { Toast.makeText(this, "שגיאה: סיסמה חייבת להכיל לפחות 6 תווים!", Toast.LENGTH_LONG).show(); return false; }
+        return true;
     }
 }

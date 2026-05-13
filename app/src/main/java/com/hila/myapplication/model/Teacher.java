@@ -4,16 +4,15 @@ import java.io.Serializable;
 
 public class Teacher extends User implements Serializable {
 
-    protected String age ;
-    protected String subject ;
-    protected double price ;
-    protected String zoom ;
-    protected String teachclass ;
-
+    protected String age;
+    protected String subject;
+    protected double price;
+    protected String zoom;
+    protected String teachclass;
+    protected String image; // תמונה בBase64
 
     public Teacher() {
     }
-
 
     public Teacher(Teacher teacher) {
         super(teacher.id, teacher.fname, teacher.lname, teacher.phone, teacher.email);
@@ -22,9 +21,12 @@ public class Teacher extends User implements Serializable {
         this.price = teacher.price;
         this.zoom = teacher.zoom;
         this.teachclass = teacher.teachclass;
+        this.image = teacher.image;
     }
 
-    public Teacher(String id, String fname, String lname, String phone, String email, String password, String age, String subject, double price, String zoom, String teachclass) {
+    public Teacher(String id, String fname, String lname, String phone, String email,
+                   String password, String age, String subject, double price,
+                   String zoom, String teachclass) {
         super(id, fname, lname, phone, email, password);
         this.age = age;
         this.subject = subject;
@@ -41,45 +43,23 @@ public class Teacher extends User implements Serializable {
         this.teachclass = teachclass;
     }
 
-    public String getAge() {
-        return age;
-    }
+    public String getAge() { return age; }
+    public void setAge(String age) { this.age = age; }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
+    public String getSubject() { return subject; }
+    public void setSubject(String subject) { this.subject = subject; }
 
-    public String getSubject() {
-        return subject;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+    public String getZoom() { return zoom; }
+    public void setZoom(String zoom) { this.zoom = zoom; }
 
-    public double getPrice() {
-        return price;
-    }
+    public String getTeachclass() { return teachclass; }
+    public void setTeachclass(String teachclass) { this.teachclass = teachclass; }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getZoom() {
-        return zoom;
-    }
-
-    public void setZoom(String zoom) {
-        this.zoom = zoom;
-    }
-
-    public String getTeachclass() {
-        return teachclass;
-    }
-
-    public void setTeachclass(String teachclass) {
-        this.teachclass = teachclass;
-    }
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 
     @Override
     public String toString() {

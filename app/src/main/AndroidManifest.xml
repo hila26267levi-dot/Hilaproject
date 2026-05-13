@@ -30,11 +30,6 @@
         <activity android:name=".screens.StudentListActivity" android:exported="false" />
         <activity android:name=".screens.loginActivity" android:exported="false" />
         <activity android:name=".screens.RegisterStudentActivity" android:exported="false" />
-        <activity android:name=".screens.Splash" android:exported="false" />
-        <activity android:name=".screens.AdutActivity" android:exported="false" />
-        <activity android:name=".screens.RegisterTeacherActivity" android:exported="false" />
-        <activity android:name=".screens.teacher_profile" android:exported="false" />
-
         <activity
             android:name=".screens.MainActivity"
             android:exported="true">

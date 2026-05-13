@@ -4,157 +4,366 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pic16"
+    android:background="#D7EEF4"
     tools:context=".screens.Teacher_edit_profile">
 
-    <LinearLayout
-        android:id="@+id/main"
-        android:layout_width="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="30dp"
-        android:paddingTop="180dp"
-        android:paddingEnd="30dp"
-        android:paddingBottom="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/img_TeacherProfile"
-            android:layout_width="85dp"
-            android:layout_height="54dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginBottom="30dp"
-            app:srcCompat="@drawable/profil" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <EditText
-            android:id="@+id/profile_Teacher_E_Fname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:hint="שם פרטי"
-            android:inputType="text"
-            android:textColor="#1E5A7A"
-            android:textSize="17sp" />
+            <!-- תמונת פרופיל -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
-        <EditText
-            android:id="@+id/profile_Teacher_E_Lname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:hint="שם משפחה"
-            android:inputType="text"
-            android:textSize="17sp" />
+                <ImageButton
+                    android:id="@+id/img_StudentProfile"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/add" />
 
-        <EditText
-            android:id="@+id/profile_Teacher_E_age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:hint="גיל"
-            android:inputType="number"
-            android:textSize="17sp" />
+                <ImageButton
+                    android:id="@+id/img_Student1"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/add2" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:text="כיתות לימוד:"
-            android:textColor="#1E5A7A"
-            android:textSize="15sp" />
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/sp_teachclass_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:entries="@array/Arrgrade"
-            android:layoutDirection="rtl" />
+            <!-- כותרת -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="עריכת פרופיל מורה"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1a5f78"
+                android:gravity="center"
+                android:fontFamily="@font/gevret_levin_alef"
+                android:layout_marginBottom="16dp" />
 
-        <EditText
-            android:id="@+id/profile_Teacher_E_teachclass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:hint="כיתות שנבחרו"
-            android:textColor="#1E5A7A"
-            android:textSize="17sp" />
+            <!-- כרטיס טופס -->
+            <LinearLayout
+                android:id="@+id/main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp">
 
-        <EditText
-            android:id="@+id/profile_Teacher_E_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:hint="מחיר"
-            android:inputType="numberDecimal"
-            android:textSize="17sp" />
+                <!-- שם פרטי -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:text="מקצוע:"
-            android:textColor="#1E5A7A"
-            android:textSize="15sp" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_person"
+                        android:layout_marginEnd="8dp" />
 
-        <Spinner
-            android:id="@+id/sp_subject_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:entries="@array/Arrsubject"
-            android:layoutDirection="rtl" />
+                    <EditText
+                        android:id="@+id/profile_Teacher_E_Fname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="שם פרטי"
+                        android:textDirection="ltr"
+                        android:inputType="text"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp"
+                        android:textColor="#1E5A7A"
+                        android:fontFamily="@font/gevret_levin_alef" />
+                </LinearLayout>
 
-        <EditText
-            android:id="@+id/profile_Teacher_E_subject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:hint="מקצועות שנבחרו"
-            android:textSize="17sp" />
+                <!-- שם משפחה -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
-        <EditText
-            android:id="@+id/profile_Teacher_E_zoom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:gravity="end"
-            android:hint="זום (yes/no)"
-            android:inputType="text"
-            android:textSize="17sp" />
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_person"
+                        android:layout_marginEnd="8dp" />
 
-        <Button
-            android:id="@+id/profile_Teacher_E_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/my_button_background"
-            android:fontFamily="@font/gevret_levin_alef"
-            android:text="שמור פרופיל"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/profile_Teacher_E_Lname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textDirection="ltr"
+                        android:hint="שם משפחה"
+                        android:inputType="text"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/gevret_levin_alef" />
+                </LinearLayout>
 
-    </LinearLayout>
+                <!-- גיל -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+/>
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/outline_calendar_month_24"
+                        android:layout_marginEnd="8dp" />
+                    <EditText
+                        android:id="@+id/profile_Teacher_E_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="גיל"
+                        android:inputType="number"
+                        android:textDirection="ltr"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/gevret_levin_alef" />
+                </LinearLayout>
+
+                <!-- כיתות לימוד -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="כיתות לימוד:"
+                    android:textColor="#1E5A7A"
+                    android:textSize="13sp"
+                    android:textDirection="ltr"
+                    android:fontFamily="@font/gevret_levin_alef"
+                    android:gravity="end"
+                    android:layout_marginBottom="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_book"
+                        android:layout_marginEnd="8dp" />
+
+                    <Spinner
+                        android:id="@+id/sp_teachclass_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/Arrgrade"
+                        android:background="@null"
+                        android:layoutDirection="rtl" />
+                </LinearLayout>
+
+                <!-- כיתות שנבחרו -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_readonly_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/outline_calendar_add_on_24" />
+                    <EditText
+                        android:id="@+id/profile_Teacher_E_teachclass"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="כיתות שנבחרו"
+                        android:focusable="false"
+                        android:textDirection="ltr"
+                        android:focusableInTouchMode="false"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp"
+                        android:textColor="#1E5A7A"
+                        android:fontFamily="@font/gevret_levin_alef" />
+                </LinearLayout>
+
+                <!-- מחיר -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/outline_money_24" />
+
+                    <EditText
+                        android:id="@+id/profile_Teacher_E_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="מחיר"
+                        android:textDirection="ltr"
+                        android:inputType="numberDecimal"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/gevret_levin_alef" />
+                </LinearLayout>
+
+                <!-- מקצוע -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="מקצוע:"
+                    android:textColor="#1E5A7A"
+                    android:textSize="13sp"
+                    android:textDirection="ltr"
+                    android:fontFamily="@font/gevret_levin_alef"
+                    android:gravity="end"
+                    android:layout_marginBottom="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+
+
+                    <Spinner
+                        android:id="@+id/sp_subject_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/Arrsubject"
+                        android:background="@null"
+                        android:layoutDirection="rtl" />
+                </LinearLayout>
+
+                <!-- מקצועות שנבחרו -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_readonly_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/outline_checkbook_24" />
+
+                    <EditText
+                        android:id="@+id/profile_Teacher_E_subject"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="מקצועות שנבחרו"
+                        android:focusable="false"
+                        android:textDirection="ltr"
+                        android:focusableInTouchMode="false"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/gevret_levin_alef" />
+                </LinearLayout>
+
+                <!-- זום -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="16dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <Spinner
+                        android:id="@+id/profile_Teacher_E_zoom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/"
+                        android:background="@null"
+                        android:layoutDirection="rtl" />
+                </LinearLayout>
+
+                <!-- כפתור שמירה -->
+                <Button
+                    android:id="@+id/profile_Teacher_E_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="שמור פרופיל"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/gevret_levin_alef"
+                    android:backgroundTint="#1a7a9b"
+                    android:stateListAnimator="@null" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

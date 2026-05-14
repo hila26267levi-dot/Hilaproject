@@ -3,8 +3,10 @@ package com.hila.myapplication.screens;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hila.myapplication.R;
@@ -36,14 +40,18 @@ public class RegisterTeacherActivity extends AppCompatActivity
 
     Spinner spZoom, spteachclass, spsubject;
 
-    ImageButton imgCamera;   // add - לחיץ, פותח גלריה
-    ImageView imgDisplay;    // add2 - עיצוב בלבד
+    ImageButton img_Camera;   // כפתור מצלמה
+    ImageButton img_Gallery;  // כפתור גלריה
+    ImageView Ivr_teacher;    // ImageView להצגת התמונה שנבחרה
+
+    // launchers - בדיוק כמו ב-Student_edit_profile
+    private ActivityResultLauncher<Intent> selectImageLauncher;
+    private ActivityResultLauncher<Intent> captureImageLauncher;
 
     String subject    = "";
     String zoom       = "";
     String imageBase64 = "";
     private String password, email;
-    int SELECT_PICTURE = 200;
 
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
@@ -54,6 +62,7 @@ public class RegisterTeacherActivity extends AppCompatActivity
 
         ImageUtil.requestPermission(this);
 
+        // חיבור Views
         edittext_email    = findViewById(R.id.et_teacher_email);
         edittext_fname    = findViewById(R.id.et_teacher_fname);
         edittext_lname    = findViewById(R.id.et_teacher_lname);
@@ -65,10 +74,15 @@ public class RegisterTeacherActivity extends AppCompatActivity
         spsubject         = findViewById(R.id.spSubject);
         edittext_subject  = findViewById(R.id.etSubjects);
 
-        imgCamera  = findViewById(R.id.imageView8);  // add - לחיץ
-        imgDisplay = findViewById(R.id.imageView9);  // add2 - עיצוב
+        img_Camera  = findViewById(R.id.teacher_register_camara);
+        img_Gallery = findViewById(R.id.teacher_register_gallery);
+        Ivr_teacher = findViewById(R.id.iv_Rteacher);
 
-        imgCamera.setOnClickListener(this);
+        // הגדרת Launchers - בדיוק כמו ב-Student_edit_profile
+        setUpLaunchers();
+
+        img_Camera.setOnClickListener(this);
+        img_Gallery.setOnClickListener(this);
 
         spZoom = findViewById(R.id.spZoom);
         spZoom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -76,7 +90,7 @@ public class RegisterTeacherActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 1) zoom = "כן";
                 else if (position == 2) zoom = "לא";
-                else zoom = ""; // לא נבחר
+                else zoom = "";
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -88,16 +102,61 @@ public class RegisterTeacherActivity extends AppCompatActivity
         spsubject.setOnItemSelectedListener(this);
     }
 
+    // בדיוק כמו setUpGallery ב-Student_edit_profile
+    private void setUpLaunchers() {
+        // גלריה
+        selectImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImage = result.getData().getData();
+                        Ivr_teacher.setImageURI(selectedImage);
+                        Ivr_teacher.setTag(null);
+                        Ivr_teacher.post(() -> {
+                            String base64 = ImageUtil.convertTo64Base(Ivr_teacher);
+                            if (base64 != null) imageBase64 = base64;
+                        });
+                    }
+                });
+
+        // מצלמה
+        captureImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+                        Ivr_teacher.setImageBitmap(bitmap);
+                        Ivr_teacher.setTag(null);
+                        Ivr_teacher.post(() -> {
+                            String base64 = ImageUtil.convertTo64Base(Ivr_teacher);
+                            if (base64 != null) imageBase64 = base64;
+                        });
+                    }
+                });
+    }
+
     @Override
     public void onClick(View v) {
-        if (v == imgCamera) {
-            imageChooser();
+        if (v == img_Gallery) {
+            // פתיחת גלריה
+            ImageUtil.requestPermission(this);
+            Intent i = new Intent();
+            i.setType("image/*");
+            i.setAction(Intent.ACTION_GET_CONTENT);
+            selectImageLauncher.launch(Intent.createChooser(i, "בחר תמונה"));
+            return;
+        }
+
+        if (v == img_Camera) {
+            // פתיחת מצלמה
+            ImageUtil.requestPermission(this);
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            captureImageLauncher.launch(takePictureIntent);
             return;
         }
 
         if (v.getId() == btnteacher.getId()) {
             Log.d(TAG, "onClick: Register button clicked");
-
             email         = edittext_email.getText().toString().trim();
             password      = edittext_password.getText().toString().trim();
             String fName  = edittext_fname.getText().toString().trim();
@@ -119,33 +178,10 @@ public class RegisterTeacherActivity extends AppCompatActivity
         }
     }
 
-    void imageChooser() {
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(i, "בחר תמונה"), SELECT_PICTURE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE && data != null) {
-            Uri selectedImageUri = data.getData();
-            if (selectedImageUri != null) {
-                imgDisplay.setImageURI(selectedImageUri);
-                imgDisplay.post(() -> {
-                    String base64 = ImageUtil.convertTo64Base(imgDisplay);
-                    if (base64 != null) imageBase64 = base64;
-                });
-            }
-        }
-    }
-
     private void createUserInDatabase(Teacher teacher) {
         databaseService.createNewTeacher(teacher, new DatabaseService.DatabaseCallback<String>() {
             @Override
             public void onCompleted(String uid) {
-                Log.d(TAG, "createUserInDatabase: User created successfully");
                 teacher.setId(uid);
                 SharedPreferences sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -158,7 +194,6 @@ public class RegisterTeacherActivity extends AppCompatActivity
             }
             @Override
             public void onFailed(Exception e) {
-                Log.e(TAG, "createUserInDatabase: Failed to create user", e);
                 Toast.makeText(RegisterTeacherActivity.this, "הרשמה נכשלה", Toast.LENGTH_SHORT).show();
             }
         });
@@ -187,101 +222,25 @@ public class RegisterTeacherActivity extends AppCompatActivity
         String emailRegex  = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
         String numberRegex = "^[0-9]+$";
 
-        // שם פרטי
-        if (fName.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!fName.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // שם משפחה
-        if (lName.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!lName.matches(nameRegex)) {
-            Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // טלפון - חייב להתחיל ב-05 ולהכיל 10 ספרות
-        if (phone.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!phone.matches(phoneRegex)) {
-            Toast.makeText(this, "שגיאה: מספר טלפון חייב להתחיל ב-05 ולהכיל 10 ספרות!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // כיתות לימוד
-        if (teachclass.isEmpty() || teachclass.equals("בחר כיתות לימוד")) {
-            Toast.makeText(this, "שגיאה: חובה לבחור כיתות לימוד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // מקצועות
-        if (subject2.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה לבחור לפחות מקצוע אחד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // גיל - חייב להיות מספר וגדול מ-18
-        if (age.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין גיל!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!age.matches(numberRegex)) {
-            Toast.makeText(this, "שגיאה: גיל חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (Integer.parseInt(age) < 18) {
-            Toast.makeText(this, "שגיאה: מורה חייב להיות מעל גיל 18!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // מחיר - חייב להיות מספר חיובי
-        if (stprice.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין מחיר!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!stprice.matches(numberRegex)) {
-            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (Double.parseDouble(stprice) <= 0) {
-            Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר חיובי!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // אימייל
-        if (email.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין אימייל!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (!email.matches(emailRegex)) {
-            Toast.makeText(this, "שגיאה: יש להזין כתובת Gmail תקינה!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // סיסמה
-        if (password.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה להזין סיסמה!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        if (password.length() < 6) {
-            Toast.makeText(this, "שגיאה: סיסמה חייבת להכיל לפחות 6 תווים!", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
-        // זום - חובה לבחור
-        if (zoom.isEmpty()) {
-            Toast.makeText(this, "שגיאה: חובה לבחור אם השיעור בזום או לא!", Toast.LENGTH_LONG).show();
-            return false;
-        }
+        if (fName.isEmpty())           { Toast.makeText(this, "שגיאה: חובה להזין שם פרטי!", Toast.LENGTH_LONG).show(); return false; }
+        if (!fName.matches(nameRegex)) { Toast.makeText(this, "שגיאה: שם פרטי חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show(); return false; }
+        if (lName.isEmpty())           { Toast.makeText(this, "שגיאה: חובה להזין שם משפחה!", Toast.LENGTH_LONG).show(); return false; }
+        if (!lName.matches(nameRegex)) { Toast.makeText(this, "שגיאה: שם משפחה חייב להכיל אותיות בלבד!", Toast.LENGTH_LONG).show(); return false; }
+        if (phone.isEmpty())           { Toast.makeText(this, "שגיאה: חובה להזין מספר טלפון!", Toast.LENGTH_LONG).show(); return false; }
+        if (!phone.matches(phoneRegex)){ Toast.makeText(this, "שגיאה: מספר טלפון חייב להתחיל ב-05 ולהכיל 10 ספרות!", Toast.LENGTH_LONG).show(); return false; }
+        if (teachclass.isEmpty() || teachclass.equals("בחר כיתות לימוד")) { Toast.makeText(this, "שגיאה: חובה לבחור כיתות לימוד!", Toast.LENGTH_LONG).show(); return false; }
+        if (subject2.isEmpty())        { Toast.makeText(this, "שגיאה: חובה לבחור לפחות מקצוע אחד!", Toast.LENGTH_LONG).show(); return false; }
+        if (age.isEmpty())             { Toast.makeText(this, "שגיאה: חובה להזין גיל!", Toast.LENGTH_LONG).show(); return false; }
+        if (!age.matches(numberRegex)) { Toast.makeText(this, "שגיאה: גיל חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show(); return false; }
+        if (Integer.parseInt(age) < 18){ Toast.makeText(this, "שגיאה: מורה חייב להיות מעל גיל 18!", Toast.LENGTH_LONG).show(); return false; }
+        if (stprice.isEmpty())         { Toast.makeText(this, "שגיאה: חובה להזין מחיר!", Toast.LENGTH_LONG).show(); return false; }
+        if (!stprice.matches(numberRegex)) { Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר בלבד!", Toast.LENGTH_LONG).show(); return false; }
+        if (Double.parseDouble(stprice) <= 0) { Toast.makeText(this, "שגיאה: מחיר חייב להיות מספר חיובי!", Toast.LENGTH_LONG).show(); return false; }
+        if (email.isEmpty())           { Toast.makeText(this, "שגיאה: חובה להזין אימייל!", Toast.LENGTH_LONG).show(); return false; }
+        if (!email.matches(emailRegex)){ Toast.makeText(this, "שגיאה: יש להזין כתובת Gmail תקינה!", Toast.LENGTH_LONG).show(); return false; }
+        if (password.isEmpty())        { Toast.makeText(this, "שגיאה: חובה להזין סיסמה!", Toast.LENGTH_LONG).show(); return false; }
+        if (password.length() < 6)     { Toast.makeText(this, "שגיאה: סיסמה חייבת להכיל לפחות 6 תווים!", Toast.LENGTH_LONG).show(); return false; }
+        if (zoom.isEmpty())            { Toast.makeText(this, "שגיאה: חובה לבחור אם השיעור בזום או לא!", Toast.LENGTH_LONG).show(); return false; }
 
         Toast.makeText(this, "כל הפרטים תקינים!", Toast.LENGTH_LONG).show();
         return true;

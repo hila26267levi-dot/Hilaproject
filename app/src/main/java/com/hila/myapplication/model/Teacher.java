@@ -9,7 +9,7 @@ public class Teacher extends User implements Serializable {
     protected double price;
     protected String zoom;
     protected String teachclass;
-    protected String image; // תמונה בBase64
+
 
     public Teacher() {
     }
@@ -21,7 +21,7 @@ public class Teacher extends User implements Serializable {
         this.price = teacher.price;
         this.zoom = teacher.zoom;
         this.teachclass = teacher.teachclass;
-        this.image = teacher.image;
+
     }
 
     public Teacher(String id, String fname, String lname, String phone, String email,
@@ -35,7 +35,43 @@ public class Teacher extends User implements Serializable {
         this.teachclass = teachclass;
     }
 
+    public Teacher(String id, String fname, String lname, String phone, String email, String password, String pic, String age, String subject, double price, String zoom, String teachclass) {
+        super(id, fname, lname, phone, email, password, pic);
+        this.age = age;
+        this.subject = subject;
+        this.price = price;
+        this.zoom = zoom;
+        this.teachclass = teachclass;
+    }
+
+    public Teacher(User user, String age, String subject, double price, String zoom, String teachclass) {
+        super(user);
+        this.age = age;
+        this.subject = subject;
+        this.price = price;
+        this.zoom = zoom;
+        this.teachclass = teachclass;
+    }
+
+    public Teacher(String email, String password, String fname, String age, String subject, double price, String zoom, String teachclass) {
+        super(email, password, fname);
+        this.age = age;
+        this.subject = subject;
+        this.price = price;
+        this.zoom = zoom;
+        this.teachclass = teachclass;
+    }
+
     public Teacher(String age, String subject, double price, String zoom, String teachclass) {
+        this.age = age;
+        this.subject = subject;
+        this.price = price;
+        this.zoom = zoom;
+        this.teachclass = teachclass;
+    }
+
+    public Teacher(String id, String fname, String lname, String phone, String email, String age, String subject, double price, String zoom, String teachclass) {
+        super(id, fname, lname, phone, email);
         this.age = age;
         this.subject = subject;
         this.price = price;
@@ -58,8 +94,7 @@ public class Teacher extends User implements Serializable {
     public String getTeachclass() { return teachclass; }
     public void setTeachclass(String teachclass) { this.teachclass = teachclass; }
 
-    public String getImage() { return image; }
-    public void setImage(String image) { this.image = image; }
+
 
     @Override
     public String toString() {

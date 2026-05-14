@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,12 +31,18 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
     EditText etfname, etlname, etphone;
     Spinner spKita;
     Button btn_save;
-    ImageButton imgCamera;  // add - לחיץ, פותח גלריה
-    ImageView imgDisplay;   // add2 - עיצוב בלבד, לא לחיץ, מציג תמונה שנבחרה
+    ImageButton imgCamera,img_gallery;  // add - לחיץ, פותח גלריה
+    ImageView iv_Estudent;   // add2 - עיצוב בלבד, לא לחיץ, מציג תמונה שנבחרה
+
+    /// Activity result launcher for selecting image from gallery
+    private ActivityResultLauncher<Intent> selectImageLauncher;
+    /// Activity result launcher for capturing image from camera
+    private ActivityResultLauncher<Intent> captureImageLauncher;
     Student currentStudent;
     String uid;
     private DatabaseService databaseService;
     int SELECT_PICTURE = 200;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +53,19 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
         ImageUtil.requestPermission(this);
         databaseService = DatabaseService.getInstance();
 
+        setUpGallery();
+
         etfname    = findViewById(R.id.profile_student_E_Fname);
         etlname    = findViewById(R.id.profile_student_E_Lname);
         etphone    = findViewById(R.id.profile_student_E_phone);
         spKita     = findViewById(R.id.spstudent_kita);
         btn_save   = findViewById(R.id.btnSaveprofile_student);
-        imgCamera  = findViewById(R.id.img_StudentProfile); // add - לחיץ
-        imgDisplay = findViewById(R.id.add2);       // add2 - עיצוב בלבד
-
+        imgCamera  = findViewById(R.id.img_camara_StudentProfile); // add - לחיץ
+        img_gallery = findViewById(R.id.img_gallery_StudentProfile);       // add2 - עיצוב בלבד
+        iv_Estudent=  findViewById(R.id.iv_Estudent);
         btn_save.setOnClickListener(this);
-        imgCamera.setOnClickListener(this); // רק add לחיץ
+        imgCamera.setOnClickListener(this);
+        img_gallery.setOnClickListener(this);// רק add לחיץ
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -92,7 +104,7 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
                 && !currentStudent.getPic().equals("jjj")) {
             Bitmap bmp = ImageUtil.convertFromivIPic(currentStudent.getPic());
             if (bmp != null) {
-                imgDisplay.setImageBitmap(bmp);
+                iv_Estudent.setImageBitmap(bmp);
             }
         }
     }
@@ -122,7 +134,7 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
         currentStudent.setKita(kita);
 
         // שמירת תמונה מ-imgDisplay
-        String picBase64 = ImageUtil.convertTo64Base(imgDisplay);
+        String picBase64 = ImageUtil.convertTo64Base(iv_Estudent);
         if (picBase64 != null) {
             currentStudent.setPic(picBase64);
         }
@@ -144,11 +156,58 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if (v == btn_save) {
             saveStudentProfile();
-        } else if (v == imgCamera) {
+        }   else if (v == img_gallery) {
             // רק add פותח גלריה
+
+            ImageUtil.requestPermission(Student_edit_profile.this);
             imageChooser();
         }
+        else if (v ==imgCamera) {
+
+            ImageUtil.requestPermission(Student_edit_profile.this);
+            captureImageFromCamera();
+
+        }
     }
+    private void setUpGallery() {
+        /// register the activity result launcher for selecting image from gallery
+        selectImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImage = result.getData().getData();
+                        iv_Estudent.setImageURI(selectedImage);
+                        /// set the tag for the image view to null
+                        iv_Estudent.setTag(null);
+                    }
+                });
+
+        /// register the activity result launcher for capturing image from camera
+        captureImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+                        iv_Estudent.setImageBitmap(bitmap);
+                        /// set the tag for the image view to null
+                        iv_Estudent.setTag(null);
+                    }
+                });
+
+
+
+
+
+
+    }
+
+    /// capture image from camera
+    private void captureImageFromCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureImageLauncher.launch(takePictureIntent);
+    }
+
+
 
     void imageChooser() {
         Intent i = new Intent();
@@ -164,10 +223,13 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 // תמונה שנבחרה מוצגת ב-imgDisplay (add2) בלבד
-                imgDisplay.setImageURI(selectedImageUri);
+                iv_Estudent.setImageURI(selectedImageUri);
             }
         }
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

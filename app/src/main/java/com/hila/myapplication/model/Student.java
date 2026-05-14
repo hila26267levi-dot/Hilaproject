@@ -18,12 +18,33 @@ public class Student extends User implements Serializable {
      //   this.kita = kita;
   //  }
 
+    public Student(String id, String fname, String lname, String phone, String email, String password, String kita) {
+        super(id, fname, lname, phone, email, password);
+        this.kita = kita;
+    }
+
     public Student(String id, String fname, String lname, String phone, String email, String password, String pic, String kita) {
         super(id, fname, lname, phone, email, password, pic);
         this.kita = kita;
     }
 
+    public Student(User user, String kita) {
+        super(user);
+        this.kita = kita;
+    }
+
+    public Student(String email, String password, String fname, String kita) {
+        super(email, password, fname);
+        this.kita = kita;
+    }
+
+
     public Student(String kita) {
+        this.kita = kita;
+    }
+
+    public Student(String id, String fname, String lname, String phone, String email, String kita) {
+        super(id, fname, lname, phone, email);
         this.kita = kita;
     }
 
@@ -42,8 +63,6 @@ public class Student extends User implements Serializable {
     }
 
 
-
-    @NonNull
     @Override
     public String toString() {
         return "Student{" +
@@ -54,6 +73,7 @@ public class Student extends User implements Serializable {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", pic='" + pic + '\'' +
                 '}';
     }
 }

@@ -24,11 +24,16 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
         void onLongStudentClick(Student student);
     }
 
-    private final List<Student> studentList;
+    private  List<Student> studentList;
     private final OnStudentClickListener onStudentClickListener;
     public StudentAdapter(@Nullable final OnStudentClickListener onStudentClickListener) {
-        studentList = new ArrayList<>();
+        this.studentList = new ArrayList<>();
         this.onStudentClickListener = onStudentClickListener;
+    }
+
+    public StudentAdapter(List<Student> studentList, OnStudentClickListener onStudentClickListener ) {
+        this.onStudentClickListener = onStudentClickListener;
+        this.studentList = studentList;
     }
 
     @NonNull
@@ -68,9 +73,9 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
     }
 
     public void setStudentList(List<Student> students) {
-        studentList.clear();
-        studentList.addAll(students);
-        notifyDataSetChanged();
+
+       this.studentList=students;
+
     }
 
     public void addStudent(Student student) {
@@ -93,7 +98,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvFname, tvLname, tvClass;
-        Chip chipRole;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

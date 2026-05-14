@@ -28,29 +28,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="80dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <!-- כפתור מצלמה - לחיץ - add -->
                 <ImageButton
-                    android:id="@+id/img_StudentProfile"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:id="@+id/img_camara_teacherE_Profile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/add"
+                    android:contentDescription="בחר תמונה"
                     android:scaleType="center"
-                    android:src="@null"
-                    android:contentDescription="בחר תמונה" />
+                    android:src="@null" />
 
                 <!-- עיגול כובע - עיצוב בלבד - add2 -->
+
+                <ImageButton
+                    android:id="@+id/img_gallery_teacherE_Profile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/gallery"
+                    android:contentDescription="בחר תמונה"
+                    android:scaleType="center"
+                    android:src="@null" />
+
                 <ImageView
-                    android:id="@+id/add2"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:background="@drawable/add2"
-                    android:scaleType="centerCrop"
-                     />
+                    android:id="@+id/iv_Eteacher"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    tools:srcCompat="@tools:sample/avatars" />
+
 
             </LinearLayout>
 

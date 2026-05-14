@@ -1,5 +1,7 @@
 package com.hila.myapplication.screens;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,8 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hila.myapplication.R;
 import com.hila.myapplication.adapters.StudentAdapter;
 import com.hila.myapplication.model.Student;
+import com.hila.myapplication.model.Teacher;
 import com.hila.myapplication.servicses.DatabaseService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentListActivity extends AppCompatActivity {
@@ -34,6 +38,8 @@ public class StudentListActivity extends AppCompatActivity {
     private TextView tvUserCount;
     private RecyclerView rcStudentList;
     private DatabaseService databaseService;
+
+    ArrayList<Student>studentArrayList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,20 @@ public class StudentListActivity extends AppCompatActivity {
         tvUserCount = findViewById(R.id.tv_student_count);
         rcStudentList.setLayoutManager(new LinearLayoutManager(this));
 
-        studentAdapter = new StudentAdapter(new StudentAdapter.OnStudentClickListener() {
+        studentAdapter= new StudentAdapter(studentArrayList, new StudentAdapter.OnStudentClickListener() {
+            @Override
+            public void onStudentClick(Student student) {
+
+            }
+
+            @Override
+            public void onLongStudentClick(Student student) {
+
+            }
+        });
+        rcStudentList.setAdapter(studentAdapter);
+
+        studentAdapter = new StudentAdapter(studentArrayList,new StudentAdapter.OnStudentClickListener() {
 
             // לחיצה קצרה — לא עושה כלום
             @Override
@@ -136,8 +155,9 @@ public class StudentListActivity extends AppCompatActivity {
         databaseService.getStudentList(new DatabaseService.DatabaseCallback<List<Student>>() {
             @Override
             public void onCompleted(List<Student> students) {
-                studentAdapter.setStudentList(students);
-                tvUserCount.setText("סך הכל תלמידים: " + students.size());
+                studentArrayList.addAll(students);
+                studentAdapter.notifyDataSetChanged();
+              // Toast.makeText(StudentListActivity.this,students.size()+"oooo",LENGTH_LONG).show();
             }
 
             @Override

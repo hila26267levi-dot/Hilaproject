@@ -32,24 +32,30 @@
 
                 <!-- imageView8 = תמונת מצלמה - לחיצה פותחת גלריה -->
                 <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:id="@+id/teacher_register_camara"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:contentDescription="בחר תמונה"
                     android:background="@drawable/add"
+                    android:clickable="true"
+                    android:contentDescription="בחר תמונה"
+                    android:focusable="true"
                     android:padding="16dp" />
 
                 <!-- imageView9 = ImageButton שמציג את התמונה שנבחרה -->
                 <ImageButton
-                    android:id="@+id/imageView9"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/add2"
-                    android:scaleType="centerCrop"
-                    android:contentDescription="תמונת פרופיל" />
+                    android:id="@+id/teacher_register_gallery"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/gallery"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/iv_Rteacher"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    tools:srcCompat="@tools:sample/avatars" />
 
             </LinearLayout>
 

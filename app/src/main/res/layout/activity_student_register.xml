@@ -31,25 +31,32 @@
                 android:orientation="horizontal">
 
                 <!-- תמונת מצלמה - לחיצה פותחת גלריה -->
-                <ImageView
-                    android:id="@+id/student2"
+                <ImageButton
+                    android:id="@+id/student_register_gallery"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginEnd="16dp"
+                    android:background="@drawable/gallery"
                     android:clickable="true"
                     android:focusable="true"
-                    android:contentDescription="בחר תמונה"
-                    app:srcCompat="@drawable/add" />
+                    />
 
                 <!-- תמונת פרופיל - מציגה את התמונה שנבחרה, גם לחיצה פותחת גלריה -->
+
                 <ImageButton
-                    android:id="@+id/profile"
+                    android:id="@+id/student_register_camara"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/add2"
-                    android:scaleType="centerCrop"
+                    android:background="@drawable/add"
                     android:elevation="20dp"
-                    android:contentDescription="תמונת פרופיל" />
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/iv_Rstudent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    tools:srcCompat="@tools:sample/avatars" />
 
             </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,8 +31,16 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
 
     EditText fname, lname, age, price, teachclass, subject;
     Spinner spZoomEdit, spTeachclassEdit, spSubjectEdit;
-    ImageButton imgCamera;  // add - לחיץ, פותח גלריה
-    ImageView imgDisplay;   // add2 - עיצוב בלבד, לא לחיץ, מציג תמונה שנבחרה
+    ImageButton img_Camera, img_gallery;  // add - לחיץ, פותח גלריה
+
+    ImageView iv_Eteacher;
+
+
+    /// Activity result launcher for selecting image from gallery
+    private ActivityResultLauncher<Intent> selectImageLauncher;
+    /// Activity result launcher for capturing image from camera
+    private ActivityResultLauncher<Intent> captureImageLauncher;
+
     Teacher currentTeacher;
     String uid;
     Button btn_save;
@@ -46,6 +57,8 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
         ImageUtil.requestPermission(this);
         databaseService = DatabaseService.getInstance();
 
+        setUpGallery();
+
         fname      = findViewById(R.id.profile_Teacher_E_Fname);
         lname      = findViewById(R.id.profile_Teacher_E_Lname);
         age        = findViewById(R.id.profile_Teacher_E_age);
@@ -53,15 +66,22 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
         teachclass = findViewById(R.id.profile_Teacher_E_teachclass);
         subject    = findViewById(R.id.profile_Teacher_E_subject);
         btn_save   = findViewById(R.id.profile_Teacher_E_btn);
-        imgCamera  = findViewById(R.id.img_StudentProfile); // add - לחיץ
-        imgDisplay = findViewById(R.id.add2);       // add2 - עיצוב בלבד
+        img_Camera  = findViewById(R.id.img_camara_teacherE_Profile); // add - לחיץ
+        img_gallery = findViewById(R.id.img_gallery_teacherE_Profile);       // add2 - עיצוב בלבד
+        iv_Eteacher =  findViewById(R.id.iv_Eteacher);
 
-        imgCamera.setOnClickListener(this); // רק add לחיץ
+        img_Camera.setOnClickListener(this);
+        img_gallery.setOnClickListener(this);
+        // רק add לחיץ
         btn_save.setOnClickListener(this);
 
         spZoomEdit       = findViewById(R.id.spZoomEdit);
         spTeachclassEdit = findViewById(R.id.sp_teachclass_edit);
         spSubjectEdit    = findViewById(R.id.sp_subject_edit);
+
+
+
+
 
         spTeachclassEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -130,7 +150,7 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
                 && !currentTeacher.getPic().equals("jkjk")) {
             Bitmap bmp = ImageUtil.convertFromivIPic(currentTeacher.getPic());
             if (bmp != null) {
-                imgDisplay.setImageBitmap(bmp);
+                iv_Eteacher.setImageBitmap(bmp);
             }
         }
 
@@ -167,7 +187,7 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
         currentTeacher.setZoom(selectedZoom);
 
         // שמירת תמונה מ-imgDisplay
-        String picBase64 = ImageUtil.convertTo64Base(imgDisplay);
+        String picBase64 = ImageUtil.convertTo64Base(iv_Eteacher);
         if (picBase64 != null) {
             currentTeacher.setPic(picBase64);
         }
@@ -189,11 +209,65 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if (v == btn_save) {
             saveTeacherProfile();
-        } else if (v == imgCamera) {
+        }
+
+        else if (v == img_gallery) {
             // רק add פותח גלריה
+
+            ImageUtil.requestPermission(Teacher_edit_profile.this);
             imageChooser();
         }
+
+
+
+        else if (v ==img_Camera) {
+
+            ImageUtil.requestPermission(Teacher_edit_profile.this);
+            captureImageFromCamera();
+
+        }
     }
+
+
+    private void setUpGallery() {
+        /// register the activity result launcher for selecting image from gallery
+        selectImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri selectedImage = result.getData().getData();
+                        iv_Eteacher.setImageURI(selectedImage);
+                        /// set the tag for the image view to null
+                        iv_Eteacher.setTag(null);
+                    }
+                });
+
+        /// register the activity result launcher for capturing image from camera
+        captureImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Bitmap bitmap = (Bitmap) result.getData().getExtras().get("data");
+                        iv_Eteacher.setImageBitmap(bitmap);
+                        /// set the tag for the image view to null
+                        iv_Eteacher.setTag(null);
+                    }
+                });
+
+
+
+
+
+
+    }
+
+    /// capture image from camera
+    private void captureImageFromCamera() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        captureImageLauncher.launch(takePictureIntent);
+    }
+
+
 
     void imageChooser() {
         Intent i = new Intent();
@@ -209,10 +283,13 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 // תמונה שנבחרה מוצגת ב-imgDisplay (add2) בלבד
-                imgDisplay.setImageURI(selectedImageUri);
+                iv_Eteacher.setImageURI(selectedImageUri);
             }
         }
     }
+
+
+
 
     public boolean validateInput(String fname, String lname, String price, String age) {
         String nameRegex   = "^[A-Za-zא-ת]+$";
@@ -245,4 +322,6 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
         if (id == R.id.teacher_adut)     { startActivity(new Intent(this, AdutActivity.class)); return true; }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

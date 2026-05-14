@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
+import com.hila.myapplication.adapters.ImageUtil;
 import com.hila.myapplication.model.Teacher;
 import com.hila.myapplication.servicses.DatabaseService;
 
@@ -27,6 +29,9 @@ public class teacher_profile extends AppCompatActivity {
     Teacher currntTeacher = null;
     Button btn_E_profile;
     String tId = "";
+
+    ImageView img_teacher_pofile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,10 @@ public class teacher_profile extends AppCompatActivity {
                         tvzoom.setText(teacher.getZoom());
                         tvage.setText(teacher.getAge());
                         tvprice.setText(teacher.getPrice() + "");
-                    } else {
+                        if(teacher.getPic()!=null){
+                        img_teacher_pofile.setImageBitmap(ImageUtil.convertFromivIPic(teacher.getPic()));
+                    } }
+                        else {
                         Toast.makeText(teacher_profile.this,
                                 "לא נמצאו פרטי מורה", Toast.LENGTH_SHORT).show();
                     }
@@ -97,6 +105,8 @@ public class teacher_profile extends AppCompatActivity {
         tvage = findViewById(R.id.tvProfileTeacher_age);
         tvprice = findViewById(R.id.tvProfileTeacher_price);
         btn_E_profile = findViewById(R.id.btn_E_teacher_profile);
+
+        img_teacher_pofile = findViewById(R.id.img_TeacherProfile);
     }
 
     @Override

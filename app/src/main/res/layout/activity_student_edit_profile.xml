@@ -21,30 +21,34 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- תמונת פרופיל -->
-
-            <!-- כותרת -->
-
+            <!-- שני כפתורים בדיוק כמו בהרשמה -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
+                <!-- כפתור מצלמה - לחיץ - add -->
                 <ImageButton
                     android:id="@+id/img_StudentProfile"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/add" />
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/add"
+                    android:scaleType="center"
+                    android:src="@null"
+                    android:contentDescription="בחר תמונה" />
 
-                <ImageButton
-                    android:id="@+id/img_Student1"
+                <!-- עיגול כובע - עיצוב בלבד - add2 -->
+                <ImageView
+                    android:id="@+id/add2"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/add2" />
+                    android:background="@drawable/add2"
+                    android:scaleType="centerCrop"
+                   />
 
             </LinearLayout>
 
@@ -60,150 +64,80 @@
                 android:fontFamily="@font/gevret_levin_alef"
                 android:layout_marginBottom="16dp" />
 
-            <!-- כרטיס טופס -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/card_background"
                 android:padding="16dp">
 
                 <!-- שם פרטי -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/input_background"
-                    android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_person"
-                        android:layout_marginEnd="8dp" />
-
-                    <EditText
-                        android:id="@+id/profile_student_E_Fname"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="שם פרטי"
-                        android:textDirection="ltr"
-                        android:inputType="text"
-                        android:background="@null"
-                        android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl"
-                        android:textSize="14sp"
-                        android:textColor="#1E5A7A"
-                        android:fontFamily="@font/gevret_levin_alef" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp" android:paddingEnd="12dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                        android:src="@drawable/ic_person" android:layout_marginEnd="8dp" />
+                    <EditText android:id="@+id/profile_student_E_Fname"
+                        android:layout_width="match_parent" android:layout_height="match_parent"
+                        android:hint="שם פרטי" android:textDirection="ltr" android:inputType="text"
+                        android:background="@null" android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl" android:textSize="14sp"
+                        android:textColor="#1E5A7A" android:fontFamily="@font/gevret_levin_alef" />
                 </LinearLayout>
 
                 <!-- שם משפחה -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/input_background"
-                    android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_person"
-                        android:layout_marginEnd="8dp" />
-
-                    <EditText
-                        android:id="@+id/profile_student_E_Lname"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="שם משפחה"
-                        android:inputType="text"
-                        android:textDirection="ltr"
-                        android:background="@null"
-                        android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl"
-                        android:textSize="14sp"
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp" android:paddingEnd="12dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                        android:src="@drawable/ic_person" android:layout_marginEnd="8dp" />
+                    <EditText android:id="@+id/profile_student_E_Lname"
+                        android:layout_width="match_parent" android:layout_height="match_parent"
+                        android:hint="שם משפחה" android:inputType="text" android:textDirection="ltr"
+                        android:background="@null" android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl" android:textSize="14sp"
                         android:fontFamily="@font/gevret_levin_alef" />
                 </LinearLayout>
 
                 <!-- כיתה -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/input_background"
-                    android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_book"
-                        android:layout_marginEnd="8dp" />
-
-                    <Spinner
-                        android:id="@+id/spstudent_kita"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textDirection="ltr"
-                        android:entries="@array/my_items"
-                        android:background="@null"
-                        android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl"
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp" android:paddingEnd="12dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                        android:src="@drawable/ic_book" android:layout_marginEnd="8dp" />
+                    <Spinner android:id="@+id/spstudent_kita"
+                        android:layout_width="match_parent" android:layout_height="match_parent"
+                        android:entries="@array/my_items" android:background="@null"
+                        android:gravity="end|center_vertical" android:layoutDirection="rtl"
                         android:fontFamily="@font/gevret_levin_alef" />
                 </LinearLayout>
 
                 <!-- טלפון -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/input_background"
-                    android:layout_marginBottom="16dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_phone"
-                        android:layout_marginEnd="8dp" />
-
-                    <EditText
-                        android:id="@+id/profile_student_E_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="מספר טלפון"
-                        android:inputType="phone"
-                        android:textDirection="ltr"
-                        android:background="@null"
-                        android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl"
-                        android:textSize="14sp"
+                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:background="@drawable/input_background" android:layout_marginBottom="16dp"
+                    android:paddingStart="12dp" android:paddingEnd="12dp">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                        android:src="@drawable/ic_phone" android:layout_marginEnd="8dp" />
+                    <EditText android:id="@+id/profile_student_E_phone"
+                        android:layout_width="match_parent" android:layout_height="match_parent"
+                        android:hint="מספר טלפון" android:inputType="phone" android:textDirection="ltr"
+                        android:background="@null" android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl" android:textSize="14sp"
                         android:fontFamily="@font/gevret_levin_alef" />
                 </LinearLayout>
 
                 <!-- כפתור שמירה -->
-                <Button
-                    android:id="@+id/btnSaveprofile_student"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:text="שמור פרופיל"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                <Button android:id="@+id/btnSaveprofile_student"
+                    android:layout_width="match_parent" android:layout_height="48dp"
+                    android:text="שמור פרופיל" android:textColor="@android:color/white"
+                    android:textSize="16sp" android:textStyle="bold"
                     android:fontFamily="@font/gevret_levin_alef"
-                    android:backgroundTint="#1a7a9b"
-                    android:stateListAnimator="@null" />
+                    android:backgroundTint="#1a7a9b" android:stateListAnimator="@null" />
 
             </LinearLayout>
         </LinearLayout>

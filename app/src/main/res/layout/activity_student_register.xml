@@ -21,31 +21,36 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <!-- תמונת פרופיל -->
-
-            <!-- כותרת -->
+            <!-- שתי תמונות לחיצות לבחירת תמונת פרופיל -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-             android:layout_marginTop="80dp"
+                android:layout_marginTop="80dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <!-- תמונת מצלמה - לחיצה פותחת גלריה -->
                 <ImageView
                     android:id="@+id/student2"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginLeft="30dp"
                     android:layout_marginEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="בחר תמונה"
                     app:srcCompat="@drawable/add" />
 
+                <!-- תמונת פרופיל - מציגה את התמונה שנבחרה, גם לחיצה פותחת גלריה -->
                 <ImageButton
                     android:id="@+id/profile"
-                    android:layout_width="89dp"
-                    android:layout_height="89dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:background="@drawable/add2"
-                    android:elevation="20dp" />
+                    android:scaleType="centerCrop"
+                    android:elevation="20dp"
+                    android:contentDescription="תמונת פרופיל" />
+
             </LinearLayout>
 
             <TextView
@@ -79,13 +84,11 @@
                     android:layout_marginBottom="10dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_person"
                         android:layout_marginEnd="8dp" />
-
                     <EditText
                         android:id="@+id/et_student_fname"
                         android:layout_width="match_parent"
@@ -109,13 +112,11 @@
                     android:layout_marginBottom="10dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_person"
                         android:layout_marginEnd="8dp" />
-
                     <EditText
                         android:id="@+id/et_student_lname"
                         android:layout_width="match_parent"
@@ -139,13 +140,11 @@
                     android:layout_marginBottom="10dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_phone"
                         android:layout_marginEnd="8dp" />
-
                     <EditText
                         android:id="@+id/et_student_phone"
                         android:layout_width="match_parent"
@@ -169,13 +168,11 @@
                     android:layout_marginBottom="10dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_book"
                         android:layout_marginEnd="8dp" />
-
                     <Spinner
                         android:id="@+id/spstudent_kita"
                         android:layout_width="match_parent"
@@ -198,13 +195,11 @@
                     android:layout_marginBottom="10dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_email"
                         android:layout_marginEnd="8dp" />
-
                     <EditText
                         android:id="@+id/et_student_email"
                         android:layout_width="match_parent"
@@ -228,20 +223,17 @@
                     android:layout_marginBottom="16dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp">
-
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:tint="@color/black"
                         android:src="@android:drawable/ic_lock_lock"
                         android:layout_marginEnd="8dp" />
-
                     <EditText
                         android:id="@+id/et_student_password"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textDirection="ltr"
-
                         android:hint="סיסמא"
                         android:inputType="textPassword"
                         android:background="@null"

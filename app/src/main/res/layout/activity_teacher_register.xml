@@ -83,155 +83,317 @@
                 android:padding="16dp">
 
                 <!-- שם פרטי -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_person" android:layout_marginEnd="8dp" />
-                    <EditText android:id="@+id/et_teacher_fname"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:hint="שם פרטי" android:inputType="text" android:textDirection="ltr"
-                        android:background="@null" android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl" android:textSize="14sp" />
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_person"
+                        android:layout_marginEnd="8dp" />
+
+                    <EditText
+                        android:id="@+id/et_teacher_fname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="שם פרטי"
+                        android:inputType="text"
+                        android:textDirection="ltr"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
 
                 <!-- שם משפחה -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_person" android:layout_marginEnd="8dp" />
-                    <EditText android:id="@+id/et_teacher_lname"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:hint="שם משפחה" android:textDirection="ltr" android:inputType="text"
-                        android:background="@null" android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl" android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_person"
+                        android:layout_marginEnd="8dp" />
+
+                    <EditText
+                        android:id="@+id/et_teacher_lname"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="שם משפחה"
+                        android:textDirection="ltr"
+                        android:inputType="text"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <!-- טלפון -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_phone" android:layout_marginEnd="8dp" />
-                    <EditText android:id="@+id/et_teacher_phone"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:hint="טלפון" android:inputType="phone" android:background="@null"
-                        android:gravity="end|center_vertical" android:layoutDirection="rtl" android:textSize="14sp" />
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_phone"
+                        android:layout_marginEnd="8dp" />
+
+                    <EditText
+                        android:id="@+id/et_teacher_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="טלפון"
+                        android:inputType="phone"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
 
                 <!-- אימייל -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_email" android:layout_marginEnd="8dp" />
-                    <EditText android:id="@+id/et_teacher_email"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:textDirection="ltr" android:hint="אימייל" android:inputType="textEmailAddress"
-                        android:background="@null" android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl" android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
 
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_email"
+                        android:layout_marginEnd="8dp" />
+
+                    <EditText
+                        android:id="@+id/et_teacher_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textDirection="ltr"
+                        android:hint="אימייל"
+                        android:inputType="textEmailAddress"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <!-- סיסמא -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/outline_dialpad_24"
+                        android:layout_marginEnd="8dp" />
+
+                    <EditText
+                        android:id="@+id/et_teacher_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="סיסמא"
+                        android:inputType="textPassword"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <!-- גיל -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/outline_calendar_month_24"
+                        android:layout_marginEnd="8dp"
+                        />
                     <EditText
                         android:id="@+id/et_teacher_age"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:hint="גיל"
+                        android:inputType="textPassword"
                         android:background="@null"
                         android:gravity="end|center_vertical"
-                        android:hint="גיל"
-                        android:inputType="number"
                         android:layoutDirection="rtl"
-                        android:textDirection="ltr"
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <!-- סיסמא -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/outline_dialpad_24" android:layout_marginEnd="8dp" />
-                    <EditText android:id="@+id/et_teacher_password"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:hint="סיסמא" android:inputType="textPassword" android:background="@null"
-                        android:gravity="end|center_vertical" android:layoutDirection="rtl" android:textSize="14sp" />
-                </LinearLayout>
-
-                <!-- גיל -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/outline_calendar_month_24" android:layout_marginEnd="8dp" />
-
-                </LinearLayout>
-
                 <!-- מחיר -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/outline_money_24" android:layout_marginEnd="8dp" />
-                    <EditText android:id="@+id/et_teacher_price"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:hint="מחיר" android:inputType="numberDecimal" android:background="@null"
-                        android:textDirection="ltr" android:gravity="end|center_vertical"
-                        android:layoutDirection="rtl" android:textSize="14sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/outline_money_24"
+                        android:layout_marginEnd="8dp" />
+
+                    <EditText
+                        android:id="@+id/et_teacher_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="מחיר"
+                        android:inputType="numberDecimal"
+                        android:background="@null"
+                        android:textDirection="ltr"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <!-- מקצוע Spinner -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <Spinner android:id="@+id/spSubject"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:entries="@array/Arrsubject" android:background="@null"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <Spinner
+                        android:id="@+id/spSubject"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/Arrsubject"
+                        android:background="@null"
                         android:layoutDirection="rtl" />
+
                 </LinearLayout>
 
                 <!-- מקצועות שנבחרו -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <EditText android:id="@+id/etSubjects"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:hint="מקצועות שנבחרו" android:focusable="false"
-                        android:focusableInTouchMode="false" android:background="@null"
-                        android:gravity="end|center_vertical" android:layoutDirection="rtl"
-                        android:textSize="14sp" android:textColor="#1E5A7A" />
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <EditText
+                        android:id="@+id/etSubjects"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="מקצועות שנבחרו"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:background="@null"
+                        android:gravity="end|center_vertical"
+                        android:layoutDirection="rtl"
+                        android:textSize="14sp"
+                        android:textColor="#1E5A7A" />
+
                 </LinearLayout>
 
                 <!-- זום Spinner -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="10dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <Spinner android:id="@+id/spZoom"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:entries="@array/Arrzoom" android:background="@null"
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+                    <Spinner
+                        android:id="@+id/spZoom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/Arrzoom"
+                        android:background="@null"
                         android:layoutDirection="rtl" />
+
                 </LinearLayout>
 
                 <!-- כיתות לימוד -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="48dp"
-                    android:orientation="horizontal" android:gravity="center_vertical"
-                    android:background="@drawable/input_background" android:layout_marginBottom="16dp"
-                    android:paddingStart="12dp" android:paddingEnd="12dp">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_book" android:layout_marginEnd="8dp" />
-                    <Spinner android:id="@+id/et_teacher_teach_class"
-                        android:layout_width="match_parent" android:layout_height="match_parent"
-                        android:entries="@array/Arrgrade" android:background="@null"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/input_background"
+                    android:layout_marginBottom="16dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_book"
+                        android:layout_marginEnd="8dp" />
+
+                    <Spinner
+
+                        android:id="@+id/et_teacher_teach_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:entries="@array/Arrgrade"
+                        android:background="@null"
                         android:layoutDirection="rtl" />
                 </LinearLayout>
 
                 <!-- כפתור הרשמה -->
-                <Button android:id="@+id/btn_register"
-                    android:layout_width="match_parent" android:layout_height="48dp"
-                    android:text="הרשמה" android:textColor="@android:color/white"
-                    android:textSize="16sp" android:textStyle="bold"
-                    android:backgroundTint="#1a7a9b" android:stateListAnimator="@null" />
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="הרשמה"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#1a7a9b"
+                    android:stateListAnimator="@null" />
 
             </LinearLayout>
         </LinearLayout>

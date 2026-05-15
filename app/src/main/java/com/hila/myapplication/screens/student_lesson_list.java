@@ -62,11 +62,11 @@ public class student_lesson_list extends AppCompatActivity {
 
                     @Override
                     public void onLessonClick(TeacherLesson lesson) {
-                        // לחיצה רגילה — לא עושה כלום
                     }
 
                     @Override
                     public void onLongLessonClick(TeacherLesson lesson) {
+
                         AlertDialog.Builder builder =
                                 new AlertDialog.Builder(student_lesson_list.this);
                         builder.setTitle("ביטול שיעור");
@@ -79,21 +79,21 @@ public class student_lesson_list extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        // הסרה מהרשימה המקומית
+
+                                        if (lesson.getStudent() == null) {
+                                            Toast.makeText(student_lesson_list.this,
+                                                    "שיעור זה אינו תפוס, אין צורך לבטל",
+                                                    Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
                                         lessonList.remove(lesson);
                                         teacherLessonAdapter.notifyDataSetChanged();
-
-                                        // שליחת SMS למורה
                                         sendSmsToTeacher(lesson);
-
-                                        // החזרת השיעור לפנוי ומחיקת התלמיד ממנו
                                         lesson.setStatus("availbale");
-                                        lesson.setStudent(null);
-
                                         databaseService.deleteLessonForStudent(lesson, new DatabaseService.DatabaseCallback<Void>() {
                                             @Override
                                             public void onCompleted(Void object) {
-                                                // הושלם בהצלחה
                                             }
 
                                             @Override
@@ -135,7 +135,9 @@ public class student_lesson_list extends AppCompatActivity {
     }
 
     private void sendSmsToTeacher(TeacherLesson lesson) {
-        if (lesson.getTeacher() != null && lesson.getTeacher().getPhone() != null) {
+        if (lesson.getTeacher() != null
+                && lesson.getTeacher().getPhone() != null
+                && lesson.getStudent() != null) {
             String message =
                     "שלום " + lesson.getTeacher().getFname()
                             + " " + lesson.getTeacher().getLname() + ",\n"

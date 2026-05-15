@@ -13,13 +13,14 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginStart="211dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="116dp"
         android:layout_marginEnd="50dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="תאריך השיעור"
-        android:textSize="20dp"
         android:textColor="#1E5A7A"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,23 +28,23 @@
         android:id="@+id/subjectlesson_addlessonSet"
         android:layout_width="149dp"
         android:layout_height="54dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="מקצוע שיעור"
-        android:textSize="20dp"
         android:textColor="#1E5A7A"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="@+id/et_datelesson_addlessonSet"
         app:layout_constraintTop_toBottomOf="@+id/et_datelesson_addlessonSet" />
 
     <TextView
         android:id="@+id/et_timelesson_addlessonSet"
-        android:layout_width="158dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="56dp"
+        android:layout_width="145dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="זמן השיעור"
-        android:textSize="20dp"
         android:textColor="#1E5A7A"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="@+id/subjectlesson_addlessonSet"
         app:layout_constraintTop_toBottomOf="@+id/subjectlesson_addlessonSet" />
 
@@ -51,7 +52,7 @@
         android:id="@+id/etGradeClassSet"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="כיתה"
@@ -65,21 +66,23 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="79dp"
-        android:textSize="20dp"
         android:enabled="false"
         android:fontFamily="@font/gevret_levin_alef"
         android:hint="האם זום"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSetLesson"
         app:layout_constraintEnd_toEndOf="@+id/etGradeClassSet"
-        app:layout_constraintTop_toBottomOf="@+id/etGradeClassSet" />
+        app:layout_constraintTop_toBottomOf="@+id/etGradeClassSet"
+        app:layout_constraintVertical_bias="0.481" />
 
     <Button
         android:id="@+id/btnSetLesson"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="164dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/my_button_background"
         android:fontFamily="@font/nehama_webfont"
         android:text="  קביעת שיעור"
@@ -88,7 +91,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

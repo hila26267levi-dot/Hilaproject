@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 import com.hila.myapplication.model.Teacher;
 import com.hila.myapplication.servicses.DatabaseService;
@@ -135,9 +136,11 @@ public class TeacherProfile_forstudent extends AppCompatActivity {
             return true;
         }
         if (id == R.id.student_disconect) {
-            Intent intent = new Intent(TeacherProfile_forstudent.this, disconect_forstudent.class);
-            startActivity(intent);
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(TeacherProfile_forstudent.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.student_mylesson) {
             Intent intent = new Intent(TeacherProfile_forstudent.this, student_lesson_list.class);

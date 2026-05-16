@@ -215,9 +215,11 @@ public class TeacherLessonsList extends AppCompatActivity {
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            Intent intent = new Intent(TeacherLessonsList.this, disconect_forteacher.class);
-            startActivity(intent);
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(TeacherLessonsList.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.teacher_adut) {
             Intent intent = new Intent(TeacherLessonsList.this, AdutActivity.class);

@@ -315,11 +315,29 @@ public class Teacher_edit_profile extends AppCompatActivity implements View.OnCl
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.teacher_home)     { startActivity(new Intent(this, TeacherActivity.class)); return true; }
-        if (id == R.id.teacher_profile)  { startActivity(new Intent(this, teacher_profile.class)); return true; }
-        if (id == R.id.teacher_mylesson) { startActivity(new Intent(this, TeacherLessonsList.class)); return true; }
-        if (id == R.id.teacher_disconect){ startActivity(new Intent(this, disconect_forteacher.class)); return true; }
-        if (id == R.id.teacher_adut)     { startActivity(new Intent(this, AdutActivity.class)); return true; }
+        if (id == R.id.teacher_home)
+        {
+            startActivity(new Intent(this, TeacherActivity.class)); return true;
+        }
+        if (id == R.id.teacher_profile)
+        {
+            startActivity(new Intent(this, teacher_profile.class)); return true;
+        }
+        if (id == R.id.teacher_mylesson)
+        {
+            startActivity(new Intent(this, TeacherLessonsList.class)); return true;
+        }
+        if (id == R.id.teacher_disconect) {
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(Teacher_edit_profile.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
+        }
+        if (id == R.id.teacher_adut)
+        {
+            startActivity(new Intent(this, AdutActivity.class)); return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

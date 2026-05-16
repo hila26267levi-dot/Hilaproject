@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 import com.hila.myapplication.adapters.StudentAdapter;
 import com.hila.myapplication.model.Student;
@@ -188,8 +189,11 @@ public class StudentListActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.admin_disconect) {
-            startActivity(new Intent(StudentListActivity.this, disconect_foradmin.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(StudentListActivity.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

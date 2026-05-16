@@ -11,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 
 public class AdutActivity extends AppCompatActivity {
@@ -66,8 +67,11 @@ public class AdutActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.student_disconect) {
-            startActivity(new Intent(AdutActivity.this, disconect_forstudent.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(AdutActivity.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.student_mylesson) {
             startActivity(new Intent(AdutActivity.this, student_lesson_list.class));
@@ -91,8 +95,11 @@ public class AdutActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            startActivity(new Intent(AdutActivity.this, disconect_forteacher.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(AdutActivity.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.teacher_adut) {
             return true; // כבר כאן
@@ -107,8 +114,11 @@ public class AdutActivity extends AppCompatActivity {
             return true; // כבר כאן
         }
         if (id == R.id.admin_disconect) {
-            startActivity(new Intent(AdutActivity.this, disconect_foradmin.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(AdutActivity.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

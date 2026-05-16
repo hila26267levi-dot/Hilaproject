@@ -10,6 +10,7 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 
 public class StudentActivity extends AppCompatActivity implements View.OnClickListener {
@@ -64,8 +65,11 @@ public class StudentActivity extends AppCompatActivity implements View.OnClickLi
             return true;
         }
         if (id == R.id.student_disconect) {
-            startActivity(new Intent(StudentActivity.this, disconect_forstudent.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(StudentActivity.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.student_mylesson) {
             startActivity(new Intent(StudentActivity.this, student_lesson_list.class));

@@ -13,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 import com.hila.myapplication.servicses.DatabaseService;
 
@@ -75,8 +76,11 @@ public class AdminActivity extends AppCompatActivity implements View.OnClickList
             return true;
         }
         if (id == R.id.admin_disconect) {
-            startActivity(new Intent(AdminActivity.this, disconect_foradmin.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(AdminActivity.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -240,12 +240,33 @@ public class Student_edit_profile extends AppCompatActivity implements View.OnCl
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.student_home)         { startActivity(new Intent(this, StudentActivity.class)); return true; }
-        if (id == R.id.student_searchteacher){ startActivity(new Intent(this, TeacherListActivity.class)); return true; }
-        if (id == R.id.student_profile)      { startActivity(new Intent(this, StudentProfile.class)); return true; }
-        if (id == R.id.student_disconect)    { startActivity(new Intent(this, disconect_forstudent.class)); return true; }
-        if (id == R.id.student_mylesson)     { startActivity(new Intent(this, student_lesson_list.class)); return true; }
-        if (id == R.id.student_adut)         { startActivity(new Intent(this, AdutActivity.class)); return true; }
+        if (id == R.id.student_home)
+        {
+            startActivity(new Intent(this, StudentActivity.class)); return true;
+        }
+        if (id == R.id.student_searchteacher)
+        {
+            startActivity(new Intent(this, TeacherListActivity.class)); return true;
+        }
+        if (id == R.id.student_profile)
+        {
+            startActivity(new Intent(this, StudentProfile.class)); return true;
+        }
+        if (id == R.id.student_disconect) {
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(Student_edit_profile.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
+        }
+        if (id == R.id.student_mylesson)
+        {
+            startActivity(new Intent(this, student_lesson_list.class)); return true;
+        }
+        if (id == R.id.student_adut)
+        {
+            startActivity(new Intent(this, AdutActivity.class)); return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

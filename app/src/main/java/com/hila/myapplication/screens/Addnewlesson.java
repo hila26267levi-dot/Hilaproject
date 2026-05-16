@@ -21,6 +21,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 import com.hila.myapplication.model.Teacher;
 import com.hila.myapplication.model.TeacherLesson;
@@ -257,9 +258,11 @@ public class Addnewlesson extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            Intent intent = new Intent(Addnewlesson.this, disconect_forteacher.class);
-            startActivity(intent);
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(Addnewlesson.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.teacher_adut) {
             Intent intent = new Intent(Addnewlesson.this, AdutActivity.class);

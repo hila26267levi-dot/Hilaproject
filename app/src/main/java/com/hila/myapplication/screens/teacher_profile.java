@@ -131,8 +131,11 @@ public class teacher_profile extends AppCompatActivity {
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            startActivity(new Intent(this, disconect_forteacher.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(teacher_profile.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.teacher_adut) {
             startActivity(new Intent(this, AdutActivity.class));

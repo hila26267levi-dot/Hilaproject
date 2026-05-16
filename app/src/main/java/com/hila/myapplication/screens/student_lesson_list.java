@@ -184,9 +184,11 @@ public class student_lesson_list extends AppCompatActivity {
             return true;
         }
         if (id == R.id.student_disconect) {
-            Intent intent = new Intent(student_lesson_list.this, disconect_forstudent.class);
-            startActivity(intent);
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(student_lesson_list.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.student_mylesson) {
             Intent intent = new Intent(student_lesson_list.this, student_lesson_list.class);

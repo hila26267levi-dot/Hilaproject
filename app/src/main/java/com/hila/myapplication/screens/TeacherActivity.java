@@ -10,6 +10,7 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.hila.myapplication.R;
 import com.hila.myapplication.servicses.DatabaseService;
 
@@ -60,8 +61,11 @@ public class TeacherActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.teacher_disconect) {
-            startActivity(new Intent(TeacherActivity.this, disconect_forteacher.class));
-            return true;
+            FirebaseAuth.getInstance().signOut();
+            Intent go = new Intent(TeacherActivity.this,
+                    MainActivity.class);
+            startActivity(go);
+            finish();
         }
         if (id == R.id.teacher_adut) {
             Intent intent = new Intent(TeacherActivity.this, AdutActivity.class);
